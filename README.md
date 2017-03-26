@@ -1,0 +1,2 @@
+# JSONDecodePojo
+解决重复写json2Object及Object2Json同时又不能混淆的问题
