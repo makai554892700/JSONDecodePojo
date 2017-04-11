@@ -31,6 +31,7 @@ public class InfoUtils {
                 if (arrayListBack == null) {
                     return;
                 }
+                Class<T> clazz = null;
                 do {
                     if (status != 200 || data == null) {
                         break;
@@ -47,9 +48,13 @@ public class InfoUtils {
                     if (types == null || types.length == 0) {
                         break;
                     }
-                    arrayListBack.onResult((ArrayList<T>) BasePoJo.JSONArrayStrToArray((Class<T>) types[0], new String(data)));
+                    clazz = (Class<T>) types[0];
                 } while (false);
-                arrayListBack.onFail(status, message);
+                if (clazz == null) {
+                    arrayListBack.onFail(status, message);
+                } else {
+                    arrayListBack.onResult((ArrayList<T>) BasePoJo.JSONArrayStrToArray(clazz, new String(data)));
+                }
             }
 
             @Override
