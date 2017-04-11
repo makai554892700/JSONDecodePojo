@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.mayousheng.www.jsondecodepojo.R;
 import com.mayousheng.www.jsondecodepojo.base.BaseAdapter;
 import com.mayousheng.www.jsondecodepojo.pojo.NewsPojo;
+import com.mayousheng.www.jsondecodepojo.utils.ShowImageUtils;
 
 import java.util.List;
 
@@ -41,6 +42,8 @@ public class NewsAdapter extends BaseAdapter<NewsPojo> {
             holder.title.setText(newsPojo.title);
             holder.desc.setText(newsPojo.description);
             holder.time.setText(newsPojo.ctime);
+            holder.img.setTag(newsPojo.picUrl);
+            new ShowImageUtils().loadImage(newsPojo.picUrl, holder.img);
         }
         return convertView;
     }
