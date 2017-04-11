@@ -1,53 +1,83 @@
 package com.mayousheng.www.jsondecodepojo;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.ListView;
 
-import com.mayousheng.www.jsondecodepojo.pojo.TestPojo;
-import com.mayousheng.www.jsondecodepojo.pojo.TestUser;
+import com.mayousheng.www.jsondecodepojo.adapter.NewsAdapter;
+import com.mayousheng.www.jsondecodepojo.base.BaseActivity;
+import com.mayousheng.www.jsondecodepojo.pojo.NewsPojo;
+import com.mayousheng.www.jsondecodepojo.utils.ArrayListBack;
+import com.mayousheng.www.jsondecodepojo.utils.InfoUtils;
+import com.mayousheng.www.refreshview.RefreshRelativeLayout;
 
 import java.util.ArrayList;
 
+public class MainActivity extends BaseActivity {
 
-public class MainActivity extends Activity {
-
-    private TextView obj2str, str2obj;
+    private RefreshRelativeLayout refreshRelativeLayout;
+    private ListView listView;
+    private NewsAdapter newsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        obj2str = (TextView) findViewById(R.id.obj2str);
-        str2obj = (TextView) findViewById(R.id.str2obj);
+        initData();
+        initView();
+        initEvent();
+    }
 
-        TestPojo testPojo = new TestPojo();
-        testPojo.clazz = "三<二>班";
-        ArrayList<TestUser> userList = new ArrayList<TestUser>();
-        for (int i = 0; i < 10; i++) {
-            TestUser testUser = new TestUser();
-            testUser.age = i;
-            testUser.userName = "name_" + i;
-            userList.add(testUser);
-        }
-        testPojo.userList = userList;
-        obj2str.setText(testPojo.toString());
+    private void updateData() {
+        InfoUtils.getNewsInfo("wxnew", 0, 10, new ArrayListBack<NewsPojo>() {
+            @Override
+            public void onFail(int status, String message) {
+                Log.e("-----1", "status=" + status + ";message=" + message);
+            }
 
-        String testStr = "{\"class\":\"三<二>班\",\"users\":" +
-                "[{\"user_age\":0,\"user_name\":\"name_0\"}," +
-                "{\"user_age\":1,\"user_name\":\"name_1\"}," +
-                "{\"user_age\":2,\"user_name\":\"name_2\"}," +
-                "{\"user_age\":3,\"user_name\":\"name_3\"}," +
-                "{\"user_age\":4,\"user_name\":\"name_4\"}," +
-                "{\"user_age\":5,\"user_name\":\"name_5\"}," +
-                "{\"user_age\":6,\"user_name\":\"name_6\"}," +
-                "{\"user_age\":7,\"user_name\":\"name_7\"}," +
-                "{\"user_age\":8,\"user_name\":\"name_8\"}," +
-                "{\"user_age\":9,\"user_name\":\"name_9\"}]}";
-        TestPojo testPojo2 = new TestPojo(testStr);
-        str2obj.setText(testPojo2.toString());
+            @Override
+            public void onResult(final ArrayList<NewsPojo> data) {
+                if (data != null) {
+                    newsAdapter.updateData(MainActivity.this, data);
+                }
+                Log.e("-----1", "data=" + (data == null ? "null" : data));
+            }
+        });
+    }
 
+    private void initData() {
+        newsAdapter = new NewsAdapter(this, null);
+        updateData();
+    }
+
+    private void initView() {
+        refreshRelativeLayout = getViewById(R.id.refreshLayout);
+        listView = getViewById(R.id.listView);
+        listView.setAdapter(newsAdapter);
+    }
+
+    private void initEvent() {
+        refreshRelativeLayout.setRefreshListener(new RefreshRelativeLayout.RefreshListener() {
+            @Override
+            public void onDown() {
+
+            }
+
+            @Override
+            public void onMove() {
+
+            }
+
+            @Override
+            public void onUp() {
+                refreshRelativeLayout.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        refreshRelativeLayout.endRotate();
+                    }
+                }, 3000);
+            }
+        });
     }
 }
