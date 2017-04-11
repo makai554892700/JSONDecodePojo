@@ -1,7 +1,7 @@
 package com.mayousheng.www.jsondecodepojo.pojo;
 
-import com.mayousheng.www.jsondecodepojo.common.BasePoJo;
-import com.mayousheng.www.jsondecodepojo.common.FieldDesc;
+import com.mayousheng.www.basepojo.BasePoJo;
+import com.mayousheng.www.basepojo.FieldDesc;
 
 /**
  * Created by marking on 2017/3/26.

@@ -1,6 +1,4 @@
-package com.mayousheng.www.jsondecodepojo.common;
-
-import android.util.Log;
+package com.mayousheng.www.basepojo;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -10,11 +8,11 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 /**
- * pojo基本类，继承自此类后方可利用此类的方法
+ * pojo基本抽象类，继承此类后方可利用此类的方法
  * Created by marking on 2017/3/24.
  */
 
-public class BasePoJo {
+public abstract class BasePoJo{
 
     //带参构造，用于json string直接转对象
     public BasePoJo(String jsonStr) {
@@ -74,8 +72,10 @@ public class BasePoJo {
                 if (jsonArray == null) {
                     continue;
                 }
-                ArrayList tempArrayList = JSONArrayToArray(arrayType, jsonArray);
-                if (tempArrayList == null) {
+                ArrayList tempArrayList = null;
+                try {
+                    tempArrayList = JSONArrayToArray(arrayType, jsonArray);
+                } catch (Exception e) {
                 }
                 try {
                     field.set(this, tempArrayList);
@@ -86,9 +86,8 @@ public class BasePoJo {
                 if (tempJSONObject == null) {
                     continue;
                 }
-                Object object = JSONObjectToObject(fieldType, tempJSONObject);
-                if (object == null) {
-                } else {
+                BasePoJo object = JSONObjectToObject(BasePoJo.class, tempJSONObject);
+                if (object != null) {
                     try {
                         field.set(this, object);
                     } catch (Exception e) {
@@ -115,39 +114,53 @@ public class BasePoJo {
         }
     }
 
-    //此类只针对于继承自此类的方法将JSONObject解析为特定对象，同理也可string转对象
-    private Object JSONObjectToObject(Class fieldType, JSONObject jsonObject) {
-        Object result = null;
+    private <T> T JSONObjectToObject(Class fieldType, JSONObject jsonObject) {
+        T result = null;
         try {
             Constructor constructor = fieldType.getConstructor(String.class);
             if (constructor != null) {
-                result = constructor.newInstance(jsonObject.toString());
+                result = (T) constructor.newInstance(jsonObject.toString());
             }
         } catch (Exception e) {
         }
         return result;
     }
 
-    //与上面JSONObjectToObject原理类似
-    private ArrayList JSONArrayToArray(Class arrayType, JSONArray jsonArray) {
-        ArrayList tempArrayList = new ArrayList();
-        if (jsonArray != null) {
-            for (int j = 0; j < jsonArray.length(); j++) {
-                try {
-                    Object obj = jsonArray.get(j);
-                    Constructor constructor = arrayType.getConstructor(String.class);
-                    if (constructor != null) {
-                        tempArrayList.add(constructor.newInstance(obj.toString()));
+    public static <T> ArrayList<T> JSONArrayStrToArray(Class arrayType, String jsonArrayStr) {
+        ArrayList<T> tempArrayList = new ArrayList<T>();
+        if (jsonArrayStr != null) {
+            JSONArray jsonArray = null;
+            try {
+                jsonArray = new JSONArray(jsonArrayStr);
+            } catch (Exception e) {
+            }
+            tempArrayList = JSONArrayToArray(arrayType, jsonArray);
+        }
+        return tempArrayList;
+    }
+
+    public static <T> ArrayList<T> JSONArrayToArray(Class arrayType, JSONArray jsonArray) {
+        ArrayList<T> tempArrayList = new ArrayList<T>();
+        if (jsonArray != null && arrayType != null) {
+            Constructor constructor = null;
+            try {
+                constructor = arrayType.getConstructor(String.class);
+            } catch (Exception e) {
+            }
+            if (constructor != null) {
+                for (int j = 0; j < jsonArray.length(); j++) {
+                    try {
+                        Object obj = jsonArray.get(j);
+                        tempArrayList.add((T) constructor.newInstance(obj.toString()));
+                    } catch (Exception e) {
                     }
-                } catch (Exception e) {
                 }
             }
         }
         return tempArrayList;
     }
 
-    //此方法针对也于继承自此类的类，调用toJSONObject方法转为JSONObject再转为JSONArray，方便数据转换
-    private JSONArray arrayToJsonArray(ArrayList arrayList) {
+    public static JSONArray arrayToJsonArray(ArrayList arrayList) {
         JSONArray jsonArray = new JSONArray();
         if (arrayList != null) {
             for (Object obj : arrayList) {
@@ -180,7 +193,6 @@ public class BasePoJo {
             try {
                 fieldValue = field.get(this);
             } catch (Exception e) {
-                Log.e("-----1", "e=" + e);
             }
             if (ArrayList.class == fieldType) {
                 putObject(result, key, arrayToJsonArray((ArrayList) fieldValue));
