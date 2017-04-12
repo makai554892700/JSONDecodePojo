@@ -1,10 +1,10 @@
-package com.mayousheng.www.jsondecodepojo;
+package com.mayousheng.www.jsondecodepojo.activity;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.widget.ListView;
 
+import com.mayousheng.www.jsondecodepojo.R;
 import com.mayousheng.www.jsondecodepojo.adapter.NewsAdapter;
 import com.mayousheng.www.jsondecodepojo.base.BaseActivity;
 import com.mayousheng.www.jsondecodepojo.pojo.NewsPojo;

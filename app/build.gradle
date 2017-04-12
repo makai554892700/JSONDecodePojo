@@ -25,4 +25,5 @@ dependencies {
     compile project(':basepojo')
     compile project(':httputils')
     compile project(':refreshview')
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3'
 }
