@@ -2,10 +2,7 @@ package com.mayousheng.www.jsondecodepojo.utils;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.util.Log;
+import android.os.AsyncTask;
 import android.widget.ImageView;
 
 import java.io.BufferedInputStream;
@@ -17,38 +14,9 @@ import java.net.URL;
  */
 
 public class ShowImageUtils {
-    private ImageView imageView;
-    private String imgUrl;
-
-    private Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            String url = (String) imageView.getTag();
-            if (url == null || imgUrl == null) {
-                return;
-            }
-            if (url.equals(imgUrl)) {
-                imageView.setImageBitmap((Bitmap) msg.obj);
-            }
-        }
-    };
 
     public void loadImage(final String imgUrl, final ImageView imageView) {
-        this.imageView = imageView;
-        this.imgUrl = imgUrl;
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Bitmap bitmap = getBitmapFromUrl(imgUrl);
-                if (bitmap == null || imageView == null) {
-                    return;
-                }
-                Message message = new Message();
-                message.obj = bitmap;
-                handler.sendMessage(message);
-            }
-        }).start();
+        new MyAsyncTast(imgUrl,imageView).execute(imgUrl);
     }
 
     private Bitmap getBitmapFromUrl(String imgUrl) {
@@ -57,7 +25,7 @@ public class ShowImageUtils {
             if (imgUrl == null || imgUrl.isEmpty()) {
                 break;
             }
-            URL url = null;
+            URL url;
             try {
                 url = new URL(imgUrl);
             } catch (Exception e) {
@@ -85,6 +53,36 @@ public class ShowImageUtils {
             }
         } while (false);
         return result;
+    }
+
+    private class MyAsyncTast extends AsyncTask<String,Void,Bitmap>{
+        private ImageView imageView;
+        private String imgUrl;
+
+        private MyAsyncTast(String imgUrl, ImageView imageView){
+            this.imageView = imageView;
+            this.imgUrl = imgUrl;
+        }
+
+        @Override
+        protected Bitmap doInBackground(String... params) {
+            Bitmap result = null;
+            if(params != null && params.length > 0){
+                result = getBitmapFromUrl(params[0]);
+            }
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap bitmap) {
+            String url = (String) imageView.getTag();
+            if (url == null || imgUrl == null) {
+                return;
+            }
+            if (url.equals(imgUrl)) {
+                imageView.setImageBitmap(bitmap);
+            }
+        }
     }
 
 }
