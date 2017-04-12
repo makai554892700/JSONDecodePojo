@@ -19,8 +19,11 @@ import java.util.List;
 
 public class NewsAdapter extends BaseAdapter<NewsPojo> {
 
+    private Context context;
+
     public NewsAdapter(Context context, List<NewsPojo> datas) {
         super(context, datas);
+        this.context = context;
     }
 
     @Override
@@ -43,7 +46,7 @@ public class NewsAdapter extends BaseAdapter<NewsPojo> {
             holder.desc.setText(newsPojo.description);
             holder.time.setText(newsPojo.ctime);
             holder.img.setTag(newsPojo.picUrl);
-            new ShowImageUtils().loadImage(newsPojo.picUrl, holder.img);
+            new ShowImageUtils().loadImage(context, newsPojo.picUrl, holder.img);
         }
         return convertView;
     }
