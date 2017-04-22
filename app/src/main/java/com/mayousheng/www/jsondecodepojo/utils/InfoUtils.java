@@ -2,7 +2,7 @@ package com.mayousheng.www.jsondecodepojo.utils;
 
 import com.mayousheng.www.basepojo.BasePoJo;
 import com.mayousheng.www.httputils.HttpUtils;
-import com.mayousheng.www.jsondecodepojo.pojo.NewsPojo;
+import com.mayousheng.www.jsondecodepojo.pojo.News;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -19,7 +19,7 @@ public class InfoUtils {
 
     private static final String baseUrl = "http://www.shandao.space/getNews?type=%s&num=%s&page=%s";
 
-    public static void getNewsInfo(String type, int page, int num, ArrayListBack<NewsPojo> arrayListBack) {
+    public static void getNewsInfo(String type, int page, int num, ArrayListBack<News> arrayListBack) {
         String url = String.format(baseUrl, type, num, page);
         commonGetArrayRequest(url, null, arrayListBack);
     }

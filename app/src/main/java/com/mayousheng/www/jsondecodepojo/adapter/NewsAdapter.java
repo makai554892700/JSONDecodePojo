@@ -1,61 +1,171 @@
 package com.mayousheng.www.jsondecodepojo.adapter;
 
-import android.content.Context;
+import android.app.Activity;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.BaseAdapter;
 
 import com.mayousheng.www.jsondecodepojo.R;
-import com.mayousheng.www.jsondecodepojo.base.BaseAdapter;
-import com.mayousheng.www.jsondecodepojo.pojo.NewsPojo;
+import com.mayousheng.www.jsondecodepojo.holder.CommonFootHolder;
+import com.mayousheng.www.jsondecodepojo.holder.NewsBodyHolder;
+import com.mayousheng.www.jsondecodepojo.pojo.News;
+import com.mayousheng.www.jsondecodepojo.utils.ArrayListBack;
+import com.mayousheng.www.jsondecodepojo.utils.InfoUtils;
 import com.mayousheng.www.jsondecodepojo.utils.ShowImageUtils;
 
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Created by marking on 2017/4/11.
  */
 
-public class NewsAdapter extends BaseAdapter<NewsPojo> {
+public class NewsAdapter extends BaseAdapter {
 
-    private Context context;
+    private static final int TYPE_FOOT = 0;
+    private static final int TYPE_BODY = 1;
+    private static final int PAGE_NUM = 10;//每次请求数据条数
 
-    public NewsAdapter(Context context, List<NewsPojo> datas) {
-        super(context, datas);
-        this.context = context;
+    private Activity activity;
+    private String footStr;
+    private ArrayList<News> datas = new ArrayList<News>();
+    private boolean ifFootRefreshed = true;
+    private boolean isInRefresh;
+    private int page = 0;
+    private boolean haveMore = true;
+
+    public NewsAdapter(Activity activity) {
+        this.activity = activity;
+        footStr = activity.getString(R.string.load0);
+        load(0);
+    }
+
+    @Override
+    public int getCount() {
+        return 1 + (datas == null ? 0 : datas.size());
+    }
+
+    @Override
+    public Object getItem(int position) {
+        int type = getItemViewType(position);
+        switch (type) {
+            case TYPE_FOOT:
+                return footStr;
+            default:
+                return (datas == null || datas.size() <= position) ? null : datas.get(position);
+        }
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (position == getCount() - 1) {
+            return TYPE_FOOT;
+        } else {
+            return TYPE_BODY;
+        }
+    }
+
+    @Override
+    public int getViewTypeCount() {
+        return 2;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Holder holder;
-        if (convertView == null) {
-            convertView = layoutInflater.inflate(R.layout.item_news, parent, false);
-            holder = new Holder();
-            holder.title = (TextView) convertView.findViewById(R.id.title);
-            holder.desc = (TextView) convertView.findViewById(R.id.desc);
-            holder.time = (TextView) convertView.findViewById(R.id.time);
-            holder.img = (ImageView) convertView.findViewById(R.id.img);
-            convertView.setTag(holder);
-        } else {
-            holder = (Holder) convertView.getTag();
+        int type = getItemViewType(position);
+        Object item = getItem(position);
+        switch (type) {
+            case TYPE_BODY:
+                NewsBodyHolder bodyHolder;
+                if (convertView == null) {
+                    bodyHolder = new NewsBodyHolder(activity, R.layout.item_news, parent);
+                    convertView = bodyHolder.getView();
+                    convertView.setTag(bodyHolder);
+                } else {
+                    bodyHolder = (NewsBodyHolder) convertView.getTag();
+                }
+                News news = (News) item;
+                bodyHolder.title.setText(news.title);
+                bodyHolder.desc.setText(news.description);
+                bodyHolder.time.setText(news.ctime);
+                bodyHolder.img.setTag(news.picUrl);
+                new ShowImageUtils().loadImage(activity, news.picUrl, bodyHolder.img);
+                return convertView;
+            case TYPE_FOOT:
+                CommonFootHolder footHolder;
+                if (convertView == null) {
+                    footHolder = new CommonFootHolder(activity, R.layout.item_foot, parent);
+                    convertView = footHolder.getView();
+                    convertView.setTag(footHolder);
+                } else {
+                    footHolder = (CommonFootHolder) convertView.getTag();
+                }
+                footHolder.title.setText(item.toString());
+                if (ifFootRefreshed) {
+                    ifFootRefreshed = false;
+                } else {
+                    onFoot();
+                }
+                return convertView;
         }
-        NewsPojo newsPojo = getItem(position);
-        if (newsPojo != null) {
-            holder.title.setText(newsPojo.title);
-            holder.desc.setText(newsPojo.description);
-            holder.time.setText(newsPojo.ctime);
-            holder.img.setTag(newsPojo.picUrl);
-            new ShowImageUtils().loadImage(context, newsPojo.picUrl, holder.img);
-        }
-        return convertView;
+        return null;
     }
 
-    private class Holder {
-        private TextView title;
-        private TextView desc;
-        private TextView time;
-        private ImageView img;
+    public void onFoot() {
+        load(page);
+    }
+
+    public void load(final int position) {
+        if (isInRefresh) {
+            return;
+        }
+        isInRefresh = true;
+        updateDataView(null, activity.getString(R.string.load1));
+        InfoUtils.getNewsInfo("wxnew", position, PAGE_NUM, new ArrayListBack<News>() {
+            @Override
+            public void onFail(int status, String message) {
+                isInRefresh = false;
+            }
+
+            @Override
+            public void onResult(final ArrayList<News> data) {
+                if (data != null) {
+                    haveMore = data.size() == PAGE_NUM;
+                    footStr = haveMore ? activity.getString(R.string.load0) : activity.getString(R.string.load2);
+                    if (position == 0) {
+                        datas.clear();
+                    }
+                    datas.addAll(data);
+                    updateDataView(null, null);
+                }
+                page++;
+                isInRefresh = false;
+            }
+        });
+    }
+
+    public void updateData() {
+        load(0);
+    }
+
+    public void updateDataView(ArrayList<News> datas, String footStr) {
+        if (datas != null) {
+            this.datas = datas;
+        }
+        if (footStr != null) {
+            this.footStr = footStr;
+        }
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                notifyDataSetChanged();
+            }
+        });
     }
 
 }

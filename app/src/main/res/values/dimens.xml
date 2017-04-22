@@ -2,4 +2,5 @@
     <dimen name="item_news_height">85dp</dimen>
     <dimen name="item_news_img_h">65dp</dimen>
     <dimen name="item_news_img_w">85dp</dimen>
+    <dimen name="item_foot_height">50dp</dimen>
 </resources>

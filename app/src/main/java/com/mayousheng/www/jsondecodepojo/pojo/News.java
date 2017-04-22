@@ -7,7 +7,7 @@ import com.mayousheng.www.basepojo.FieldDesc;
  * Created by marking on 2017/4/11.
  */
 
-public class NewsPojo extends BasePoJo {
+public class News extends BasePoJo {
 
     @FieldDesc(key = "title")
     public String title;
@@ -20,7 +20,7 @@ public class NewsPojo extends BasePoJo {
     @FieldDesc(key = "ctime")
     public String ctime;
 
-    public NewsPojo(String jsonStr) {
+    public News(String jsonStr) {
         super(jsonStr);
     }
 
