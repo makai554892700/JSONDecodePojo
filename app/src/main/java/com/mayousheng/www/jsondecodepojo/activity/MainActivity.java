@@ -1,7 +1,6 @@
 package com.mayousheng.www.jsondecodepojo.activity;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ListView;
 
 import com.mayousheng.www.jsondecodepojo.R;
@@ -19,7 +18,17 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        newsAdapter = new NewsAdapter(this);
+        newsAdapter = new NewsAdapter(this, new NewsAdapter.EventBus() {
+            @Override
+            public void refreshUI() {
+                MainActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        newsAdapter.notifyDataSetChanged();
+                    }
+                });
+            }
+        });
         refreshRelativeLayout = getViewById(R.id.refreshLayout);
         listView = getViewById(R.id.listView);
         listView.setAdapter(newsAdapter);
@@ -36,7 +45,7 @@ public class MainActivity extends BaseActivity {
 
             @Override
             public void onUp() {
-                newsAdapter.updateData();
+                newsAdapter.refreshData();
                 refreshRelativeLayout.endRotate();
             }
         });

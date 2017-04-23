@@ -1,18 +1,19 @@
 package com.mayousheng.www.jsondecodepojo.adapter;
 
-import android.app.Activity;
-import android.util.Log;
+import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.mayousheng.www.jsondecodepojo.R;
-import com.mayousheng.www.jsondecodepojo.holder.CommonFootHolder;
-import com.mayousheng.www.jsondecodepojo.holder.NewsBodyHolder;
 import com.mayousheng.www.jsondecodepojo.pojo.News;
 import com.mayousheng.www.jsondecodepojo.utils.ArrayListBack;
 import com.mayousheng.www.jsondecodepojo.utils.InfoUtils;
 import com.mayousheng.www.jsondecodepojo.utils.ShowImageUtils;
+import com.shandao.www.baseholder.BaseHolder;
+import com.shandao.www.baseholder.ViewDesc;
 
 import java.util.ArrayList;
 
@@ -26,18 +27,18 @@ public class NewsAdapter extends BaseAdapter {
     private static final int TYPE_BODY = 1;
     private static final int PAGE_NUM = 10;//每次请求数据条数
 
-    private Activity activity;
+    private Context context;
     private String footStr;
     private ArrayList<News> datas = new ArrayList<News>();
-    private boolean ifFootRefreshed = true;
     private boolean isInRefresh;
     private int page = 0;
     private boolean haveMore = true;
+    private EventBus eventBus;
 
-    public NewsAdapter(Activity activity) {
-        this.activity = activity;
-        footStr = activity.getString(R.string.load0);
-        load(0);
+    public NewsAdapter(Context context, EventBus eventBus) {
+        this.context = context;
+        this.eventBus = eventBus;
+        footStr = context.getString(R.string.load1);
     }
 
     @Override
@@ -81,51 +82,38 @@ public class NewsAdapter extends BaseAdapter {
         Object item = getItem(position);
         switch (type) {
             case TYPE_BODY:
-                NewsBodyHolder bodyHolder;
+                NewsHolder newsHolder;
                 if (convertView == null) {
-                    bodyHolder = new NewsBodyHolder(activity, R.layout.item_news, parent);
-                    convertView = bodyHolder.getView();
-                    convertView.setTag(bodyHolder);
+                    newsHolder = new NewsHolder();
+                    convertView = newsHolder.newRootView(context, R.layout.item_news, parent);
+                    convertView.setTag(newsHolder);
                 } else {
-                    bodyHolder = (NewsBodyHolder) convertView.getTag();
+                    newsHolder = (NewsHolder) convertView.getTag();
                 }
-                News news = (News) item;
-                bodyHolder.title.setText(news.title);
-                bodyHolder.desc.setText(news.description);
-                bodyHolder.time.setText(news.ctime);
-                bodyHolder.img.setTag(news.picUrl);
-                new ShowImageUtils().loadImage(activity, news.picUrl, bodyHolder.img);
+                newsHolder.inViewBind((News) item);
                 return convertView;
             case TYPE_FOOT:
-                CommonFootHolder footHolder;
+                FootHolder footHolder;
                 if (convertView == null) {
-                    footHolder = new CommonFootHolder(activity, R.layout.item_foot, parent);
-                    convertView = footHolder.getView();
+                    footHolder = new FootHolder();
+                    convertView = footHolder.newRootView(context, R.layout.item_foot, parent);
                     convertView.setTag(footHolder);
                 } else {
-                    footHolder = (CommonFootHolder) convertView.getTag();
+                    footHolder = (FootHolder) convertView.getTag();
                 }
-                footHolder.title.setText(item.toString());
-                if (ifFootRefreshed) {
-                    ifFootRefreshed = false;
-                } else {
-                    onFoot();
-                }
+                footHolder.inViewBind((String) item);
+                loadData(page);
                 return convertView;
         }
         return null;
     }
 
-    public void onFoot() {
-        load(page);
-    }
-
-    public void load(final int position) {
+    public void loadData(final int position) {
         if (isInRefresh) {
             return;
         }
         isInRefresh = true;
-        updateDataView(null, activity.getString(R.string.load1));
+        footStr = context.getString(R.string.load1);
         InfoUtils.getNewsInfo("wxnew", position, PAGE_NUM, new ArrayListBack<News>() {
             @Override
             public void onFail(int status, String message) {
@@ -136,12 +124,14 @@ public class NewsAdapter extends BaseAdapter {
             public void onResult(final ArrayList<News> data) {
                 if (data != null) {
                     haveMore = data.size() == PAGE_NUM;
-                    footStr = haveMore ? activity.getString(R.string.load0) : activity.getString(R.string.load2);
+                    footStr = haveMore ? context.getString(R.string.load0) : context.getString(R.string.load2);
                     if (position == 0) {
                         datas.clear();
                     }
                     datas.addAll(data);
-                    updateDataView(null, null);
+                    if (eventBus != null) {
+                        eventBus.refreshUI();
+                    }
                 }
                 page++;
                 isInRefresh = false;
@@ -149,23 +139,45 @@ public class NewsAdapter extends BaseAdapter {
         });
     }
 
-    public void updateData() {
-        load(0);
+    public void refreshData() {
+        loadData(0);
     }
 
-    public void updateDataView(ArrayList<News> datas, String footStr) {
-        if (datas != null) {
-            this.datas = datas;
-        }
-        if (footStr != null) {
-            this.footStr = footStr;
-        }
-        activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                notifyDataSetChanged();
-            }
-        });
+    public interface EventBus {
+        void refreshUI();
     }
 
+    private class FootHolder extends BaseHolder<String> {
+
+        @ViewDesc(viewId = R.id.title)
+        public TextView title;
+
+        @Override
+        public void inViewBind(String item) {
+            title.setText(item);
+        }
+
+    }
+
+    private class NewsHolder extends BaseHolder<News> {
+
+        @ViewDesc(viewId = R.id.title)
+        public TextView title;
+        @ViewDesc(viewId = R.id.desc)
+        public TextView desc;
+        @ViewDesc(viewId = R.id.time)
+        public TextView time;
+        @ViewDesc(viewId = R.id.img)
+        public ImageView img;
+
+        @Override
+        public void inViewBind(News item) {
+            title.setText(item.title);
+            desc.setText(item.description);
+            time.setText(item.ctime);
+            img.setImageResource(R.mipmap.ic_launcher);
+            img.setTag(item.picUrl);
+            new ShowImageUtils().loadImage(context, item.picUrl, img);
+        }
+    }
 }
