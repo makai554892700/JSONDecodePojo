@@ -1,11 +1,7 @@
 package com.mayousheng.www.jsondecodepojo.utils;
 
-import android.content.Context;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Environment;
 
 import com.mayousheng.www.jsondecodepojo.utils.cache.DiskLruCache;
 
@@ -27,20 +23,43 @@ import java.security.NoSuchAlgorithmException;
 
 public class CacheUtils {
 
-    public Bitmap getBitmap(Context context, String imageUrl) {
+    public static final String CACHE_PATH = "bitmap";
+
+    private static CacheUtils cacheUtils;
+    private DiskLruCache diskLruCache;
+
+    private CacheUtils() {
+    }
+
+    public static void init(File cacheDir, int appVersion) {
+        if (cacheUtils == null) {
+            cacheUtils = new CacheUtils();
+        }
+        if (cacheUtils.diskLruCache == null && cacheDir != null && appVersion != 0) {
+            try {
+                cacheUtils.diskLruCache = DiskLruCache.open(cacheDir, appVersion, 1, 10 * 1024 * 1024);
+            } catch (IOException e) {
+            }
+        }
+    }
+
+    public static CacheUtils getInstance() {
+        return cacheUtils;
+    }
+
+    public Bitmap getBitmapByDisk(String imageUrl) {
+        if (imageUrl != null && !imageUrl.isEmpty()) {
+            String key = hashKeyForDisk(imageUrl);
+            return getBitmap(diskLruCache, key);
+        } else {
+            return null;
+        }
+    }
+
+    public Bitmap getBitmap(String imageUrl) {
         Bitmap result = null;
         do {
-            if (context == null || imageUrl == null) {
-                break;
-            }
-            DiskLruCache diskLruCache;
-            File cacheDir = getDiskCacheDir(context, "bitmap");
-            if (!cacheDir.exists()) {
-                cacheDir.mkdirs();
-            }
-            try {
-                diskLruCache = DiskLruCache.open(cacheDir, getAppVersion(context), 1, 10 * 1024 * 1024);
-            } catch (IOException e) {
+            if (imageUrl == null || imageUrl.isEmpty()) {
                 break;
             }
             String key = hashKeyForDisk(imageUrl);
@@ -103,25 +122,25 @@ public class CacheUtils {
         return result;
     }
 
-    private File getDiskCacheDir(Context context, String uniqueName) {
-        String cachePath;
-        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())
-                || !Environment.isExternalStorageRemovable()) {
-            cachePath = context.getExternalCacheDir().getPath();
-        } else {
-            cachePath = context.getCacheDir().getPath();
-        }
-        return new File(cachePath + File.separator + uniqueName);
-    }
-
-    private int getAppVersion(Context context) {
-        try {
-            PackageInfo info = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-            return info.versionCode;
-        } catch (PackageManager.NameNotFoundException e) {
-            return 1;
-        }
-    }
+//    private File getDiskCacheDir(Context context, String uniqueName) {
+//        String cachePath;
+//        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())
+//                || !Environment.isExternalStorageRemovable()) {
+//            cachePath = context.getExternalCacheDir().getPath();
+//        } else {
+//            cachePath = context.getCacheDir().getPath();
+//        }
+//        return new File(cachePath + File.separator + uniqueName);
+//    }
+//
+//    private int getAppVersion(Context context) {
+//        try {
+//            PackageInfo info = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+//            return info.versionCode;
+//        } catch (PackageManager.NameNotFoundException e) {
+//            return 1;
+//        }
+//    }
 
     private boolean downloadUrlToStream(String urlString, OutputStream outputStream) {
         HttpURLConnection urlConnection = null;

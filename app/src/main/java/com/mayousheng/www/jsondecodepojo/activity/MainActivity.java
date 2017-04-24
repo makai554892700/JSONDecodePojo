@@ -18,20 +18,21 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        refreshRelativeLayout = getViewById(R.id.refreshLayout);
+        listView = getViewById(R.id.listView);
         newsAdapter = new NewsAdapter(this, new NewsAdapter.EventBus() {
             @Override
-            public void refreshUI() {
+            public void refreshUI(final boolean refreshImg) {
                 MainActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        newsAdapter.notifyDataSetChanged();
+                        newsAdapter.updateData(refreshImg);
                     }
                 });
             }
-        });
-        refreshRelativeLayout = getViewById(R.id.refreshLayout);
-        listView = getViewById(R.id.listView);
+        }, listView);
         listView.setAdapter(newsAdapter);
+        listView.setOnScrollListener(newsAdapter);
         refreshRelativeLayout.setRefreshListener(new RefreshRelativeLayout.RefreshListener() {
             @Override
             public void onDown() {
