@@ -41,6 +41,46 @@ public class HttpUtils {
 
     }
 
+    public byte[] getURLResponse(String urlString, HashMap<String, String> heads) {
+        byte[] result = null;
+        if (urlString != null) {
+            HttpURLConnection conn = null; //连接对象
+            InputStream is = null;
+            ByteArrayOutputStream baos = null;
+            try {
+                URL url = new URL(urlString); //URL对象
+                if (urlString.startsWith(HTTPS)) {
+                    conn = (HttpsURLConnection) url.openConnection();
+                } else {
+                    conn = (HttpURLConnection) url.openConnection();
+                }
+                conn.setConnectTimeout(5 * 1000);
+                conn.setRequestMethod(GET);
+                if (heads != null) {
+                    for (String key : heads.keySet()) {
+                        conn.addRequestProperty(key, heads.get(key));
+                    }
+                }
+                is = conn.getInputStream();   //获取输入流，此时才真正建立链接
+                baos = new ByteArrayOutputStream();
+                byte[] temp = new byte[1024];
+                int len;
+                while ((len = is.read(temp)) != -1) {
+                    baos.write(temp, 0, len);
+                }
+                result = baos.toByteArray();
+            } catch (Exception e) {
+            } finally {
+                closeSilently(is);
+                closeSilently(baos);
+                if (conn != null) {
+                    conn.disconnect();
+                }
+            }
+        }
+        return result;
+    }
+
     public void getURLResponse(String urlString, HashMap<String, String> heads, IWebCallback iWebCallback) {
         if (urlString != null) {
             HttpURLConnection conn = null; //连接对象
@@ -87,6 +127,48 @@ public class HttpUtils {
                 }
             }
         }
+    }
+
+    public byte[] postURLResponse(String urlString, HashMap<String, String> headers, byte[] postData) {
+        byte[] result = null;
+        if (urlString != null) {
+            HttpURLConnection conn = null; //连接对象
+            InputStream is = null;
+            ByteArrayOutputStream baos = null;
+            try {
+                URL url = new URL(urlString); //URL对象
+                if (urlString.startsWith(HTTPS)) {
+                    conn = (HttpsURLConnection) url.openConnection();
+                } else {
+                    conn = (HttpURLConnection) url.openConnection();
+                }
+                conn.setConnectTimeout(5 * 1000);
+                conn.setRequestMethod(POST); //使用post请求
+                conn.setRequestProperty("Charsert", "UTF-8");
+                if (headers != null) {
+                    for (Map.Entry<String, String> temp : headers.entrySet()) {
+                        conn.setRequestProperty(temp.getKey(), temp.getValue());
+                    }
+                }
+                conn.getOutputStream().write(postData);
+                is = conn.getInputStream();   //获取输入流，此时才真正建立链接
+                baos = new ByteArrayOutputStream();
+                byte[] temp = new byte[1024];
+                int len;
+                while ((len = is.read(temp)) != -1) {
+                    baos.write(temp, 0, len);
+                }
+                result = baos.toByteArray();
+            } catch (Exception e) {
+            } finally {
+                closeSilently(is);
+                closeSilently(baos);
+                if (conn != null) {
+                    conn.disconnect();
+                }
+            }
+        }
+        return result;
     }
 
     public void postURLResponse(String urlString, HashMap<String, String> headers,
