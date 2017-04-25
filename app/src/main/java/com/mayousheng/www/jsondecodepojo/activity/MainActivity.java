@@ -1,12 +1,16 @@
 package com.mayousheng.www.jsondecodepojo.activity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ListView;
 
 import com.mayousheng.www.jsondecodepojo.R;
 import com.mayousheng.www.jsondecodepojo.adapter.NewsAdapter;
 import com.mayousheng.www.jsondecodepojo.base.BaseActivity;
+import com.mayousheng.www.jsondecodepojo.pojo.News;
 import com.mayousheng.www.refreshview.RefreshRelativeLayout;
+
+import java.util.ArrayList;
 
 public class MainActivity extends BaseActivity {
 
@@ -22,13 +26,28 @@ public class MainActivity extends BaseActivity {
         listView = getViewById(R.id.listView);
         newsAdapter = new NewsAdapter(this, new NewsAdapter.EventBus() {
             @Override
-            public void refreshUI(final boolean refreshImg) {
-                MainActivity.this.runOnUiThread(new Runnable() {
+            public void refreshUI() {
+                new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        newsAdapter.updateData(refreshImg);
+                        MainActivity.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                newsAdapter.notifyDataSetChanged();
+                            }
+                        });
+                        try {
+                            Thread.sleep(1000);
+                        } catch (Exception e) {
+                        }
+                        MainActivity.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                refreshRelativeLayout.endRotate();
+                            }
+                        });
                     }
-                });
+                }).start();
             }
         }, listView);
         listView.setAdapter(newsAdapter);
@@ -47,7 +66,6 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onUp() {
                 newsAdapter.refreshData();
-                refreshRelativeLayout.endRotate();
             }
         });
     }

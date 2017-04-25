@@ -19,6 +19,20 @@ public class InfoUtils {
 
     private static final String baseUrl = "http://www.shandao.space/getNews?type=%s&num=%s&page=%s";
 
+    public static ArrayList<News> getNewsInfo(String type, int page, int num) {
+        String url = String.format(baseUrl, type, num, page);
+        return getNews(url, null);
+    }
+
+    private static ArrayList<News> getNews(final String url, final HashMap<String, String> heads) {
+        byte[] data = HttpUtils.getInstance().getURLResponse(url, heads);
+        if (data != null) {
+            return BasePoJo.JSONArrayStrToArray(News.class, new String(data));
+        } else {
+            return null;
+        }
+    }
+
     public static void getNewsInfo(String type, int page, int num, ArrayListBack<News> arrayListBack) {
         String url = String.format(baseUrl, type, num, page);
         commonGetArrayRequest(url, null, arrayListBack);

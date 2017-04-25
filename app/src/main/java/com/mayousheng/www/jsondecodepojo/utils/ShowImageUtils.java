@@ -6,8 +6,6 @@ import android.util.Log;
 import android.widget.ImageView;
 import android.widget.ListView;
 
-import com.mayousheng.www.jsondecodepojo.adapter.NewsAdapter;
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,18 +17,26 @@ public class ShowImageUtils {
 
     private ListView listView;
     private Set<MyAsyncTast> myAsyncTasts;
+    private String[] urls;
 
     public ShowImageUtils(ListView listView) {
         this.listView = listView;
         myAsyncTasts = new HashSet<MyAsyncTast>();
     }
 
+    public String[] getUrls() {
+        return urls;
+    }
+
+    public void setUrls(String[] urls) {
+        this.urls = urls;
+    }
+
     public void loadImage(int start, int end) {
-        Log.e("-----1", "NewsAdapter.URLS=" + NewsAdapter.URLS + ";start=" + start + ";end=" + end);
-        if (NewsAdapter.URLS != null) {
+        if (urls != null) {
             for (int i = start; i < end; i++) {
-                if (NewsAdapter.URLS.length > i) {
-                    String url = NewsAdapter.URLS[i];
+                if (urls.length > i) {
+                    String url = urls[i];
                     Bitmap tempBitmap = CacheUtils.getInstance().getBitmapByDisk(url);
                     if (tempBitmap == null) {
                         MyAsyncTast myAsyncTast = new MyAsyncTast(url);

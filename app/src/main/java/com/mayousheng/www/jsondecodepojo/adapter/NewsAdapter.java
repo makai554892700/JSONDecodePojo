@@ -36,16 +36,12 @@ public class NewsAdapter extends BaseAdapter implements AbsListView.OnScrollList
     private static final int PAGE_NUM = 10;//每次请求数据条数
 
     private Context context;
-    private String footStr;
     private ArrayList<News> datas = new ArrayList<News>();
-    private boolean isInRefresh;
-    private int page = 0;
-    private boolean haveMore = true;
+    private String footStr;
+    private boolean isInRefresh, isRefresh, haveMore = true;
+    private int start, end, page;
     private EventBus eventBus;
-    public static String[] URLS;
-    private int start, end;
     private ShowImageUtils showImageUtils;
-    private boolean isFirstIn = true;
 
     public NewsAdapter(Context context, EventBus eventBus, ListView listView) {
         this.context = context;
@@ -113,6 +109,7 @@ public class NewsAdapter extends BaseAdapter implements AbsListView.OnScrollList
                     convertView = footHolder.newRootView(context, R.layout.item_foot, parent);
                     convertView.setTag(footHolder);
                 } else {
+
                     footHolder = (FootHolder) convertView.getTag();
                 }
                 footHolder.inViewBind((String) item);
@@ -127,51 +124,56 @@ public class NewsAdapter extends BaseAdapter implements AbsListView.OnScrollList
             return;
         }
         isInRefresh = true;
-        footStr = context.getString(R.string.load1);
-        InfoUtils.getNewsInfo("wxnew", position, PAGE_NUM, new ArrayListBack<News>() {
-            @Override
-            public void onFail(int status, String message) {
-                isInRefresh = false;
-                Log.e("-----1", "onFail message=" + message);
-            }
-
-            @Override
-            public void onResult(final ArrayList<News> data) {
-                if (data != null) {
-                    haveMore = data.size() == PAGE_NUM;
-                    footStr = haveMore ? context.getString(R.string.load0) : context.getString(R.string.load2);
-                    if (position == 0) {
-                        datas.clear();
-                    }
-                    datas.addAll(data);
-                    URLS = new String[datas.size()];
-                    int i = 0;
-                    for (News news : datas) {
-                        URLS[i++] = news.picUrl;
-                    }
+        if (haveMore) {
+            footStr = context.getString(R.string.load1);
+            InfoUtils.getNewsInfo("wxnew", position, PAGE_NUM, new ArrayListBack<News>() {
+                @Override
+                public void onFail(int status, String message) {
+                    isInRefresh = false;
                     if (eventBus != null) {
-                        eventBus.refreshUI(position == 0);
+                        eventBus.refreshUI();
                     }
                 }
-                page++;
-                isInRefresh = false;
+
+                @Override
+                public void onResult(final ArrayList<News> data) {
+                    if (data != null) {
+                        haveMore = data.size() == PAGE_NUM;
+                        footStr = haveMore ? context.getString(R.string.load0) : context.getString(R.string.load2);
+                        isRefresh = position == 0;
+                        if (isRefresh) {
+                            datas.clear();
+                        }
+                        datas.addAll(data);
+                        String[] URLS = new String[datas.size()];
+                        int i = 0;
+                        for (News news : datas) {
+                            URLS[i++] = news.picUrl;
+                        }
+                        showImageUtils.setUrls(URLS);
+                        if (eventBus != null) {
+                            eventBus.refreshUI();
+                        }
+                    }
+                    page++;
+                    isInRefresh = false;
+                }
+            });
+        } else {
+            footStr = context.getString(R.string.load2);
+            if (eventBus != null) {
+                eventBus.refreshUI();
             }
-        });
+            isInRefresh = false;
+        }
     }
 
     public void refreshData() {
         loadData(0);
     }
 
-    public void updateData(boolean refreshImg) {
-        notifyDataSetChanged();
-        if (refreshImg) {
-            showImageUtils.loadImage(start, end);
-        }
-    }
-
     public interface EventBus {
-        void refreshUI(boolean refreshImg);
+        void refreshUI();
     }
 
     private class FootHolder extends BaseHolder<String> {
@@ -239,10 +241,8 @@ public class NewsAdapter extends BaseAdapter implements AbsListView.OnScrollList
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
         start = firstVisibleItem;
         end = firstVisibleItem + visibleItemCount;
-        if (isFirstIn && URLS != null) {
-            isFirstIn = false;
-            start = firstVisibleItem;
-            end = firstVisibleItem + visibleItemCount;
+        if (isRefresh && showImageUtils.getUrls() != null) {
+            isRefresh = false;
             showImageUtils.loadImage(start, end);
         }
     }
