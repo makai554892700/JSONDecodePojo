@@ -12,7 +12,7 @@ import java.util.ArrayList;
  * Created by marking on 2017/3/24.
  */
 
-public abstract class BasePoJo{
+public abstract class BasePoJo {
 
     //带参构造，用于json string直接转对象
     public BasePoJo(String jsonStr) {
@@ -81,12 +81,12 @@ public abstract class BasePoJo{
                     field.set(this, tempArrayList);
                 } catch (Exception e) {
                 }
-            } else if (self.isAssignableFrom(fieldType)) {
+            } else if (BasePoJo.class.isAssignableFrom(fieldType)) {
                 JSONObject tempJSONObject = jsonObject.optJSONObject(key);
                 if (tempJSONObject == null) {
                     continue;
                 }
-                BasePoJo object = JSONObjectToObject(BasePoJo.class, tempJSONObject);
+                BasePoJo object = JSONObjectToObject(fieldType, tempJSONObject);
                 if (object != null) {
                     try {
                         field.set(this, object);
