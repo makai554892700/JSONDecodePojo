@@ -193,11 +193,14 @@ public abstract class BasePoJo {
             try {
                 fieldValue = field.get(this);
             } catch (Exception e) {
+                continue;
             }
             if (ArrayList.class == fieldType) {
                 putObject(result, key, arrayToJsonArray((ArrayList) fieldValue));
-            } else if (self.isAssignableFrom(fieldType)) {
-                putObject(result, key, fieldValue);
+            } else if (BasePoJo.class.isAssignableFrom(fieldType)) {
+                if (fieldValue != null) {
+                    putObject(result, key, ((BasePoJo) fieldValue).toJSONObject());
+                }
             } else {
                 putObject(result, key, fieldValue);
             }
