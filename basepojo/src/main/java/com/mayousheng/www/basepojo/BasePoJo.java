@@ -62,6 +62,11 @@ public abstract class BasePoJo {
                     field.setBoolean(this, jsonObject.optBoolean(key));
                 } catch (Exception e) {
                 }
+            } else if (fieldType == float.class) {
+                try {
+                    field.setFloat(this, (float) jsonObject.optDouble(key));
+                } catch (Exception e) {
+                }
             } else if (fieldType == double.class) {
                 try {
                     field.setDouble(this, jsonObject.optDouble(key));
@@ -151,7 +156,8 @@ public abstract class BasePoJo {
                 for (int j = 0; j < jsonArray.length(); j++) {
                     try {
                         Object obj = jsonArray.get(j);
-                        tempArrayList.add((T) constructor.newInstance(obj.toString()));
+                        Object tempObj = constructor.newInstance(obj.toString());
+                        tempArrayList.add((T) tempObj);
                     } catch (Exception e) {
                     }
                 }
