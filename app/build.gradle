@@ -5,14 +5,18 @@ android {
     buildToolsVersion "25.0.2"
     defaultConfig {
         applicationId "com.mayousheng.www.jsondecodepojo"
-        minSdkVersion 15
+        minSdkVersion 11
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }

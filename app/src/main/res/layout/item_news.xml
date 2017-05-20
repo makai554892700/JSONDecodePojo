@@ -20,6 +20,7 @@
         android:layout_margin="10dp"
         android:layout_toLeftOf="@id/img"
         android:layout_toStartOf="@id/img"
+        android:ellipsize="end"
         android:maxLines="3"
         android:text="title"
         android:textColor="@color/black" />
@@ -27,12 +28,10 @@
 
     <TextView
         android:id="@+id/time"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_margin="10dp"
-        android:layout_toLeftOf="@id/img"
-        android:layout_toStartOf="@id/img"
         android:maxLines="1"
         android:text="title"
         android:textColor="@color/gray" />
@@ -43,8 +42,11 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_margin="10dp"
+        android:layout_toEndOf="@id/time"
         android:layout_toLeftOf="@id/img"
+        android:layout_toRightOf="@id/time"
         android:layout_toStartOf="@id/img"
+        android:ellipsize="end"
         android:gravity="end"
         android:maxLines="1"
         android:text="title"

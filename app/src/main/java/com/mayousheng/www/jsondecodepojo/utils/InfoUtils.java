@@ -3,6 +3,7 @@ package com.mayousheng.www.jsondecodepojo.utils;
 import com.mayousheng.www.basepojo.BasePoJo;
 import com.mayousheng.www.httputils.HttpUtils;
 import com.mayousheng.www.jsondecodepojo.pojo.News;
+import com.mayousheng.www.jsondecodepojo.pojo.NewsType;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -17,11 +18,26 @@ import java.util.Map;
 
 public class InfoUtils {
 
-    private static final String baseUrl = "http://www.shandao.space/getNews?type=%s&num=%s&page=%s";
+    private static final String baseUrl = "http://java.markingyun.cn/newsweb/news/getNews?type=%s&num=%s&page=%s";
+    private static final String[] types = new String[]{"war"
+            , "sport", "tech", "edu", "ent", "money", "gupiao", "travel", "lady"};
+    private static final String[] titles = new String[]{"军事",
+            "体育", "科技", "教育", "娱乐", "财经", "股票", "旅游", "女人"};
 
     public static ArrayList<News> getNewsInfo(String type, int page, int num) {
         String url = String.format(baseUrl, type, num, page);
         return getNews(url, null);
+    }
+
+    public static ArrayList<NewsType> getNewsTypeInfo() {
+        ArrayList<NewsType> result = new ArrayList<>();
+        for (int i = 0; i < types.length; i++) {
+            NewsType newsType = new NewsType(null);
+            newsType.title = titles[i];
+            newsType.type = types[i];
+            result.add(newsType);
+        }
+        return result;
     }
 
     private static ArrayList<News> getNews(final String url, final HashMap<String, String> heads) {

@@ -42,6 +42,7 @@ public class NewsAdapter extends BaseAdapter implements AbsListView.OnScrollList
     private int start, end, page;
     private EventBus eventBus;
     private ShowImageUtils showImageUtils;
+    private String newsType;
 
     public NewsAdapter(Context context, EventBus eventBus, ListView listView) {
         this.context = context;
@@ -109,7 +110,6 @@ public class NewsAdapter extends BaseAdapter implements AbsListView.OnScrollList
                     convertView = footHolder.newRootView(context, R.layout.item_foot, parent);
                     convertView.setTag(footHolder);
                 } else {
-
                     footHolder = (FootHolder) convertView.getTag();
                 }
                 footHolder.inViewBind((String) item);
@@ -119,6 +119,11 @@ public class NewsAdapter extends BaseAdapter implements AbsListView.OnScrollList
         return null;
     }
 
+    public void changeNews(String newsType) {
+        this.newsType = newsType;
+        loadData(0);
+    }
+
     public void loadData(final int position) {
         if (isInRefresh) {
             return;
@@ -126,7 +131,7 @@ public class NewsAdapter extends BaseAdapter implements AbsListView.OnScrollList
         isInRefresh = true;
         if (haveMore) {
             footStr = context.getString(R.string.load1);
-            InfoUtils.getNewsInfo("wxnew", position, PAGE_NUM, new ArrayListBack<News>() {
+            InfoUtils.getNewsInfo(newsType, position, PAGE_NUM, new ArrayListBack<News>() {
                 @Override
                 public void onFail(int status, String message) {
                     isInRefresh = false;
