@@ -1,31 +1,31 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.novoda.bintray-release'
-
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.novoda:bintray-release:0.3.4'
-    }
-}
-
-publish {
-    userOrg = 'marking'
-    groupId = 'com.mayousheng.www'
-    artifactId = 'basepojo'
-    publishVersion = '0.0.1'
-    desc = 'JSON decode pojo'
-    website = 'https://github.com/makai554892700/JSONDecodePojo/tree/master/basepojo'
-}
-
-tasks.withType(Javadoc) {
-    options {
-        encoding "UTF-8"
-        charSet 'UTF-8'
-    }
-    options.addStringOption('Xdoclint:none', '-quiet')
-}
+//apply plugin: 'com.novoda.bintray-release'
+//
+//buildscript {
+//    repositories {
+//        jcenter()
+//    }
+//    dependencies {
+//        classpath 'com.novoda:bintray-release:0.3.4'
+//    }
+//}
+//
+//publish {
+//    userOrg = 'marking'
+//    groupId = 'com.mayousheng.www'
+//    artifactId = 'basepojo'
+//    publishVersion = '0.0.1'
+//    desc = 'JSON decode pojo'
+//    website = 'https://github.com/makai554892700/JSONDecodePojo/tree/master/basepojo'
+//}
+//
+//tasks.withType(Javadoc) {
+//    options {
+//        encoding "UTF-8"
+//        charSet 'UTF-8'
+//    }
+//    options.addStringOption('Xdoclint:none', '-quiet')
+//}
 
 android {
     compileSdkVersion 25
