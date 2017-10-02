@@ -40,69 +40,34 @@ public abstract class BasePoJo {
             Class fieldType = field.getType();
             String key = fieldDescs.key();
             Class arrayType = fieldDescs.arrayType();
+            Object fieldObj;
             if (fieldType == String.class) {
                 //根据属性不同类型调用不同方法解析，同时不影响继续解析
                 //目前可能存在考虑不周的地方可根据自己的需求再另行更改
-                try {
-                    field.set(this, jsonObject.optString(key));
-                } catch (Exception e) {
-                }
-            } else if (fieldType == int.class) {
-                try {
-                    field.setInt(this, jsonObject.optInt(key));
-                } catch (Exception e) {
-                }
-            } else if (fieldType == long.class) {
-                try {
-                    field.setLong(this, jsonObject.optLong(key));
-                } catch (Exception e) {
-                }
-            } else if (fieldType == boolean.class) {
-                try {
-                    field.setBoolean(this, jsonObject.optBoolean(key));
-                } catch (Exception e) {
-                }
-            } else if (fieldType == float.class) {
-                try {
-                    field.setFloat(this, (float) jsonObject.optDouble(key));
-                } catch (Exception e) {
-                }
-            } else if (fieldType == double.class) {
-                try {
-                    field.setDouble(this, jsonObject.optDouble(key));
-                } catch (Exception e) {
-                }
+                fieldObj = jsonObject.optString(key);
+            } else if (fieldType == int.class || fieldType == Integer.class) {
+                fieldObj = jsonObject.optInt(key);
+            } else if (fieldType == long.class || fieldType == Long.class) {
+                fieldObj = jsonObject.optLong(key);
+            } else if (fieldType == boolean.class || fieldType == Boolean.class) {
+                fieldObj = jsonObject.optBoolean(key);
+            } else if (fieldType == float.class || fieldType == Float.class) {
+                fieldObj = jsonObject.optDouble(key);
+            } else if (fieldType == double.class || fieldType == Double.class) {
+                fieldObj = jsonObject.optDouble(key);
             } else if (ArrayList.class == fieldType) {
-                JSONArray jsonArray = jsonObject.optJSONArray(key);
-                if (jsonArray == null) {
-                    continue;
-                }
-                ArrayList tempArrayList = null;
-                try {
-                    tempArrayList = JSONArrayToArray(arrayType, jsonArray);
-                } catch (Exception e) {
-                }
-                try {
-                    field.set(this, tempArrayList);
-                } catch (Exception e) {
-                }
+                fieldObj = JSONArrayToArray(arrayType, jsonObject.optJSONArray(key));
             } else if (BasePoJo.class.isAssignableFrom(fieldType)) {
-                JSONObject tempJSONObject = jsonObject.optJSONObject(key);
-                if (tempJSONObject == null) {
-                    continue;
-                }
-                BasePoJo object = JSONObjectToObject(fieldType, tempJSONObject);
-                if (object != null) {
-                    try {
-                        field.set(this, object);
-                    } catch (Exception e) {
-                    }
-                }
+                fieldObj = JSONObjectToObject(fieldType, jsonObject.optJSONObject(key));
             } else {
-                try {
-                    field.set(this, jsonObject.optString(key));
-                } catch (Exception e) {
-                }
+                fieldObj = jsonObject.optString(key);
+            }
+            if (fieldObj == null) {
+                continue;
+            }
+            try {
+                field.set(this, fieldObj);
+            } catch (Exception e) {
             }
         }
     }
@@ -120,6 +85,9 @@ public abstract class BasePoJo {
     }
 
     private <T> T JSONObjectToObject(Class fieldType, JSONObject jsonObject) {
+        if (jsonObject == null) {
+            return null;
+        }
         T result = null;
         try {
             Constructor constructor = fieldType.getConstructor(String.class);

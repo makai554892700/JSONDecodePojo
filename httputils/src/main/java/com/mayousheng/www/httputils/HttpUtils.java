@@ -2,6 +2,7 @@ package com.mayousheng.www.httputils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -21,15 +22,12 @@ public class HttpUtils {
     private String HTTPS = "https";
     private String GET = "GET";
     private String POST = "POST";
-    private static HttpUtils httpUtils;
+    private static HttpUtils httpUtils = new HttpUtils();
 
     private HttpUtils() {
     }
 
     public static HttpUtils getInstance() {
-        if (httpUtils == null) {
-            httpUtils = new HttpUtils();
-        }
         return httpUtils;
     }
 
@@ -41,90 +39,44 @@ public class HttpUtils {
 
     }
 
-    public byte[] getURLResponse(String urlString, HashMap<String, String> heads) {
+    public byte[] getURLResponse(String urlString, HashMap<String, String> headers) {
         byte[] result = null;
         if (urlString != null) {
             HttpURLConnection conn = null; //连接对象
             InputStream is = null;
             ByteArrayOutputStream baos = null;
             try {
-                URL url = new URL(urlString); //URL对象
-                if (urlString.startsWith(HTTPS)) {
-                    conn = (HttpsURLConnection) url.openConnection();
-                } else {
-                    conn = (HttpURLConnection) url.openConnection();
-                }
-                conn.setConnectTimeout(5 * 1000);
-                conn.setRequestMethod(GET);
-                if (heads != null) {
-                    for (String key : heads.keySet()) {
-                        conn.addRequestProperty(key, heads.get(key));
-                    }
-                }
+                conn = commonGetConn(GET, urlString, headers, null);
                 is = conn.getInputStream();   //获取输入流，此时才真正建立链接
                 baos = new ByteArrayOutputStream();
-                byte[] temp = new byte[1024];
-                int len;
-                while ((len = is.read(temp)) != -1) {
-                    baos.write(temp, 0, len);
-                }
+                is2bos(is, baos);
                 result = baos.toByteArray();
             } catch (Exception e) {
+                onException(null, conn, e);
             } finally {
-                closeSilently(is);
-                closeSilently(baos);
-                if (conn != null) {
-                    conn.disconnect();
-                }
+                closeAll(conn, is, baos);
             }
         }
         return result;
     }
 
-    public void getURLResponse(String urlString, HashMap<String, String> heads, IWebCallback iWebCallback) {
+    public void getURLResponse(String urlString, HashMap<String, String> headers, IWebCallback iWebCallback) {
         if (urlString != null) {
             HttpURLConnection conn = null; //连接对象
             InputStream is = null;
             ByteArrayOutputStream baos = null;
             try {
-                URL url = new URL(urlString); //URL对象
-                if (urlString.startsWith(HTTPS)) {
-                    conn = (HttpsURLConnection) url.openConnection();
-                } else {
-                    conn = (HttpURLConnection) url.openConnection();
-                }
-                conn.setConnectTimeout(5 * 1000);
-                conn.setRequestMethod(GET);
-                if (heads != null) {
-                    for (String key : heads.keySet()) {
-                        conn.addRequestProperty(key, heads.get(key));
-                    }
-                }
+                conn = commonGetConn(GET, urlString, headers, null);
                 is = conn.getInputStream();   //获取输入流，此时才真正建立链接
                 baos = new ByteArrayOutputStream();
-                byte[] temp = new byte[1024];
-                int len;
-                while ((len = is.read(temp)) != -1) {
-                    baos.write(temp, 0, len);
-                }
+                is2bos(is, baos);
                 if (iWebCallback != null) {
                     iWebCallback.onCallback(conn.getResponseCode(), conn.getResponseMessage(), conn.getHeaderFields(), baos.toByteArray());
                 }
             } catch (Exception e) {
-                int code = 600;
-                try {
-                    code = conn == null ? 600 : conn.getResponseCode();
-                } catch (Exception e1) {
-                }
-                if (iWebCallback != null) {
-                    iWebCallback.onFail(code, e.toString());
-                }
+                onException(iWebCallback, conn, e);
             } finally {
-                closeSilently(is);
-                closeSilently(baos);
-                if (conn != null) {
-                    conn.disconnect();
-                }
+                closeAll(conn, is, baos);
             }
         }
     }
@@ -136,36 +88,15 @@ public class HttpUtils {
             InputStream is = null;
             ByteArrayOutputStream baos = null;
             try {
-                URL url = new URL(urlString); //URL对象
-                if (urlString.startsWith(HTTPS)) {
-                    conn = (HttpsURLConnection) url.openConnection();
-                } else {
-                    conn = (HttpURLConnection) url.openConnection();
-                }
-                conn.setConnectTimeout(5 * 1000);
-                conn.setRequestMethod(POST); //使用post请求
-                conn.setRequestProperty("Charsert", "UTF-8");
-                if (headers != null) {
-                    for (Map.Entry<String, String> temp : headers.entrySet()) {
-                        conn.setRequestProperty(temp.getKey(), temp.getValue());
-                    }
-                }
-                conn.getOutputStream().write(postData);
+                conn = commonGetConn(POST, urlString, headers, postData);
                 is = conn.getInputStream();   //获取输入流，此时才真正建立链接
                 baos = new ByteArrayOutputStream();
-                byte[] temp = new byte[1024];
-                int len;
-                while ((len = is.read(temp)) != -1) {
-                    baos.write(temp, 0, len);
-                }
+                is2bos(is, baos);
                 result = baos.toByteArray();
             } catch (Exception e) {
+                onException(null, conn, e);
             } finally {
-                closeSilently(is);
-                closeSilently(baos);
-                if (conn != null) {
-                    conn.disconnect();
-                }
+                closeAll(conn, is, baos);
             }
         }
         return result;
@@ -178,48 +109,74 @@ public class HttpUtils {
             InputStream is = null;
             ByteArrayOutputStream baos = null;
             try {
-                URL url = new URL(urlString); //URL对象
-                if (urlString.startsWith(HTTPS)) {
-                    conn = (HttpsURLConnection) url.openConnection();
-                } else {
-                    conn = (HttpURLConnection) url.openConnection();
-                }
-                conn.setConnectTimeout(5 * 1000);
-                conn.setRequestMethod(POST); //使用post请求
-                conn.setRequestProperty("Charsert", "UTF-8");
-                if (headers != null) {
-                    for (Map.Entry<String, String> temp : headers.entrySet()) {
-                        conn.setRequestProperty(temp.getKey(), temp.getValue());
-                    }
-                }
-                conn.getOutputStream().write(postData);
+                conn = commonGetConn(POST, urlString, headers, postData);
                 is = conn.getInputStream();   //获取输入流，此时才真正建立链接
                 baos = new ByteArrayOutputStream();
-                byte[] temp = new byte[1024];
-                int len;
-                while ((len = is.read(temp)) != -1) {
-                    baos.write(temp, 0, len);
-                }
+                is2bos(is, baos);
                 if (iWebCallback != null) {
                     iWebCallback.onCallback(conn.getResponseCode(), conn.getResponseMessage(), conn.getHeaderFields(), baos.toByteArray());
                 }
             } catch (Exception e) {
-                int code = 600;
-                try {
-                    code = conn == null ? 600 : conn.getResponseCode();
-                } catch (Exception e1) {
-                }
-                if (iWebCallback != null) {
-                    iWebCallback.onFail(code, e.toString());
-                }
+                onException(iWebCallback, conn, e);
             } finally {
-                closeSilently(is);
-                closeSilently(baos);
-                if (conn != null) {
-                    conn.disconnect();
-                }
+                closeAll(conn, is, baos);
             }
         }
+    }
+
+    private void onException(IWebCallback iWebCallback, HttpURLConnection conn, Exception e) {
+        int code;
+        if (conn != null) {
+            try {
+                code = conn.getResponseCode();
+            } catch (Exception e1) {
+                code = 600;
+            }
+        } else {
+            code = 600;
+        }
+        if (iWebCallback != null) {
+            iWebCallback.onFail(code, e.toString());
+        }
+    }
+
+    private void closeAll(HttpURLConnection conn, InputStream is, ByteArrayOutputStream baos) {
+        closeSilently(is);
+        closeSilently(baos);
+        if (conn != null) {
+            conn.disconnect();
+        }
+    }
+
+    private void is2bos(InputStream is, ByteArrayOutputStream baos) throws IOException {
+        byte[] temp = new byte[1024];
+        int len;
+        while ((len = is.read(temp)) != -1) {
+            baos.write(temp, 0, len);
+        }
+    }
+
+    private HttpURLConnection commonGetConn(String requestMethod, String urlString
+            , HashMap<String, String> headers, byte[] postData) throws IOException {
+        HttpURLConnection conn;
+        URL url = new URL(urlString); //URL对象
+        if (urlString.startsWith(HTTPS)) {
+            conn = (HttpsURLConnection) url.openConnection();
+        } else {
+            conn = (HttpURLConnection) url.openConnection();
+        }
+        conn.setConnectTimeout(5 * 1000);
+        conn.setRequestMethod(requestMethod);
+        conn.setRequestProperty("Charsert", "UTF-8");
+        if (headers != null) {
+            for (Map.Entry<String, String> temp : headers.entrySet()) {
+                conn.setRequestProperty(temp.getKey(), temp.getValue());
+            }
+        }
+        if (POST.equals(requestMethod)) {
+            conn.getOutputStream().write(postData);
+        }
+        return conn;
     }
 
     private void closeSilently(Closeable closeable) {
