@@ -27,6 +27,7 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':basepojo')
+//    compile 'com.mayousheng.www:basebojo:0.0.1'
     compile project(':httputils')
     compile project(':refreshview')
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3'
