@@ -14,7 +14,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.mayousheng.www.jsondecodepojo.R;
-import com.mayousheng.www.jsondecodepojo.pojo.News;
+import com.mayousheng.www.jsondecodepojo.pojo.JokeResponse;
 import com.mayousheng.www.jsondecodepojo.utils.ArrayListBack;
 import com.mayousheng.www.jsondecodepojo.utils.CacheUtils;
 import com.mayousheng.www.jsondecodepojo.utils.InfoUtils;
@@ -29,26 +29,23 @@ import java.util.ArrayList;
  * Created by marking on 2017/4/11.
  */
 
-public class NewsAdapter extends BaseAdapter implements AbsListView.OnScrollListener {
+public class JockAdapter extends BaseAdapter implements AbsListView.OnScrollListener {
 
     private static final int TYPE_FOOT = 0;
     private static final int TYPE_BODY = 1;
     private static final int PAGE_NUM = 10;//每次请求数据条数
 
     private Context context;
-    private ArrayList<News> datas = new ArrayList<News>();
+    private ArrayList<JokeResponse> datas = new ArrayList<JokeResponse>();
     private String footStr;
     private boolean isInRefresh, isRefresh, haveMore = true;
     private int start, end, page;
     private EventBus eventBus;
-    private ShowImageUtils showImageUtils;
-    private String newsType;
 
-    public NewsAdapter(Context context, EventBus eventBus, ListView listView) {
+    public JockAdapter(Context context, EventBus eventBus, ListView listView) {
         this.context = context;
         this.eventBus = eventBus;
         CacheUtils.init(getDiskCacheDir(context, CacheUtils.CACHE_PATH), getAppVersion(context));//初始化CachUtils
-        showImageUtils = new ShowImageUtils(listView);
         footStr = context.getString(R.string.load1);
     }
 
@@ -101,7 +98,7 @@ public class NewsAdapter extends BaseAdapter implements AbsListView.OnScrollList
                 } else {
                     newsHolder = (NewsHolder) convertView.getTag();
                 }
-                newsHolder.inViewBind((News) item);
+                newsHolder.inViewBind((JokeResponse) item);
                 return convertView;
             case TYPE_FOOT:
                 FootHolder footHolder;
@@ -120,7 +117,6 @@ public class NewsAdapter extends BaseAdapter implements AbsListView.OnScrollList
     }
 
     public void changeNews(String newsType) {
-        this.newsType = newsType;
         loadData(0);
     }
 
@@ -131,7 +127,7 @@ public class NewsAdapter extends BaseAdapter implements AbsListView.OnScrollList
         isInRefresh = true;
         if (haveMore) {
             footStr = context.getString(R.string.load1);
-            InfoUtils.getNewsInfo(newsType, position, PAGE_NUM, new ArrayListBack<News>() {
+            InfoUtils.getNewsInfo(position, PAGE_NUM, new ArrayListBack<JokeResponse>() {
                 @Override
                 public void onFail(int status, String message) {
                     isInRefresh = false;
@@ -141,7 +137,7 @@ public class NewsAdapter extends BaseAdapter implements AbsListView.OnScrollList
                 }
 
                 @Override
-                public void onResult(final ArrayList<News> data) {
+                public void onResult(final ArrayList<JokeResponse> data) {
                     if (data != null) {
                         haveMore = data.size() == PAGE_NUM;
                         footStr = haveMore ? context.getString(R.string.load0) : context.getString(R.string.load2);
@@ -152,10 +148,6 @@ public class NewsAdapter extends BaseAdapter implements AbsListView.OnScrollList
                         datas.addAll(data);
                         String[] URLS = new String[datas.size()];
                         int i = 0;
-                        for (News news : datas) {
-                            URLS[i++] = news.picUrl;
-                        }
-                        showImageUtils.setUrls(URLS);
                         if (eventBus != null) {
                             eventBus.refreshUI();
                         }
@@ -192,7 +184,7 @@ public class NewsAdapter extends BaseAdapter implements AbsListView.OnScrollList
         }
     }
 
-    private class NewsHolder extends BaseHolder<News> {
+    private class NewsHolder extends BaseHolder<JokeResponse> {
 
         @ViewDesc(viewId = R.id.title)
         public TextView title;
@@ -200,16 +192,12 @@ public class NewsAdapter extends BaseAdapter implements AbsListView.OnScrollList
         public TextView desc;
         @ViewDesc(viewId = R.id.time)
         public TextView time;
-        @ViewDesc(viewId = R.id.img)
-        public ImageView img;
 
         @Override
-        public void inViewBind(News item) {
+        public void inViewBind(JokeResponse item) {
             title.setText(item.title);
-            desc.setText(item.description);
-            time.setText(item.ctime);
-            img.setImageResource(R.mipmap.ic_launcher);
-            img.setTag(item.picUrl);
+            desc.setText(item.text);
+            time.setText(item.time);
         }
     }
 
@@ -235,20 +223,15 @@ public class NewsAdapter extends BaseAdapter implements AbsListView.OnScrollList
 
     @Override
     public void onScrollStateChanged(AbsListView view, int scrollState) {
-        if (scrollState == SCROLL_STATE_IDLE) {
-            showImageUtils.loadImage(start, end);
-        } else {
-            showImageUtils.stopAllTasks();
-        }
+
     }
 
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
         start = firstVisibleItem;
         end = firstVisibleItem + visibleItemCount;
-        if (isRefresh && showImageUtils.getUrls() != null) {
+        if (isRefresh) {
             isRefresh = false;
-            showImageUtils.loadImage(start, end);
         }
     }
 }

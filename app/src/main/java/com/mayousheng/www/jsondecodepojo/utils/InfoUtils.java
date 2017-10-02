@@ -1,16 +1,11 @@
 package com.mayousheng.www.jsondecodepojo.utils;
 
-import com.mayousheng.www.basepojo.BasePoJo;
-import com.mayousheng.www.httputils.HttpUtils;
-import com.mayousheng.www.jsondecodepojo.pojo.News;
-import com.mayousheng.www.jsondecodepojo.pojo.NewsType;
+import com.mayousheng.www.jsondecodepojo.pojo.DataBack;
+import com.mayousheng.www.jsondecodepojo.pojo.JokeResponse;
+import com.mayousheng.www.jsondecodepojo.pojo.NewsSearch;
+import com.mayousheng.www.jsondecodepojo.pojo.StaticParam;
 
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by marking on 2017/4/11.
@@ -18,89 +13,27 @@ import java.util.Map;
 
 public class InfoUtils {
 
-    private static final String baseUrl = "http://java.markingyun.cn/newsweb/news/getNews?type=%s&num=%s&page=%s";
-    private static final String[] types = new String[]{"war"
-            , "sport", "tech", "edu", "ent", "money", "gupiao", "travel", "lady"};
-    private static final String[] titles = new String[]{"军事",
-            "体育", "科技", "教育", "娱乐", "财经", "股票", "旅游", "女人"};
-
-    public static ArrayList<News> getNewsInfo(String type, int page, int num) {
-        String url = String.format(baseUrl, type, num, page);
-        return getNews(url, null);
-    }
-
-    public static ArrayList<NewsType> getNewsTypeInfo() {
-        ArrayList<NewsType> result = new ArrayList<>();
-        for (int i = 0; i < types.length; i++) {
-            NewsType newsType = new NewsType(null);
-            newsType.title = titles[i];
-            newsType.type = types[i];
-            result.add(newsType);
-        }
-        return result;
-    }
-
-    private static ArrayList<News> getNews(final String url, final HashMap<String, String> heads) {
-        byte[] data = HttpUtils.getInstance().getURLResponse(url, heads);
-        if (data != null) {
-            return BasePoJo.JSONArrayStrToArray(News.class, new String(data));
-        } else {
-            return null;
-        }
-    }
-
-    public static void getNewsInfo(String type, int page, int num, ArrayListBack<News> arrayListBack) {
-        String url = String.format(baseUrl, type, num, page);
-        commonGetArrayRequest(url, null, arrayListBack);
-    }
-
-    private static <T> void commonGetArrayRequest(final String url, final HashMap<String, String> heads, final ArrayListBack<T> arrayListBack) {
-        final HttpUtils.IWebCallback iWebCallback = new HttpUtils.IWebCallback() {
-            @Override
-            public void onCallback(int status, String message, Map<String, List<String>> heard, byte[] data) {
-                if (arrayListBack == null) {
-                    return;
-                }
-                Class<T> clazz = null;
-                do {
-                    if (status != 200 || data == null) {
-                        break;
-                    }
-                    Type[] types = arrayListBack.getClass().getGenericInterfaces();
-                    if (types == null || types.length == 0) {
-                        break;
-                    }
-                    Type type = types[0];
-                    if (!(type instanceof ParameterizedType)) {
-                        break;
-                    }
-                    types = ((ParameterizedType) type).getActualTypeArguments();
-                    if (types == null || types.length == 0) {
-                        break;
-                    }
-                    clazz = (Class<T>) types[0];
-                } while (false);
-                if (clazz == null) {
-                    arrayListBack.onFail(status, message);
-                } else {
-                    arrayListBack.onResult((ArrayList<T>) BasePoJo.JSONArrayStrToArray(clazz, new String(data)));
-                }
-            }
-
-            @Override
-            public void onFail(int status, String message) {
-                if (arrayListBack != null) {
-                    arrayListBack.onFail(status, message);
-                }
-            }
-        };
+    public static void getNewsInfo(int page, int count, final ArrayListBack<JokeResponse> arrayListBack) {
+        final NewsSearch newsSearch = new NewsSearch(count, page);
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                HttpUtils.getInstance().getURLResponse(url, heads, iWebCallback);
+                DataBack<ArrayList<JokeResponse>> dataBack =
+                        CommonRequestUtils.postDatasBack(StaticParam.BASE_GET_NEWS
+                                , JsonHeardUtils.getInstance().getHeard(),
+                                newsSearch.toString().getBytes(), new JokeResponse(null));
+                if (dataBack == null) {
+                    arrayListBack.onFail(-1, "no response");
+                } else {
+                    if (dataBack.code == 0) {
+                        arrayListBack.onResult(dataBack.data);
+                    } else {
+                        arrayListBack.onFail(dataBack.code, dataBack.msg);
+                    }
+                }
             }
         };
-        new Thread(runnable).start();
+        ThreadUtils.executor.execute(runnable);
     }
 
 }
