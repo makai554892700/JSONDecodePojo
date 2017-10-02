@@ -16,7 +16,7 @@ apply plugin: 'com.android.library'
 //    artifactId = 'httputils'
 //    publishVersion = '0.0.1'
 //    desc = 'Http utils.'
-//    website = 'https://github.com/makai554892700/JSONDecodePojo/tree/master/basepojo'
+//    website = 'https://github.com/makai554892700/JSONDecodePojo/tree/master/httputils'
 //}
 //
 //tasks.withType(Javadoc) {
