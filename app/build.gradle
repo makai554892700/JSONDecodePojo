@@ -1,36 +1,104 @@
 apply plugin: 'com.android.application'
-
+apply plugin: 'AndResGuard'
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.tencent.mm:AndResGuard-gradle-plugin:1.2.6'
+    }
+}
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    signingConfigs {
+        shandao {
+            keyAlias KEYALIAS
+            keyPassword KEYPASSWORD
+            storeFile file(STOREFILEPATH)
+            storePassword STOREPASSWORD
+        }
+    }
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
     defaultConfig {
         applicationId "com.mayousheng.www.jsondecodepojo"
-        minSdkVersion 11
-        targetSdkVersion 25
+        minSdkVersion rootProject.appMinSdkVersion
+        targetSdkVersion rootProject.targetSdkVersion
         versionCode 1
         versionName "1.0"
     }
+
     buildTypes {
         release {
+            //开启代码混淆
             minifyEnabled true
+            // 移除无用的resource文件
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.shandao
         }
         debug {
+            //开启代码混淆
             minifyEnabled false
+            // 移除无用的resource文件
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.shandao
         }
     }
+
     productFlavors {
+        marking {}
+    }
+
+    applicationVariants.all { variant ->
+        def flavor = variant.mergedFlavor
+        def versionName = flavor.versionName
+        if (variant.buildType.isDebuggable()) {
+            versionName += "_debug"
+        } else {
+            versionName += ""
+        }
+        flavor.versionName = versionName
+
+        variant.outputs.each { output ->
+            def outputFile = output.outputFile
+            if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                def fileName = "sbgnews-$variant.name- ${versionName}.apk"
+                output.outputFile = new File(outputFile.parent, fileName)
+            }
+        }
     }
 }
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile project(':basepojo')
-//    compile 'com.mayousheng.www:basebojo:0.0.1'
-    compile project(':httputils')
+    compile 'com.mayousheng.www:basepojo:0.0.1'
+    compile 'com.mayousheng.www:httputils:0.0.1'
     compile project(':refreshview')
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3'
     compile project(':baseholder')
+    compile rootProject.libRecycleView
+    compile rootProject.libSupportV4
+    compile rootProject.libSupportAppcompatV7
 }
+
+andResGuard {
+    use7zip = true
+    useSign = true
+    keepRoot = false
+    whiteList = [
+            "R.mipmap.ic_launcher",
+    ]
+    compressFilePattern = [
+            "*.png",
+            "*.jpg",
+            "*.jpeg",
+            "*.gif",
+            "resources.arsc"
+    ]
+    sevenzip {
+        artifact = 'com.tencent.mm:SevenZip:1.2.6'
+    }
+}
+//生成apk包命令： gradlew :app:clean  :app:resguardRelease

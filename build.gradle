@@ -1,4 +1,15 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
+ext {
+    compileSdkVersion = 23
+    buildToolsVersion = "25.0.0"
+    minSdkVersion = 9
+    appMinSdkVersion = 14
+    targetSdkVersion = 23
+
+    libSupportV4 = "com.android.support:support-v4:${buildToolsVersion}"
+    libSupportAppcompatV7 = "com.android.support:appcompat-v7:${buildToolsVersion}"
+    libRecycleView = "com.android.support:recyclerview-v7:${buildToolsVersion}"
+
+}
 
 buildscript {
     repositories {
