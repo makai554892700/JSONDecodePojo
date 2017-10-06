@@ -3,7 +3,7 @@ package com.mayousheng.www.jsondecodepojo.pojo;
 import com.mayousheng.www.basepojo.BasePoJo;
 import com.mayousheng.www.basepojo.FieldDesc;
 
-public class JokeResponse extends BasePoJo {
+public class BSBDJVoiceResponse extends BasePoJo {
 
     @FieldDesc(key = "mark")
     public Integer mark;        //唯一标记
@@ -15,11 +15,12 @@ public class JokeResponse extends BasePoJo {
     public String text;        //基本内容
     @FieldDesc(key = "url")
     public String url;   //详情跳转url
-    @FieldDesc(key = "title")
-    public String title;//标题
+    @FieldDesc(key = "voiceuri")
+    public String voiceuri;        //声音url
+    @FieldDesc(key = "cdnImg")
+    public String cdnImg;            //cdn图片(缩放)
 
-    public JokeResponse(String jsonStr) {
+    public BSBDJVoiceResponse(String jsonStr) {
         super(jsonStr);
     }
-
 }

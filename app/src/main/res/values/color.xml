@@ -4,4 +4,12 @@
     <color name="black">#ff000000</color>
     <color name="gray">#ff808080</color>
     <color name="base">#fff0f0f0</color>
+    <color name="red">#ffff0000</color>
+    <color name="blue">#ff00ff00</color>
+    <color name="green">#ff0000ff</color>
+    <color name="transparent">#00000000</color>
+    <color name="colorPrimary">@color/green</color>
+    <color name="colorPrimaryDark">@color/gray</color>
+    <color name="colorAccent">@color/red</color>
+    <color name="clickableBackground">@color/white</color>
 </resources>

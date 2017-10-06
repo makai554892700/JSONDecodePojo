@@ -10,7 +10,7 @@ import com.mayousheng.www.basepojo.FieldDesc;
 public class DataBack<T> extends BasePoJo {
 
     @FieldDesc(key = "code")
-    public Integer code;
+    public int code;
     @FieldDesc(key = "msg")
     public String msg;
     @FieldDesc(key = "data")

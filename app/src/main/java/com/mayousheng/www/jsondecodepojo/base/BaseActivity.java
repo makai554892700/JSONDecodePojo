@@ -1,18 +1,23 @@
 package com.mayousheng.www.jsondecodepojo.base;
 
-import android.app.Activity;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
+
+import com.mayousheng.www.jsondecodepojo.utils.ViewUtils;
 
 /**
  * Created by marking on 2017/4/11.
  */
 
-public class BaseActivity extends Activity {
+public abstract class BaseActivity extends AppCompatActivity {
 
-    public  <T> T getViewById(int id) {
-        if (id == 0) {
-            return null;
-        }
-        return (T) findViewById(id);
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(getLayout());
+        ViewUtils.initAllView(this);
     }
 
+    protected abstract int getLayout();
 }

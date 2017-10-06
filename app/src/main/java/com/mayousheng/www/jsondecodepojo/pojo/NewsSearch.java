@@ -10,9 +10,9 @@ import com.mayousheng.www.basepojo.FieldDesc;
 public class NewsSearch extends BasePoJo {
 
     @FieldDesc(key = "count")
-    public Integer count;
+    public int count;
     @FieldDesc(key = "page")
-    public Integer page;
+    public int page;
 
     public NewsSearch(int count, int page) {
         super(null);

@@ -5,7 +5,6 @@ ext {
     appMinSdkVersion = 14
     targetSdkVersion = 23
 
-    libSupportV4 = "com.android.support:support-v4:${buildToolsVersion}"
     libSupportAppcompatV7 = "com.android.support:appcompat-v7:${buildToolsVersion}"
     libRecycleView = "com.android.support:recyclerview-v7:${buildToolsVersion}"
 

@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    tools:context=".activity.MainActivity">
 
-    <com.mayousheng.www.refreshview.RefreshRelativeLayout
-        android:id="@+id/refreshLayout"
+    <include
+        android:id="@+id/button_view"
+        layout="@layout/child_activity_main_foot" />
+
+    <FrameLayout
+        android:id="@+id/content_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <ListView
-            android:id="@+id/listView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-    </com.mayousheng.www.refreshview.RefreshRelativeLayout>
+        android:layout_height="match_parent"
+        android:layout_above="@id/button_view" />
 
 </RelativeLayout>
