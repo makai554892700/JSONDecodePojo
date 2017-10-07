@@ -3,6 +3,7 @@ package com.mayousheng.www.jsondecodepojo.utils;
 import com.mayousheng.www.basepojo.BasePoJo;
 import com.mayousheng.www.jsondecodepojo.common.StaticParam;
 import com.mayousheng.www.jsondecodepojo.pojo.BSBDJPhotoResponse;
+import com.mayousheng.www.jsondecodepojo.pojo.BSBDJPunsterResponse;
 import com.mayousheng.www.jsondecodepojo.pojo.BSBDJVideoResponse;
 import com.mayousheng.www.jsondecodepojo.pojo.DataBack;
 import com.mayousheng.www.jsondecodepojo.pojo.JokeResponse;
@@ -42,9 +43,9 @@ public class InfoUtils {
     }
 
     public static void getBSBDJPunsters(Integer page, Integer count
-            , ArrayListBack<BSBDJPhotoResponse> back) {
+            , ArrayListBack<BSBDJPunsterResponse> back) {
         InfoUtils.getNewsInfos(StaticParam.BASE_GET_BSBDJ_PUNSTER, page, count
-                , new BSBDJPhotoResponse(null), back);
+                , new BSBDJPunsterResponse(null), back);
     }
 
     public static <T extends BasePoJo> void getNewsInfos(final String url, int page, int count

@@ -4,37 +4,54 @@
     android:layout_width="match_parent"
     android:layout_height="50dp"
     android:layout_alignParentBottom="true"
-    android:background="@color/gray"
+    android:background="@color/foot"
     android:orientation="horizontal">
 
     <com.mayousheng.www.jsondecodepojo.view.IconAndTextView
-        android:id="@+id/index_one"
+        android:id="@+id/home"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
         app:color="@color/blue"
-        app:icon="@drawable/friend_add"
-        app:text="第一个"
+        app:icon="@drawable/home"
+        app:text="@string/home"
         app:text_size="15sp" />
 
     <com.mayousheng.www.jsondecodepojo.view.IconAndTextView
-        android:id="@+id/index_two"
+        android:id="@+id/new_post"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
         app:color="@color/blue"
-        app:icon="@drawable/friend_add"
-        app:text="第二个"
+        app:icon="@drawable/new_post"
+        app:text="@string/new_post"
+        app:text_size="15sp" />
+
+    <ImageView
+        android:id="@+id/new_punster"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:src="@drawable/new_news" />
+
+    <com.mayousheng.www.jsondecodepojo.view.IconAndTextView
+        android:id="@+id/community"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        app:color="@color/blue"
+        app:icon="@drawable/community"
+        app:text="@string/community"
         app:text_size="15sp" />
 
     <com.mayousheng.www.jsondecodepojo.view.IconAndTextView
-        android:id="@+id/index_three"
+        android:id="@+id/mine"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
         app:color="@color/blue"
-        app:icon="@drawable/friend_add"
-        app:text="第三个"
+        app:icon="@drawable/mine"
+        app:text="@string/mine"
         app:text_size="15sp" />
 
 </LinearLayout>

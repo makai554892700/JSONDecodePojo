@@ -37,7 +37,6 @@ public class ViewUtils {
     }
 
     public static void initAllView(Activity activity) {
-        Log.e("-----1", "initAllView activity=" + activity);
         if (activity == null) {
             return;
         }

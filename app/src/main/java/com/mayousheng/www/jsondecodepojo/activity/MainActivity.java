@@ -11,9 +11,10 @@ import android.widget.FrameLayout;
 import com.mayousheng.www.jsondecodepojo.R;
 import com.mayousheng.www.jsondecodepojo.base.BaseActivity;
 import com.mayousheng.www.jsondecodepojo.common.ViewDesc;
+import com.mayousheng.www.jsondecodepojo.fragment.CommunityFragment;
 import com.mayousheng.www.jsondecodepojo.fragment.HomeFragment;
 import com.mayousheng.www.jsondecodepojo.fragment.MineFragment;
-import com.mayousheng.www.jsondecodepojo.fragment.VideoFragment;
+import com.mayousheng.www.jsondecodepojo.fragment.NewPostFragment;
 import com.mayousheng.www.jsondecodepojo.view.IconAndTextView;
 
 import java.util.ArrayList;
@@ -22,12 +23,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     @ViewDesc(viewId = R.id.content_view)
     FrameLayout contentView;
-    @ViewDesc(viewId = R.id.index_one)
-    IconAndTextView indexOne;
-    @ViewDesc(viewId = R.id.index_two)
-    IconAndTextView indexTwo;
-    @ViewDesc(viewId = R.id.index_three)
-    IconAndTextView indexThree;
+    @ViewDesc(viewId = R.id.home)
+    IconAndTextView home;
+    @ViewDesc(viewId = R.id.new_post)
+    IconAndTextView newPost;
+    @ViewDesc(viewId = R.id.community)
+    IconAndTextView community;
+    @ViewDesc(viewId = R.id.mine)
+    IconAndTextView mine;
     private FragmentManager fragmentManager;
     private SparseArray<IconAndTextView> iconAndTextViews = new SparseArray<>();
     private ArrayList<Fragment> fragmentArray = new ArrayList<>();
@@ -45,13 +48,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         fragmentManager = getSupportFragmentManager();
         initView();
         initFragments();
-        showFragment(chooseIndex(R.id.index_one));
+        showFragment(chooseIndex(R.id.home));
     }
 
     //初始化fragments
     private void initFragments() {
         fragmentArray.add(new HomeFragment());
-        fragmentArray.add(new VideoFragment());
+        fragmentArray.add(new NewPostFragment());
+        fragmentArray.add(new CommunityFragment());
         fragmentArray.add(new MineFragment());
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         for (Fragment fragment : fragmentArray) {
@@ -62,12 +66,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     //获取view
     private void initView() {
-        iconAndTextViews.put(R.id.index_one, indexOne);
-        indexOne.setOnClickListener(this);
-        iconAndTextViews.put(R.id.index_two, indexTwo);
-        indexTwo.setOnClickListener(this);
-        iconAndTextViews.put(R.id.index_three, indexThree);
-        indexThree.setOnClickListener(this);
+        iconAndTextViews.put(R.id.home, home);
+        home.setOnClickListener(this);
+        iconAndTextViews.put(R.id.new_post, newPost);
+        newPost.setOnClickListener(this);
+        iconAndTextViews.put(R.id.community, community);
+        community.setOnClickListener(this);
+        iconAndTextViews.put(R.id.mine, mine);
+        mine.setOnClickListener(this);
     }
 
     @Override
@@ -76,7 +82,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void showFragment(int index) {
-        if (lastIndex == index) {
+        if (index == -1 || lastIndex == index) {
             return;
         }
         lastIndex = index;

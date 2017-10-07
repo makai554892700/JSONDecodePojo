@@ -1,19 +1,19 @@
-package com.mayousheng.www.jsondecodepojo.fragment;
+package com.mayousheng.www.jsondecodepojo.fragment.bsbdj;
 
 import android.view.View;
 
 import com.mayousheng.www.jsondecodepojo.R;
-import com.mayousheng.www.jsondecodepojo.base.BaseFragment;
+import com.mayousheng.www.jsondecodepojo.base.BaseNewsFragment;
 
 /**
  * Created by ma kai on 2017/10/4.
  */
 
-public class VideoFragment extends BaseFragment {
+public class VoiceFragment extends BaseNewsFragment {
 
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_video;
+        return R.layout.fragment_bsbdj_voice;
     }
 
     @Override

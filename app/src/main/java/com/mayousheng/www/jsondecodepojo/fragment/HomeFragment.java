@@ -2,13 +2,17 @@ package com.mayousheng.www.jsondecodepojo.fragment;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.View;
 
 import com.mayousheng.www.jsondecodepojo.R;
 import com.mayousheng.www.jsondecodepojo.adapter.ViewPagerAdapter;
 import com.mayousheng.www.jsondecodepojo.base.BaseFragment;
 import com.mayousheng.www.jsondecodepojo.common.ViewDesc;
+import com.mayousheng.www.jsondecodepojo.fragment.bsbdj.PunsterFragment;
+import com.mayousheng.www.jsondecodepojo.fragment.bsbdj.VideoFragment;
+import com.mayousheng.www.jsondecodepojo.fragment.bsbdj.VoiceFragment;
+import com.mayousheng.www.jsondecodepojo.fragment.mix.JokeFragment;
+import com.mayousheng.www.jsondecodepojo.fragment.bsbdj.PhotoFragment;
 import com.mayousheng.www.jsondecodepojo.view.OrientationScrollView;
 
 import java.util.ArrayList;
@@ -28,8 +32,6 @@ public class HomeFragment extends BaseFragment {
     private OrientationScrollView.OnNaPageChangeListener onNaPageChangeListener;
     private ViewPagerAdapter viewPagerAdapter;
     private List<Fragment> fragmentArray = new ArrayList<>();
-    private String[] titles = new String[]{"测试一", "测试二", "测试三", "测试四", "测试五", "测试六"
-            , "测试七", "测试八", "测试九", "测试十"};
 
     @Override
     protected int getLayoutId() {
@@ -45,16 +47,11 @@ public class HomeFragment extends BaseFragment {
     }
 
     private void initFragments() {
-        fragmentArray.add(new ImgNewsFragment());
-        fragmentArray.add(new TextNewsFragment());
-        fragmentArray.add(new ImgNewsFragment());
-        fragmentArray.add(new ImgNewsFragment());
-        fragmentArray.add(new ImgNewsFragment());
-        fragmentArray.add(new ImgNewsFragment());
-        fragmentArray.add(new ImgNewsFragment());
-        fragmentArray.add(new ImgNewsFragment());
-        fragmentArray.add(new ImgNewsFragment());
-        fragmentArray.add(new ImgNewsFragment());
+        fragmentArray.add(new JokeFragment());
+        fragmentArray.add(new PunsterFragment());
+        fragmentArray.add(new VoiceFragment());
+        fragmentArray.add(new VideoFragment());
+        fragmentArray.add(new PhotoFragment());
     }
 
     private void initOrientationScrollView() {
@@ -82,7 +79,10 @@ public class HomeFragment extends BaseFragment {
             }
         };
         orientationScrollView.setViewPager(getContext().getApplicationContext()
-                , titles, viewPager, R.color.gray, R.color.black, 16, 16, 12, true
+                , new String[]{
+                        getString(R.string.joke), getString(R.string.punster), getString(R.string.voice),
+                        getString(R.string.video), getString(R.string.photo)
+                }, viewPager, R.color.gray, R.color.black, 16, 16, 12, true
                 , R.color.gray, 0f, 15f, 15f, 100);
         orientationScrollView.setBgLine(getContext().getApplicationContext(), 1, R.color.colorAccent);
         orientationScrollView.setNavLine(getActivity(), 3, R.color.colorPrimary);

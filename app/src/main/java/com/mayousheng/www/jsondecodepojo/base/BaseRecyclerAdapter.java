@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +17,8 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
 
     protected Context context;
     protected LayoutInflater layoutInflater;
-    private List<T> data = new ArrayList<>();
+    protected View rootView;
+    protected List<T> data = new ArrayList<>();
 
     public BaseRecyclerAdapter(Context context) {
         layoutInflater = LayoutInflater.from(context);

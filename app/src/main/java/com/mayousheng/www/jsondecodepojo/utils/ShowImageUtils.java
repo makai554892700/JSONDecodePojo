@@ -3,8 +3,8 @@ package com.mayousheng.www.jsondecodepojo.utils;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
-import android.widget.ListView;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -15,76 +15,88 @@ import java.util.Set;
 
 public class ShowImageUtils {
 
-    private ListView listView;
+    private View view;
     private Set<MyAsyncTast> myAsyncTasts;
-    private String[] urls;
+    private ImgDesc[] imgDescs;
 
-    public ShowImageUtils(ListView listView) {
-        this.listView = listView;
+    public ShowImageUtils(View view) {
+        this.view = view;
         myAsyncTasts = new HashSet<MyAsyncTast>();
     }
 
-    public String[] getUrls() {
-        return urls;
+    public ImgDesc[] getImgDescs() {
+        return imgDescs;
     }
 
-    public void setUrls(String[] urls) {
-        this.urls = urls;
+    public ShowImageUtils setImgDescs(ImgDesc[] imgDescs) {
+        this.imgDescs = imgDescs;
+        return this;
     }
 
-    public void loadImage(int start, int end) {
-        if (urls != null) {
+    public ShowImageUtils loadImage(int start, int end) {
+        if (imgDescs != null) {
             for (int i = start; i < end; i++) {
-                if (urls.length > i) {
-                    String url = urls[i];
-                    Bitmap tempBitmap = CacheUtils.getInstance().getBitmapByDisk(url);
+                if (imgDescs.length > i) {
+                    ImgDesc imgDesc = imgDescs[i];
+                    Bitmap tempBitmap = CacheUtils.getInstance().getBitmapByDisk(imgDesc.url);
                     if (tempBitmap == null) {
-                        MyAsyncTast myAsyncTast = new MyAsyncTast(url);
-                        myAsyncTast.execute(url);
+                        MyAsyncTast myAsyncTast = new MyAsyncTast(imgDesc);
+                        myAsyncTast.execute();
                         myAsyncTasts.add(myAsyncTast);
                     } else {
-                        setImageViewByUrl(tempBitmap, url);
+                        setImageViewByTag(tempBitmap, imgDesc.tag);
                     }
                 }
             }
         }
+        return this;
     }
 
-    public void stopAllTasks() {
+    public ShowImageUtils stopAllTasks() {
         if (myAsyncTasts != null) {
             for (MyAsyncTast myAsyncTast : myAsyncTasts) {
                 myAsyncTast.cancel(false);
             }
         }
+        return this;
     }
 
     private class MyAsyncTast extends AsyncTask<String, Void, Bitmap> {
-        private String imgUrl;
+        private ImgDesc imgDesc;
 
-        private MyAsyncTast(String imgUrl) {
-            this.imgUrl = imgUrl;
+        private MyAsyncTast(ImgDesc imgDesc) {
+            this.imgDesc = imgDesc;
         }
 
         @Override
         protected Bitmap doInBackground(String... params) {
-            Bitmap result = null;
-            if (params != null && params.length > 0) {
-                result = CacheUtils.getInstance().getBitmap(params[0]);
-            }
-            return result;
+            return CacheUtils.getInstance().getBitmap(imgDesc.url);
         }
 
         @Override
         protected void onPostExecute(Bitmap bitmap) {
-            setImageViewByUrl(bitmap, imgUrl);
+            setImageViewByTag(bitmap, imgDesc.tag);
             myAsyncTasts.remove(this);
         }
     }
 
-    public void setImageViewByUrl(Bitmap bitmap, String imgUrl) {
-        ImageView imageView = (ImageView) listView.findViewWithTag(imgUrl);
+    public void setImageViewByTag(Bitmap bitmap, String tag) {
+        ImageView imageView = (ImageView) view.findViewWithTag(tag);
         if (imageView != null && bitmap != null) {
             imageView.setImageBitmap(bitmap);
+        }
+    }
+
+    public static class ImgDesc {
+        public String tag;
+        public String url;
+
+        public ImgDesc() {
+        }
+
+        public ImgDesc(String tag, String url) {
+            this.tag = tag;
+            this.url = url;
         }
     }
 

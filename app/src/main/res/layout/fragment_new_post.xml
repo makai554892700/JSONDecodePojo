@@ -2,14 +2,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/red">
+    android:background="@color/base">
+
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:text="测试img"
+        android:text="@string/new_post"
         android:textColor="@color/green"
         android:textSize="38sp" />
-
 </RelativeLayout>

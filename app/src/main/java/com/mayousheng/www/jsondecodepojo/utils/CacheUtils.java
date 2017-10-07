@@ -1,7 +1,11 @@
 package com.mayousheng.www.jsondecodepojo.utils;
 
+import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Environment;
 
 import com.mayousheng.www.jsondecodepojo.utils.cache.DiskLruCache;
 
@@ -29,6 +33,12 @@ public class CacheUtils {
     private DiskLruCache diskLruCache;
 
     private CacheUtils() {
+    }
+
+    public static void init(Context context) {
+        init(getDiskCacheDir(context.getApplicationContext()
+                , context.getApplicationContext().getPackageName())
+                , getAppVersion(context.getApplicationContext()));
     }
 
     public static void init(File cacheDir, int appVersion) {
@@ -122,25 +132,25 @@ public class CacheUtils {
         return result;
     }
 
-//    private File getDiskCacheDir(Context context, String uniqueName) {
-//        String cachePath;
-//        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())
-//                || !Environment.isExternalStorageRemovable()) {
-//            cachePath = context.getExternalCacheDir().getPath();
-//        } else {
-//            cachePath = context.getCacheDir().getPath();
-//        }
-//        return new File(cachePath + File.separator + uniqueName);
-//    }
-//
-//    private int getAppVersion(Context context) {
-//        try {
-//            PackageInfo info = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-//            return info.versionCode;
-//        } catch (PackageManager.NameNotFoundException e) {
-//            return 1;
-//        }
-//    }
+    private static File getDiskCacheDir(Context context, String uniqueName) {
+        String cachePath;
+        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())
+                || !Environment.isExternalStorageRemovable()) {
+            cachePath = context.getExternalCacheDir().getPath();
+        } else {
+            cachePath = context.getCacheDir().getPath();
+        }
+        return new File(cachePath + File.separator + uniqueName);
+    }
+
+    private static int getAppVersion(Context context) {
+        try {
+            PackageInfo info = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+            return info.versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            return 1;
+        }
+    }
 
     private boolean downloadUrlToStream(String urlString, OutputStream outputStream) {
         HttpURLConnection urlConnection = null;
