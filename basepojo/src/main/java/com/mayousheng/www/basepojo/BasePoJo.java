@@ -27,8 +27,18 @@ public abstract class BasePoJo {
         if (jsonObject == null) {
             return;
         }
-        Class self = this.getClass();
-        Field[] fields = self.getDeclaredFields();
+        Class clazz = this.getClass();
+        while (BasePoJo.class != clazz) {
+            initField(jsonObject, clazz);
+            clazz = clazz.getSuperclass();
+        }
+    }
+
+    private void initField(JSONObject jsonObject, Class clazz) {
+        if (clazz == null) {
+            return;
+        }
+        Field[] fields = clazz.getDeclaredFields();
         if (fields == null) {
             return;
         }
@@ -151,10 +161,22 @@ public abstract class BasePoJo {
     //根据注解将对象转为JSONObject
     public JSONObject toJSONObject() {
         JSONObject result = new JSONObject();
-        Class self = this.getClass();
+        Class clazz = this.getClass();
+        while (BasePoJo.class != clazz) {
+            System.out.println("class=" + clazz);
+            initJSON(result, clazz);
+            clazz = clazz.getSuperclass();
+        }
+        return result;
+    }
+
+    private void initJSON(JSONObject result, Class self) {
+        if (self == null) {
+            return;
+        }
         Field[] fields = self.getDeclaredFields();
         if (fields == null) {
-            return result;
+            return;
         }
         for (Field field : fields) {
             FieldDesc fieldDescs = field.getAnnotation(FieldDesc.class);
@@ -179,7 +201,6 @@ public abstract class BasePoJo {
                 putObject(result, key, fieldValue);
             }
         }
-        return result;
     }
 
     //方便对象与JSONObject相互转换
