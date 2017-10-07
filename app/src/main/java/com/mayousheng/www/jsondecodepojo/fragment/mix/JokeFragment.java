@@ -8,6 +8,7 @@ import android.view.View;
 import com.mayousheng.www.jsondecodepojo.R;
 import com.mayousheng.www.jsondecodepojo.adapter.JokeAdapter;
 import com.mayousheng.www.jsondecodepojo.base.BaseNewsFragment;
+import com.mayousheng.www.jsondecodepojo.common.StaticParam;
 import com.mayousheng.www.jsondecodepojo.common.ViewDesc;
 import com.mayousheng.www.jsondecodepojo.pojo.JokeResponse;
 import com.mayousheng.www.jsondecodepojo.utils.ArrayListBack;
@@ -22,10 +23,6 @@ import java.util.ArrayList;
 
 public class JokeFragment extends BaseNewsFragment {
 
-    @ViewDesc(viewId = R.id.swipe_refresh_layout)
-    SwipeRefreshLayout swipeRefreshLayout;
-    @ViewDesc(viewId = R.id.recycler_view)
-    RecyclerView recyclerView;
     private JokeAdapter jokeAdapter;
 
     @Override
@@ -55,6 +52,7 @@ public class JokeFragment extends BaseNewsFragment {
                 });
             }
         });
+        recyclerView.addItemDecoration(StaticParam.DEFAULT_ITEM_DECORATION);
     }
 
     private void initData() {

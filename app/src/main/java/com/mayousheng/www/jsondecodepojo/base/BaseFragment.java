@@ -26,7 +26,7 @@ public abstract class BaseFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container
             , @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(getLayoutId(), container, false);
-        ViewUtils.initAllView(this, rootView);
+        ViewUtils.initAllView(BaseFragment.class, this, rootView);
         initView(rootView);
         return rootView;
     }

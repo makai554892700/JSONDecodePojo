@@ -17,7 +17,7 @@ public abstract class BaseRecyclerHolder<T> extends RecyclerView.ViewHolder {
     public BaseRecyclerHolder(Context context, View view) {
         super(view);
         this.context = context;
-        ViewUtils.initAllView(this, view);
+        ViewUtils.initAllView(BaseRecyclerHolder.class, this, view);
     }
 
     public abstract void inViewBind(T t);

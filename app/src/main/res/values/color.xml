@@ -10,7 +10,7 @@
     <color name="blue">#ff0000ff</color>
     <color name="transparent">#00000000</color>
     <color name="colorPrimary">@color/base</color>
-    <color name="colorPrimaryDark">@color/transparent</color>
+    <color name="colorPrimaryDark">@color/black</color>
     <color name="colorAccent">@color/foot</color>
     <color name="clickableBackground">@color/white</color>
 </resources>

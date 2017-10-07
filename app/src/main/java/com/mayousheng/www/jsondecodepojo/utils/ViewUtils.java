@@ -14,11 +14,18 @@ import java.lang.reflect.Field;
 
 public class ViewUtils {
 
-    public static void initAllView(Object object, View rootView) {
+    public static void initAllView(Class topClass, Object object, View rootView) {
         if (object == null || rootView == null) {
             return;
         }
-        Class self = object.getClass();
+        Class clazz = object.getClass();
+        while (topClass != clazz) {
+            initView(object, rootView, clazz);
+            clazz = clazz.getSuperclass();
+        }
+    }
+
+    private static void initView(Object object, View rootView, Class self) {
         Field[] fields = self.getDeclaredFields();
         if (fields == null) {
             return;
@@ -36,11 +43,18 @@ public class ViewUtils {
         }
     }
 
-    public static void initAllView(Activity activity) {
+    public static void initAllView(Class topClass, Activity activity) {
         if (activity == null) {
             return;
         }
-        Class self = activity.getClass();
+        Class clazz = activity.getClass();
+        while (topClass != clazz) {
+            initeView(activity, clazz);
+            clazz = clazz.getSuperclass();
+        }
+    }
+
+    private static void initeView(Activity activity, Class self) {
         Field[] fields = self.getDeclaredFields();
         if (fields == null) {
             return;
