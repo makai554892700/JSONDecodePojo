@@ -4,13 +4,14 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
 import android.widget.FrameLayout;
 
 import com.mayousheng.www.jsondecodepojo.R;
 import com.mayousheng.www.jsondecodepojo.base.BaseActivity;
-import com.mayousheng.www.jsondecodepojo.common.ViewDesc;
+import com.mayousheng.www.viewinit.ViewDesc;
 import com.mayousheng.www.jsondecodepojo.fragment.CommunityFragment;
 import com.mayousheng.www.jsondecodepojo.fragment.HomeFragment;
 import com.mayousheng.www.jsondecodepojo.fragment.MineFragment;
@@ -22,15 +23,15 @@ import java.util.ArrayList;
 public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     @ViewDesc(viewId = R.id.content_view)
-    FrameLayout contentView;
+    public FrameLayout contentView;
     @ViewDesc(viewId = R.id.home)
-    IconAndTextView home;
+    public IconAndTextView home;
     @ViewDesc(viewId = R.id.new_post)
-    IconAndTextView newPost;
+    public IconAndTextView newPost;
     @ViewDesc(viewId = R.id.community)
-    IconAndTextView community;
+    public IconAndTextView community;
     @ViewDesc(viewId = R.id.mine)
-    IconAndTextView mine;
+    public IconAndTextView mine;
     private FragmentManager fragmentManager;
     private SparseArray<IconAndTextView> iconAndTextViews = new SparseArray<>();
     private ArrayList<Fragment> fragmentArray = new ArrayList<>();

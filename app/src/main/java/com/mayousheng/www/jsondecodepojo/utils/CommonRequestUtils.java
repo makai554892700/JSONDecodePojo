@@ -1,5 +1,7 @@
 package com.mayousheng.www.jsondecodepojo.utils;
 
+import android.util.Log;
+
 import com.mayousheng.www.basepojo.BasePoJo;
 import com.mayousheng.www.httputils.HttpUtils;
 import com.mayousheng.www.jsondecodepojo.pojo.DataBack;

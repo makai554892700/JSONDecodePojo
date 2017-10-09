@@ -1,4 +1,4 @@
-package com.mayousheng.www.jsondecodepojo.common;
+package com.mayousheng.www.viewinit;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

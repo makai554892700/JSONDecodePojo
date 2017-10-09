@@ -7,7 +7,7 @@ import android.view.View;
 import com.mayousheng.www.jsondecodepojo.R;
 import com.mayousheng.www.jsondecodepojo.adapter.ViewPagerAdapter;
 import com.mayousheng.www.jsondecodepojo.base.BaseFragment;
-import com.mayousheng.www.jsondecodepojo.common.ViewDesc;
+import com.mayousheng.www.viewinit.ViewDesc;
 import com.mayousheng.www.jsondecodepojo.fragment.bsbdj.PunsterFragment;
 import com.mayousheng.www.jsondecodepojo.fragment.bsbdj.VideoFragment;
 import com.mayousheng.www.jsondecodepojo.fragment.bsbdj.VoiceFragment;
@@ -25,9 +25,9 @@ import java.util.List;
 public class HomeFragment extends BaseFragment {
 
     @ViewDesc(viewId = R.id.view_pager)
-    ViewPager viewPager;
+    public ViewPager viewPager;
     @ViewDesc(viewId = R.id.orientation_scroll_view)
-    OrientationScrollView orientationScrollView;
+    public OrientationScrollView orientationScrollView;
     private OrientationScrollView.OnTitleClickListener onTitleClickListener;
     private OrientationScrollView.OnNaPageChangeListener onNaPageChangeListener;
     private ViewPagerAdapter viewPagerAdapter;

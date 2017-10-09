@@ -7,7 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.mayousheng.www.jsondecodepojo.utils.ViewUtils;
+import com.mayousheng.www.viewinit.ViewUtils;
 
 /**
  * Created by ma kai on 2017/10/4.

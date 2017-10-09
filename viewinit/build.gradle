@@ -1,0 +1,52 @@
+apply plugin: 'com.android.library'
+//apply plugin: 'com.novoda.bintray-release'
+//
+//buildscript {
+//    repositories {
+//        jcenter()
+//    }
+//    dependencies {
+//        classpath 'com.novoda:bintray-release:0.3.4'
+//    }
+//}
+//
+//publish {
+//    userOrg = 'marking'
+//    groupId = 'com.mayousheng.www'
+//    artifactId = 'viewinit'
+//    publishVersion = '0.0.1'
+//    desc = 'view init utils.'
+//    website = 'https://github.com/makai554892700/JSONDecodePojo/tree/master/viewinit'
+//}
+//
+//tasks.withType(Javadoc) {
+//    options {
+//        encoding "UTF-8"
+//        charSet 'UTF-8'
+//    }
+//    options.addStringOption('Xdoclint:none', '-quiet')
+//}
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+    defaultConfig {
+        minSdkVersion rootProject.minSdkVersion
+        targetSdkVersion rootProject.targetSdkVersion
+        versionCode 1
+        versionName "0.0.1"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    productFlavors {
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+}
+//上传jar包命令： gradlew clean build bintrayUpload -PbintrayUser=PBINTRAY_NAME -PbintrayKey=PBINTRAY_KEY -PdryRun=false

@@ -9,7 +9,6 @@ import com.mayousheng.www.jsondecodepojo.R;
 import com.mayousheng.www.jsondecodepojo.adapter.bsbdj.PunsterAdapter;
 import com.mayousheng.www.jsondecodepojo.base.BaseNewsFragment;
 import com.mayousheng.www.jsondecodepojo.common.StaticParam;
-import com.mayousheng.www.jsondecodepojo.common.ViewDesc;
 import com.mayousheng.www.jsondecodepojo.pojo.BSBDJPunsterResponse;
 import com.mayousheng.www.jsondecodepojo.utils.ArrayListBack;
 import com.mayousheng.www.jsondecodepojo.utils.InfoUtils;

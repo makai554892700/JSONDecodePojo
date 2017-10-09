@@ -1,6 +1,6 @@
 # Add project specific ProGuard rules here.
 # By default, the flags in this file are appended to flags specified
-# in D:\Develop\DevelopForAndroid\sdk/tools/proguard/proguard-android.txt
+# in C:\Users\marking\AppData\Local\Android\Sdk/tools/proguard/proguard-android.txt
 # You can edit the include path and order by changing the proguardFiles
 # directive in build.gradle.
 #
@@ -23,6 +23,3 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
--keep class * extends com.mayousheng.www.basepojo.BasePoJo{
-    public <init>(java.lang.String);
-}

@@ -4,7 +4,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 
 import com.mayousheng.www.jsondecodepojo.R;
-import com.mayousheng.www.jsondecodepojo.common.ViewDesc;
+import com.mayousheng.www.viewinit.ViewDesc;
 
 /**
  * Created by ma kai on 2017/10/4.

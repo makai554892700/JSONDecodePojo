@@ -4,14 +4,9 @@ import android.content.Context;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.mayousheng.www.jsondecodepojo.R;
-import com.mayousheng.www.jsondecodepojo.common.StaticParam;
-import com.mayousheng.www.jsondecodepojo.common.ViewDesc;
-import com.mayousheng.www.jsondecodepojo.pojo.BSBDJPhotoResponse;
-import com.mayousheng.www.jsondecodepojo.utils.RC4Utils;
-import com.mayousheng.www.jsondecodepojo.utils.ShowImageUtils;
+import com.mayousheng.www.viewinit.ViewDesc;
 
 /**
  * Created by ma kai on 2017/10/5.

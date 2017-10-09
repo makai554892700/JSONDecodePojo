@@ -5,11 +5,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
 import com.mayousheng.www.jsondecodepojo.R;
-import com.mayousheng.www.jsondecodepojo.adapter.bsbdj.PhotoAdapter;
 import com.mayousheng.www.jsondecodepojo.adapter.bsbdj.VoiceAdapter;
 import com.mayousheng.www.jsondecodepojo.base.BaseNewsFragment;
 import com.mayousheng.www.jsondecodepojo.common.StaticParam;
-import com.mayousheng.www.jsondecodepojo.pojo.BSBDJPhotoResponse;
 import com.mayousheng.www.jsondecodepojo.pojo.BSBDJVoiceResponse;
 import com.mayousheng.www.jsondecodepojo.utils.ArrayListBack;
 import com.mayousheng.www.jsondecodepojo.utils.InfoUtils;

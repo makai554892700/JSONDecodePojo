@@ -1,2 +1,4 @@
-# JSONDecodePojo
-解决重复写json2Object及Object2Json同时又不能混淆的问题
+#Android简易新闻客户端
+##网络请求工具包
+##json解析工具包
+##view简化初始化工具包

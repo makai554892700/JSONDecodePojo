@@ -4,7 +4,7 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.mayousheng.www.jsondecodepojo.utils.ViewUtils;
+import com.mayousheng.www.viewinit.ViewUtils;
 
 /**
  * Created by ma kai on 2017/10/5.

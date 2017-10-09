@@ -2,14 +2,12 @@ package com.mayousheng.www.jsondecodepojo.fragment.mix;
 
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.mayousheng.www.jsondecodepojo.R;
 import com.mayousheng.www.jsondecodepojo.adapter.JokeAdapter;
 import com.mayousheng.www.jsondecodepojo.base.BaseNewsFragment;
 import com.mayousheng.www.jsondecodepojo.common.StaticParam;
-import com.mayousheng.www.jsondecodepojo.common.ViewDesc;
 import com.mayousheng.www.jsondecodepojo.pojo.JokeResponse;
 import com.mayousheng.www.jsondecodepojo.utils.ArrayListBack;
 import com.mayousheng.www.jsondecodepojo.utils.InfoUtils;
