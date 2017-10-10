@@ -3,6 +3,7 @@ package com.mayousheng.www.jsondecodepojo.holder.bsbdj;
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.util.Log;
+import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.ImageView;
@@ -28,6 +29,7 @@ public class VideoHolder extends BaseNewsHolder<BSBDJVideoResponse> {
     public SurfaceView video;
     private PlayStatEnum playStat = PlayStatEnum.STOPED;
     private MediaPlayer mediaPlayer = new MediaPlayer();
+    private SurfaceHolder surfaceHolder;
     private View.OnClickListener onVideoClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -54,25 +56,40 @@ public class VideoHolder extends BaseNewsHolder<BSBDJVideoResponse> {
 
 
     @Override
-    public void inViewBind(BSBDJVideoResponse videoResponse) {
+    public void inViewBind(final BSBDJVideoResponse videoResponse) {
         userImg.setTag(String.valueOf(videoResponse.mark));
         new ShowImageUtils(itemView).setImgDescs(new ShowImageUtils.ImgDesc[]{
                 new ShowImageUtils.ImgDesc(String.valueOf(videoResponse.mark)
                         , videoResponse.userDesc.imgUrl)}).loadImage(0, 1);
+        surfaceHolder = video.getHolder();
+        surfaceHolder.addCallback(new SurfaceHolder.Callback() {
+            @Override
+            public void surfaceCreated(SurfaceHolder surfaceHolder) {
+                mediaPlayer.setDisplay(surfaceHolder);
+            }
 
+            @Override
+            public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
+
+            }
+        });
         try {
             mediaPlayer.setDataSource(videoResponse.videoUri);
             mediaPlayer.prepare();
         } catch (Exception e) {
             Log.e("-----1", "e=" + e);
         }
-        mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mediaPlayer) {
-                Log.e("-----1", "onPrepared");
-                mediaPlayer.setDisplay(video.getHolder());
-            }
-        });
+//        mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+//            @Override
+//            public void onPrepared(MediaPlayer mediaPlayer) {
+//                mediaPlayer.setDisplay(surfaceHolder);
+//            }
+//        });
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mediaPlayer) {
