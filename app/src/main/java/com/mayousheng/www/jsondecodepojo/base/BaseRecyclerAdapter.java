@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by ma kai on 2017/10/5.
@@ -18,15 +17,20 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
     protected Context context;
     protected LayoutInflater layoutInflater;
     protected View rootView;
-    protected List<T> data = new ArrayList<>();
+    protected ArrayList<T> data = new ArrayList<>();
 
     public BaseRecyclerAdapter(Context context) {
         layoutInflater = LayoutInflater.from(context);
         this.context = context;
     }
 
-    public void addData(List<T> data) {
+    public void addData(ArrayList<T> data) {
         this.data.addAll(data);
+    }
+
+    public void setData(ArrayList<T> data) {
+        this.data.clear();
+        addData(data);
     }
 
     @Override

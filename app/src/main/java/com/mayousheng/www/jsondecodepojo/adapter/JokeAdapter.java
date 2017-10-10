@@ -25,8 +25,4 @@ public class JokeAdapter extends BaseRecyclerAdapter<JokeResponse> {
         return new JokeHolder(context, rootView);
     }
 
-    public void onDataChange() {
-
-    }
-
 }
