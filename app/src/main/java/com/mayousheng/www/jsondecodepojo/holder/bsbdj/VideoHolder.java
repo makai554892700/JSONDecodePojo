@@ -11,9 +11,9 @@ import android.widget.Toast;
 
 import com.mayousheng.www.jsondecodepojo.R;
 import com.mayousheng.www.jsondecodepojo.base.BaseNewsHolder;
-import com.mayousheng.www.jsondecodepojo.common.PlayStatEnum;
 import com.mayousheng.www.initview.ViewDesc;
 import com.mayousheng.www.jsondecodepojo.pojo.BSBDJVideoResponse;
+import com.mayousheng.www.jsondecodepojo.utils.MediaPlayerUtils;
 import com.mayousheng.www.jsondecodepojo.utils.RC4Utils;
 import com.mayousheng.www.jsondecodepojo.utils.ShowImageUtils;
 
@@ -27,25 +27,16 @@ public class VideoHolder extends BaseNewsHolder<BSBDJVideoResponse> {
     public ImageView play;
     @ViewDesc(viewId = R.id.video)
     public SurfaceView video;
-    private PlayStatEnum playStat = PlayStatEnum.STOPED;
-    private MediaPlayer mediaPlayer = new MediaPlayer();
     private SurfaceHolder surfaceHolder;
+    private boolean isInit;
+    private String videoUri;
     private View.OnClickListener onVideoClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            switch (playStat) {
-                case PLAYING:
-                    mediaPlayer.pause();
-                    playStat = PlayStatEnum.PAUSEED;
-                    break;
-                case PAUSEED:
-                    mediaPlayer.start();
-                    playStat = PlayStatEnum.PLAYING;
-                    break;
-                case STOPED:
-                    mediaPlayer.start();
-                    playStat = PlayStatEnum.PLAYING;
-                    break;
+            if (isInit) {
+                MediaPlayerUtils.getInstance().onClick(videoUri, surfaceHolder);
+            } else {
+                Log.e("-----1", "is not init.videoUri=" + videoUri);
             }
         }
     };
@@ -57,6 +48,7 @@ public class VideoHolder extends BaseNewsHolder<BSBDJVideoResponse> {
 
     @Override
     public void inViewBind(final BSBDJVideoResponse videoResponse) {
+        videoUri = videoResponse.videoUri;
         userImg.setTag(String.valueOf(videoResponse.mark));
         new ShowImageUtils(itemView).setImgDescs(new ShowImageUtils.ImgDesc[]{
                 new ShowImageUtils.ImgDesc(String.valueOf(videoResponse.mark)
@@ -65,42 +57,19 @@ public class VideoHolder extends BaseNewsHolder<BSBDJVideoResponse> {
         surfaceHolder.addCallback(new SurfaceHolder.Callback() {
             @Override
             public void surfaceCreated(SurfaceHolder surfaceHolder) {
-                mediaPlayer.setDisplay(surfaceHolder);
+                isInit = true;
             }
 
             @Override
             public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {
-
             }
 
             @Override
             public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
-
-            }
-        });
-        try {
-            mediaPlayer.setDataSource(videoResponse.videoUri);
-            mediaPlayer.prepare();
-        } catch (Exception e) {
-            Log.e("-----1", "e=" + e);
-        }
-//        mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-//            @Override
-//            public void onPrepared(MediaPlayer mediaPlayer) {
-//                mediaPlayer.setDisplay(surfaceHolder);
-//            }
-//        });
-        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mediaPlayer) {
-                if (mediaPlayer != null) {
-                    mediaPlayer.release();
-                    playStat = PlayStatEnum.STOPED;
-                }
+                MediaPlayerUtils.getInstance().stop(videoUri);
             }
         });
         video.setOnClickListener(onVideoClickListener);
-
         userName.setText(videoResponse.userDesc.nikeName);
         date.setText(videoResponse.newsDesc.createTime);
         text.setText(RC4Utils.hexStringToString(videoResponse.text));
@@ -133,4 +102,5 @@ public class VideoHolder extends BaseNewsHolder<BSBDJVideoResponse> {
             }
         });
     }
+
 }
