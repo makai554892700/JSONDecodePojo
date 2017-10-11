@@ -6,7 +6,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mayousheng.www.jsondecodepojo.R;
-import com.mayousheng.www.viewinit.ViewDesc;
+import com.mayousheng.www.initview.ViewDesc;
 
 /**
  * Created by ma kai on 2017/10/5.

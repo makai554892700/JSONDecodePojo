@@ -1,4 +1,4 @@
-package com.shandao.www.baseholder;
+package com.mayousheng.www.initview;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

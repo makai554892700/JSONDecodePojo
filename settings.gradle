@@ -1,1 +1,1 @@
-include ':app', ':basepojo', ':httputils', ':refreshview', ':bannerview', ':baseholder', ':viewinit'
+include ':app', ':basepojo', ':httputils', ':refreshview', ':bannerview', ':viewinit', ':initview'

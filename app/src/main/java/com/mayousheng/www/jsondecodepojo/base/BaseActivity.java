@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
-import com.mayousheng.www.viewinit.ViewUtils;
+import com.mayousheng.www.initview.ViewUtils;
 
 /**
  * Created by marking on 2017/4/11.

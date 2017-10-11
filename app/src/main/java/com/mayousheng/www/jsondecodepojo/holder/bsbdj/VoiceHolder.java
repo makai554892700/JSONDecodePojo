@@ -8,7 +8,7 @@ import android.widget.Toast;
 import com.mayousheng.www.jsondecodepojo.R;
 import com.mayousheng.www.jsondecodepojo.base.BaseNewsHolder;
 import com.mayousheng.www.jsondecodepojo.common.StaticParam;
-import com.mayousheng.www.viewinit.ViewDesc;
+import com.mayousheng.www.initview.ViewDesc;
 import com.mayousheng.www.jsondecodepojo.pojo.BSBDJVoiceResponse;
 import com.mayousheng.www.jsondecodepojo.utils.RC4Utils;
 import com.mayousheng.www.jsondecodepojo.utils.ShowImageUtils;

@@ -11,7 +11,7 @@ import android.widget.FrameLayout;
 
 import com.mayousheng.www.jsondecodepojo.R;
 import com.mayousheng.www.jsondecodepojo.base.BaseActivity;
-import com.mayousheng.www.viewinit.ViewDesc;
+import com.mayousheng.www.initview.ViewDesc;
 import com.mayousheng.www.jsondecodepojo.fragment.CommunityFragment;
 import com.mayousheng.www.jsondecodepojo.fragment.HomeFragment;
 import com.mayousheng.www.jsondecodepojo.fragment.MineFragment;

@@ -13,7 +13,7 @@ import com.mayousheng.www.jsondecodepojo.R;
 import com.mayousheng.www.jsondecodepojo.common.StaticParam;
 import com.mayousheng.www.jsondecodepojo.listener.OnLoadMoreListener;
 import com.mayousheng.www.jsondecodepojo.utils.ThreadUtils;
-import com.mayousheng.www.viewinit.ViewDesc;
+import com.mayousheng.www.initview.ViewDesc;
 
 import java.util.ArrayList;
 

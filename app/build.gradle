@@ -73,13 +73,15 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.mayousheng.www:basepojo:0.0.2'
-//    compile project(':basepojo')
     compile 'com.mayousheng.www:httputils:0.0.1'
+//    compile 'com.mayousheng.www:initview:0.0.1'
+//    compile project(':basepojo')
+//    compile project(':httputils')
+    compile project(':initview')
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3'
     compile rootProject.libRecycleView
     compile rootProject.libSupportAppcompatV7
-    compile project(':viewinit')
 }
 
 andResGuard {

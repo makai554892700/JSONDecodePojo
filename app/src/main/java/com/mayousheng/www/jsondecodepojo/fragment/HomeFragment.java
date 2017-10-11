@@ -7,7 +7,7 @@ import android.view.View;
 import com.mayousheng.www.jsondecodepojo.R;
 import com.mayousheng.www.jsondecodepojo.adapter.ViewPagerAdapter;
 import com.mayousheng.www.jsondecodepojo.base.BaseFragment;
-import com.mayousheng.www.viewinit.ViewDesc;
+import com.mayousheng.www.initview.ViewDesc;
 import com.mayousheng.www.jsondecodepojo.fragment.bsbdj.PunsterFragment;
 import com.mayousheng.www.jsondecodepojo.fragment.bsbdj.VideoFragment;
 import com.mayousheng.www.jsondecodepojo.fragment.bsbdj.VoiceFragment;
