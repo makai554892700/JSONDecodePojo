@@ -10,6 +10,7 @@ import com.mayousheng.www.jsondecodepojo.base.BaseNewsHolder;
 import com.mayousheng.www.jsondecodepojo.common.StaticParam;
 import com.mayousheng.www.initview.ViewDesc;
 import com.mayousheng.www.jsondecodepojo.pojo.BSBDJVoiceResponse;
+import com.mayousheng.www.jsondecodepojo.utils.MediaPlayerUtils;
 import com.mayousheng.www.jsondecodepojo.utils.RC4Utils;
 import com.mayousheng.www.jsondecodepojo.utils.ShowImageUtils;
 
@@ -21,6 +22,13 @@ public class VoiceHolder extends BaseNewsHolder<BSBDJVoiceResponse> {
 
     @ViewDesc(viewId = R.id.img)
     public ImageView img;
+    private String voiceuri;
+    private View.OnClickListener onClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            MediaPlayerUtils.getInstance().onClick(voiceuri, null);
+        }
+    };
 
     public VoiceHolder(final Context context, View view) {
         super(context, view);
@@ -28,6 +36,7 @@ public class VoiceHolder extends BaseNewsHolder<BSBDJVoiceResponse> {
 
     @Override
     public void inViewBind(BSBDJVoiceResponse voiceResponse) {
+        voiceuri = voiceResponse.voiceuri;
         String userImgTag = StaticParam.TAG_USER_IMG_URL + voiceResponse.mark;
         userImg.setTag(userImgTag);
         new ShowImageUtils(itemView).setImgDescs(new ShowImageUtils.ImgDesc[]{
@@ -35,6 +44,7 @@ public class VoiceHolder extends BaseNewsHolder<BSBDJVoiceResponse> {
                         , voiceResponse.userDesc.imgUrl)}).loadImage(0, 1);
         String imgTag = StaticParam.TAG_IMG_URL + voiceResponse.mark;
         img.setTag(imgTag);
+        img.setOnClickListener(onClickListener);
         new ShowImageUtils(itemView).setImgDescs(new ShowImageUtils.ImgDesc[]{
                 new ShowImageUtils.ImgDesc(imgTag
                         , voiceResponse.cdnImg)}).loadImage(0, 1);

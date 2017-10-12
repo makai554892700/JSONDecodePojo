@@ -1,7 +1,7 @@
 package com.mayousheng.www.jsondecodepojo.utils;
 
+import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.text.*;
 import android.util.Log;
 import android.view.SurfaceHolder;
 
@@ -20,11 +20,12 @@ public class MediaPlayerUtils {
     private MediaPlayerUtils() {
     }
 
-    private synchronized void initMediaPlayer(String url, SurfaceHolder surfaceHolder) {
+    private synchronized void initMediaPlayer(final String url, SurfaceHolder surfaceHolder) {
         mediaPlayer = new MediaPlayer();
         mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mediaPlayer) {
+                currentUrl = url;
                 play();
             }
         });
@@ -33,20 +34,23 @@ public class MediaPlayerUtils {
             public void onCompletion(MediaPlayer mediaPlayer) {
                 if (mediaPlayer != null) {
                     mediaPlayer.release();
-                    playStatus = PlayStatus.STOPTED;
                 }
+                playStatus = PlayStatus.STOPTED;
             }
         });
         try {
             mediaPlayer.setDataSource(url);
             if (surfaceHolder != null) {
                 mediaPlayer.setDisplay(surfaceHolder);
+            } else {
+                mediaPlayer.setAudioStreamType(AudioManager.STREAM_VOICE_CALL);
             }
             mediaPlayer.prepareAsync();
         } catch (Exception e) {
             Log.e(TAG, "e1=" + e);
+            currentUrl = null;
+            playStatus = PlayStatus.STOPTED;
         }
-        currentUrl = url;
     }
 
     public static MediaPlayerUtils getInstance() {
@@ -57,29 +61,27 @@ public class MediaPlayerUtils {
         return playStatus;
     }
 
-    public void onClick(String url, SurfaceHolder surfaceHolder) {
+    public synchronized void onClick(String url, SurfaceHolder surfaceHolder) {
         if (android.text.TextUtils.isEmpty(url)) {
             return;
         }
         if (currentUrl == null || !url.equals(currentUrl)) {
-            stop(url);
+            stop(currentUrl);
             initMediaPlayer(url, surfaceHolder);
         } else {
             switch (playStatus) {
                 case STOPTED:
+                case PAUSE:
                     play();
                     break;
                 case PLAYING:
                     pause();
                     break;
-                case PAUSE:
-                    stop(url);
-                    break;
             }
         }
     }
 
-    public void play() {
+    public synchronized void play() {
         if (playStatus == PlayStatus.PLAYING) {
             return;
         }
@@ -92,7 +94,7 @@ public class MediaPlayerUtils {
         playStatus = PlayStatus.PLAYING;
     }
 
-    public void pause() {
+    public synchronized void pause() {
         if (playStatus == PlayStatus.PAUSE) {
             return;
         }
@@ -105,7 +107,7 @@ public class MediaPlayerUtils {
         playStatus = PlayStatus.PAUSE;
     }
 
-    public void stop(String url) {
+    public synchronized void stop(String url) {
         if (currentUrl == null || !currentUrl.equals(url) || playStatus == PlayStatus.STOPTED) {
             return;
         }

@@ -25,4 +25,5 @@ public class StaticParam {
     };
     public static final String TAG_USER_IMG_URL = "tag_user_img_url";
     public static final String TAG_IMG_URL = "tag_img_url";
+    public static final String NULL = "null";
 }

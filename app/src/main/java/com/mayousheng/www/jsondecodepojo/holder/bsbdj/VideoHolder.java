@@ -1,7 +1,6 @@
 package com.mayousheng.www.jsondecodepojo.holder.bsbdj;
 
 import android.content.Context;
-import android.media.MediaPlayer;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -12,6 +11,7 @@ import android.widget.Toast;
 import com.mayousheng.www.jsondecodepojo.R;
 import com.mayousheng.www.jsondecodepojo.base.BaseNewsHolder;
 import com.mayousheng.www.initview.ViewDesc;
+import com.mayousheng.www.jsondecodepojo.common.StaticParam;
 import com.mayousheng.www.jsondecodepojo.pojo.BSBDJVideoResponse;
 import com.mayousheng.www.jsondecodepojo.utils.MediaPlayerUtils;
 import com.mayousheng.www.jsondecodepojo.utils.RC4Utils;
@@ -72,7 +72,11 @@ public class VideoHolder extends BaseNewsHolder<BSBDJVideoResponse> {
         video.setOnClickListener(onVideoClickListener);
         userName.setText(videoResponse.userDesc.nikeName);
         date.setText(videoResponse.newsDesc.createTime);
-        text.setText(RC4Utils.hexStringToString(videoResponse.text));
+        if (videoResponse.text != null && !StaticParam.NULL.equals(videoResponse.text)) {
+            text.setText(RC4Utils.hexStringToString(videoResponse.text));
+        } else {
+            text.setVisibility(View.GONE);
+        }
         loveText.setText(String.valueOf(videoResponse.newsDesc.love));
         hateText.setText(String.valueOf(videoResponse.newsDesc.hate));
         commentText.setText(String.valueOf(videoResponse.newsDesc.comment));

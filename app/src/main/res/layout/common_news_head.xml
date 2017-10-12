@@ -26,7 +26,6 @@
             android:layout_weight="1"
             android:gravity="left|bottom"
             android:padding="1dp"
-            android:text="测试用户名"
             android:textColor="@color/blue"
             android:textSize="14sp" />
 
@@ -37,7 +36,6 @@
             android:layout_weight="1"
             android:gravity="left|top"
             android:padding="1dp"
-            android:text="2017-10-07 15:47:36"
             android:textColor="@color/gray"
             android:textSize="11sp" />
 
