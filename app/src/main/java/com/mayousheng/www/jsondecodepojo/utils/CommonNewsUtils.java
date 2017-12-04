@@ -14,7 +14,7 @@ public class CommonNewsUtils {
         ShowImageUtils.ImgDesc[] result = new ShowImageUtils.ImgDesc[jokeResponses.size()];
         int i = 0;
         for (JokeResponse jokeResponse : jokeResponses) {
-            result[i++] = new ShowImageUtils.ImgDesc(String.valueOf(jokeResponse.mark)
+            result[i++] = new ShowImageUtils.ImgDesc(String.valueOf(jokeResponse.newsDesc.newsMark)
                     , jokeResponse.userDesc.imgUrl);
         }
         return result;

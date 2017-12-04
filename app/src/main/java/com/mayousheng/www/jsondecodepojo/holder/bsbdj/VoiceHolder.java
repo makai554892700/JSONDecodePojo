@@ -37,18 +37,18 @@ public class VoiceHolder extends BaseNewsHolder<BSBDJVoiceResponse> {
     @Override
     public void inViewBind(BSBDJVoiceResponse voiceResponse) {
         voiceuri = voiceResponse.voiceuri;
-        String userImgTag = StaticParam.TAG_USER_IMG_URL + voiceResponse.mark;
+        String userImgTag = StaticParam.TAG_USER_IMG_URL + voiceResponse.newsDesc.newsMark;
         userImg.setTag(userImgTag);
         new ShowImageUtils(itemView).setImgDescs(new ShowImageUtils.ImgDesc[]{
                 new ShowImageUtils.ImgDesc(userImgTag
                         , voiceResponse.userDesc.imgUrl)}).loadImage(0, 1);
-        String imgTag = StaticParam.TAG_IMG_URL + voiceResponse.mark;
+        String imgTag = StaticParam.TAG_IMG_URL + voiceResponse.newsDesc.newsMark;
         img.setTag(imgTag);
         img.setOnClickListener(onClickListener);
         new ShowImageUtils(itemView).setImgDescs(new ShowImageUtils.ImgDesc[]{
                 new ShowImageUtils.ImgDesc(imgTag
                         , voiceResponse.cdnImg)}).loadImage(0, 1);
-        userName.setText(voiceResponse.userDesc.nikeName);
+        userName.setText(voiceResponse.userDesc.nickName);
         date.setText(voiceResponse.newsDesc.createTime);
         text.setText(RC4Utils.hexStringToString(voiceResponse.text));
         loveText.setText(String.valueOf(voiceResponse.newsDesc.love));

@@ -5,8 +5,8 @@ import com.mayousheng.www.basepojo.FieldDesc;
 
 public class UserDesc extends BasePoJo {
 
-    @FieldDesc(key = "nikeName")
-    public String nikeName;        //用户昵称
+    @FieldDesc(key = "nickName")
+    public String nickName;        //用户昵称
     @FieldDesc(key = "imgUrl")
     public String imgUrl;         //用户头像
 

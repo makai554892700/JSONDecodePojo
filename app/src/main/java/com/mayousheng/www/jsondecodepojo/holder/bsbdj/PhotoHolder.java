@@ -28,17 +28,17 @@ public class PhotoHolder extends BaseNewsHolder<BSBDJPhotoResponse> {
 
     @Override
     public void inViewBind(BSBDJPhotoResponse photoResponse) {
-        String userImgTag = StaticParam.TAG_USER_IMG_URL + photoResponse.mark;
+        String userImgTag = StaticParam.TAG_USER_IMG_URL + photoResponse.newsDesc.newsMark;
         userImg.setTag(userImgTag);
         new ShowImageUtils(itemView).setImgDescs(new ShowImageUtils.ImgDesc[]{
                 new ShowImageUtils.ImgDesc(userImgTag
                         , photoResponse.userDesc.imgUrl)}).loadImage(0, 1);
-        String imgTag = StaticParam.TAG_IMG_URL + photoResponse.mark;
+        String imgTag = StaticParam.TAG_IMG_URL + photoResponse.newsDesc.newsMark;
         img.setTag(imgTag);
         new ShowImageUtils(itemView).setImgDescs(new ShowImageUtils.ImgDesc[]{
                 new ShowImageUtils.ImgDesc(imgTag
-                        , photoResponse.cdnImg)}).loadImage(0, 1);
-        userName.setText(photoResponse.userDesc.nikeName);
+                        , photoResponse.scImg)}).loadImage(0, 1);
+        userName.setText(photoResponse.userDesc.nickName);
         date.setText(photoResponse.newsDesc.createTime);
         text.setText(RC4Utils.hexStringToString(photoResponse.text));
         loveText.setText(String.valueOf(photoResponse.newsDesc.love));

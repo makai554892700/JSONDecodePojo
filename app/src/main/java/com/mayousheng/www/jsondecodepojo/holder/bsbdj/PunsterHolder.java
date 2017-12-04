@@ -21,11 +21,11 @@ public class PunsterHolder extends BaseNewsHolder<BSBDJPunsterResponse> {
 
     @Override
     public void inViewBind(BSBDJPunsterResponse punsterResponse) {
-        userImg.setTag(String.valueOf(punsterResponse.mark));
+        userImg.setTag(String.valueOf(punsterResponse.newsDesc.newsMark));
         new ShowImageUtils(itemView).setImgDescs(new ShowImageUtils.ImgDesc[]{
-                new ShowImageUtils.ImgDesc(String.valueOf(punsterResponse.mark)
+                new ShowImageUtils.ImgDesc(String.valueOf(punsterResponse.newsDesc.newsMark)
                         , punsterResponse.userDesc.imgUrl)}).loadImage(0, 1);
-        userName.setText(punsterResponse.userDesc.nikeName);
+        userName.setText(punsterResponse.userDesc.nickName);
         date.setText(punsterResponse.newsDesc.createTime);
         text.setText(RC4Utils.hexStringToString(punsterResponse.text));
         loveText.setText(String.valueOf(punsterResponse.newsDesc.love));

@@ -1,5 +1,7 @@
 package com.mayousheng.www.jsondecodepojo.utils;
 
+import android.util.Log;
+
 import com.mayousheng.www.basepojo.BasePoJo;
 import com.mayousheng.www.jsondecodepojo.common.StaticParam;
 import com.mayousheng.www.jsondecodepojo.pojo.BSBDJPhotoResponse;
@@ -20,31 +22,31 @@ public class InfoUtils {
 
     public static void getJokes(Integer page, Integer count
             , ArrayListBack<JokeResponse> back) {
-        InfoUtils.getNewsInfos(StaticParam.BASE_GET_JOKES, page, count
+        InfoUtils.getNewsInfos(StaticParam.BASE_POST_JOKES, page, count
                 , new JokeResponse(null), back);
     }
 
     public static void getBSBDJVoices(Integer page, Integer count
             , ArrayListBack<BSBDJVoiceResponse> back) {
-        InfoUtils.getNewsInfos(StaticParam.BASE_GET_BSBDJ_VOICE, page, count
+        InfoUtils.getNewsInfos(StaticParam.BASE_POST_BSBDJ_VOICE, page, count
                 , new BSBDJVoiceResponse(null), back);
     }
 
     public static void getBSBDJVideos(Integer page, Integer count
             , ArrayListBack<BSBDJVideoResponse> jokeResponseArrayListBack) {
-        InfoUtils.getNewsInfos(StaticParam.BASE_GET_BSBDJ_VIDEOS, page, count
+        InfoUtils.getNewsInfos(StaticParam.BASE_POST_BSBDJ_VIDEOS, page, count
                 , new BSBDJVideoResponse(null), jokeResponseArrayListBack);
     }
 
     public static void getBSBDJPhotos(Integer page, Integer count
             , ArrayListBack<BSBDJPhotoResponse> back) {
-        InfoUtils.getNewsInfos(StaticParam.BASE_GET_BSBDJ_PHOTO, page, count
+        InfoUtils.getNewsInfos(StaticParam.BASE_POST_BSBDJ_PHOTO, page, count
                 , new BSBDJPhotoResponse(null), back);
     }
 
     public static void getBSBDJPunsters(Integer page, Integer count
             , ArrayListBack<BSBDJPunsterResponse> back) {
-        InfoUtils.getNewsInfos(StaticParam.BASE_GET_BSBDJ_PUNSTER, page, count
+        InfoUtils.getNewsInfos(StaticParam.BASE_POST_BSBDJ_PUNSTER, page, count
                 , new BSBDJPunsterResponse(null), back);
     }
 

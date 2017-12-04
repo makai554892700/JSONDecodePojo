@@ -13,6 +13,10 @@ public class NewsDesc extends BasePoJo {
     public Integer share;        //分享的数量
     @FieldDesc(key = "comment")
     public Integer comment;      //评论的数量
+    @FieldDesc(key = "newsMark")
+    public Integer newsMark;      //新闻标记(id)
+    @FieldDesc(key = "newsType")
+    public String newsType;      //新闻类型
     @FieldDesc(key = "createTime")
     public String createTime;    //创建时间
 

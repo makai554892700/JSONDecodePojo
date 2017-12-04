@@ -12,11 +12,15 @@ import android.view.View;
 public class StaticParam {
 
     private static final String BASE_URL = "http://api.markingyun.cn";//基本域名
-    public static final String BASE_GET_JOKES = BASE_URL + "/sbgnews/jokes/getJokes";//获取新闻请求路径
-    public static final String BASE_GET_BSBDJ_VIDEOS = BASE_URL + "/sbgnews/bsbdj/getVideos";//百思不得姐获取视频请求路径
-    public static final String BASE_GET_BSBDJ_VOICE = BASE_URL + "/sbgnews/bsbdj/getVoices";//百思不得姐获取新闻请求路径
-    public static final String BASE_GET_BSBDJ_PHOTO = BASE_URL + "/sbgnews/bsbdj/getPhotos";//百思不得姐获取新闻请求路径
-    public static final String BASE_GET_BSBDJ_PUNSTER = BASE_URL + "/sbgnews/bsbdj/getPunsters";//百思不得姐获取新闻请求路径
+    public static final String BASE_POST_JOKES = BASE_URL + "/sbgnews/api/jokes/getJokes";//获取新闻请求路径
+    public static final String BASE_POST_BSBDJ_VIDEOS = BASE_URL + "/sbgnews/api/bsbdj/getVideos";//百思不得姐获取视频请求路径
+    public static final String BASE_POST_BSBDJ_VOICE = BASE_URL + "/sbgnews/api/bsbdj/getVoices";//百思不得姐获取新闻请求路径
+    public static final String BASE_POST_BSBDJ_PHOTO = BASE_URL + "/sbgnews/api/bsbdj/getPhotos";//百思不得姐获取新闻请求路径
+    public static final String BASE_POST_BSBDJ_PUNSTER = BASE_URL + "/sbgnews/api/bsbdj/getPunsters";//百思不得姐获取新闻请求路径
+    public static final String BASE_GET_USER_REGISTER = BASE_URL + "/sbgnews/api/user/register";//用户注册
+    public static final String BASE_GET_USER_LOGIN = BASE_URL + "/sbgnews/api/user/login";//用户登陆
+    public static final String BASE_GET_USER_LOGOUT = BASE_URL + "/sbgnews/api/user/logout";//用户登出
+    public static final String BASE_GET_USER_UPDATE = BASE_URL + "/sbgnews/api/user/update";//用户信息更新
     public static final RecyclerView.ItemDecoration DEFAULT_ITEM_DECORATION = new RecyclerView.ItemDecoration() {
         @Override
         public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {

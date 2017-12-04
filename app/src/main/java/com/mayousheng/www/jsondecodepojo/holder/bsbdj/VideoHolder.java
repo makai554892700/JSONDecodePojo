@@ -49,9 +49,9 @@ public class VideoHolder extends BaseNewsHolder<BSBDJVideoResponse> {
     @Override
     public void inViewBind(final BSBDJVideoResponse videoResponse) {
         videoUri = videoResponse.videoUri;
-        userImg.setTag(String.valueOf(videoResponse.mark));
+        userImg.setTag(String.valueOf(videoResponse.newsDesc.newsMark));
         new ShowImageUtils(itemView).setImgDescs(new ShowImageUtils.ImgDesc[]{
-                new ShowImageUtils.ImgDesc(String.valueOf(videoResponse.mark)
+                new ShowImageUtils.ImgDesc(String.valueOf(videoResponse.newsDesc.newsMark)
                         , videoResponse.userDesc.imgUrl)}).loadImage(0, 1);
         surfaceHolder = video.getHolder();
         surfaceHolder.addCallback(new SurfaceHolder.Callback() {
@@ -70,7 +70,7 @@ public class VideoHolder extends BaseNewsHolder<BSBDJVideoResponse> {
             }
         });
         video.setOnClickListener(onVideoClickListener);
-        userName.setText(videoResponse.userDesc.nikeName);
+        userName.setText(videoResponse.userDesc.nickName);
         date.setText(videoResponse.newsDesc.createTime);
         if (videoResponse.text != null && !StaticParam.NULL.equals(videoResponse.text)) {
             text.setText(RC4Utils.hexStringToString(videoResponse.text));

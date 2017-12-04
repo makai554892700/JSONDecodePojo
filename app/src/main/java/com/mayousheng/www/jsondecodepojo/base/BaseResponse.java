@@ -7,8 +7,6 @@ import com.mayousheng.www.jsondecodepojo.pojo.UserDesc;
 
 public class BaseResponse extends BasePoJo {
 
-    @FieldDesc(key = "mark")
-    public Integer mark;        //唯一标记
     @FieldDesc(key = "newsDesc")
     public NewsDesc newsDesc;  //新闻描述
     @FieldDesc(key = "userDesc")

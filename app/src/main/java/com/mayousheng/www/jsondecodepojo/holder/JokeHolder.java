@@ -21,11 +21,11 @@ public class JokeHolder extends BaseNewsHolder<JokeResponse> {
 
     @Override
     public void inViewBind(JokeResponse jokeResponse) {
-        userImg.setTag(String.valueOf(jokeResponse.mark));
+        userImg.setTag(String.valueOf(jokeResponse.newsDesc.newsMark));
         new ShowImageUtils(itemView).setImgDescs(new ShowImageUtils.ImgDesc[]{
-                new ShowImageUtils.ImgDesc(String.valueOf(jokeResponse.mark)
+                new ShowImageUtils.ImgDesc(String.valueOf(jokeResponse.newsDesc.newsMark)
                         , jokeResponse.userDesc.imgUrl)}).loadImage(0, 1);
-        userName.setText(jokeResponse.userDesc.nikeName);
+        userName.setText(jokeResponse.userDesc.nickName);
         date.setText(jokeResponse.newsDesc.createTime);
         text.setText(RC4Utils.hexStringToString(jokeResponse.text));
         loveText.setText(String.valueOf(jokeResponse.newsDesc.love));
