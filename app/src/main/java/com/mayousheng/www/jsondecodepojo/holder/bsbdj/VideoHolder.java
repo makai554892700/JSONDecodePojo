@@ -6,6 +6,8 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.mayousheng.www.jsondecodepojo.R;
@@ -25,15 +27,24 @@ public class VideoHolder extends BaseNewsHolder<BSBDJVideoResponse> {
 
     @ViewDesc(viewId = R.id.play)
     public ImageView play;
+    @ViewDesc(viewId = R.id.video_bg)
+    public ImageView videoBg;
     @ViewDesc(viewId = R.id.video)
     public SurfaceView video;
+    @ViewDesc(viewId = R.id.loading)
+    public ProgressBar loading;
     private SurfaceHolder surfaceHolder;
     private boolean isInit;
+    private boolean isBgShow;
     private String videoUri;
     private View.OnClickListener onVideoClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             if (isInit) {
+                if (!isBgShow) {
+                    isBgShow = true;
+                    videoBg.setVisibility(View.INVISIBLE);
+                }
                 MediaPlayerUtils.getInstance().onClick(videoUri, surfaceHolder);
             } else {
                 Log.e("-----1", "is not init.videoUri=" + videoUri);
@@ -50,14 +61,22 @@ public class VideoHolder extends BaseNewsHolder<BSBDJVideoResponse> {
     public void inViewBind(final BSBDJVideoResponse videoResponse) {
         videoUri = videoResponse.videoUri;
         userImg.setTag(String.valueOf(videoResponse.newsDesc.newsMark));
+        videoBg.setTag(videoResponse.scImg);
         new ShowImageUtils(itemView).setImgDescs(new ShowImageUtils.ImgDesc[]{
                 new ShowImageUtils.ImgDesc(String.valueOf(videoResponse.newsDesc.newsMark)
-                        , videoResponse.userDesc.imgUrl)}).loadImage(0, 1);
+                        , videoResponse.userDesc.imgUrl),
+                new ShowImageUtils.ImgDesc(videoResponse.scImg
+                        , videoResponse.scImg)}).loadImage(0, 2);
         surfaceHolder = video.getHolder();
+        surfaceHolder.setFixedSize(videoResponse.width, videoResponse.height);
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(videoResponse.width, videoResponse.height);
+        layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+        video.setLayoutParams(layoutParams);
         surfaceHolder.addCallback(new SurfaceHolder.Callback() {
             @Override
             public void surfaceCreated(SurfaceHolder surfaceHolder) {
                 isInit = true;
+                loading.setVisibility(View.INVISIBLE);
             }
 
             @Override

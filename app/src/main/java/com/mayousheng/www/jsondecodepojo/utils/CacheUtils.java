@@ -5,6 +5,8 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Environment;
 
 import com.mayousheng.www.jsondecodepojo.utils.cache.DiskLruCache;
@@ -130,6 +132,14 @@ public class CacheUtils {
             }
         } while (false);
         return result;
+    }
+
+    private Drawable getDrawable(String imageUrl) {
+        return new BitmapDrawable(getBitmap(imageUrl));
+    }
+
+    private Drawable getDrawable(DiskLruCache diskLruCache, String key) {
+        return new BitmapDrawable(getBitmap(diskLruCache, key));
     }
 
     private static File getDiskCacheDir(Context context, String uniqueName) {
