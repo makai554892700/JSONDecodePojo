@@ -16,4 +16,5 @@
     <string name="voice">声音</string>
     <string name="video">视频</string>
     <string name="photo">照片</string>
+    <string name="logout">登出</string>
 </resources>

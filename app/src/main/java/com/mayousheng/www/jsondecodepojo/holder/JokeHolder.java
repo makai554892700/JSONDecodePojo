@@ -1,11 +1,15 @@
 package com.mayousheng.www.jsondecodepojo.holder;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import com.mayousheng.www.jsondecodepojo.base.BaseNewsHolder;
 import com.mayousheng.www.jsondecodepojo.pojo.JokeResponse;
+import com.mayousheng.www.jsondecodepojo.pojo.Operate;
+import com.mayousheng.www.jsondecodepojo.utils.CommonRequestUtils;
+import com.mayousheng.www.jsondecodepojo.utils.OperateUtils;
 import com.mayousheng.www.jsondecodepojo.utils.RC4Utils;
 import com.mayousheng.www.jsondecodepojo.utils.ShowImageUtils;
 
@@ -20,7 +24,7 @@ public class JokeHolder extends BaseNewsHolder<JokeResponse> {
     }
 
     @Override
-    public void inViewBind(JokeResponse jokeResponse) {
+    public void inViewBind(final JokeResponse jokeResponse) {
         userImg.setTag(String.valueOf(jokeResponse.newsDesc.newsMark));
         new ShowImageUtils(itemView).setImgDescs(new ShowImageUtils.ImgDesc[]{
                 new ShowImageUtils.ImgDesc(String.valueOf(jokeResponse.newsDesc.newsMark)
@@ -35,7 +39,17 @@ public class JokeHolder extends BaseNewsHolder<JokeResponse> {
         love.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context, "i love it.", Toast.LENGTH_LONG).show();
+                OperateUtils.love(new Operate(jokeResponse.newsDesc.newsMark, jokeResponse.newsDesc.newsType), new CommonRequestUtils.Back() {
+                    @Override
+                    public void succeed() {
+                        Toast.makeText(context, "succeed", Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void field(String message) {
+                        Log.e("-----1", "field,message=" + message);
+                    }
+                });
             }
         });
         hate.setOnClickListener(new View.OnClickListener() {

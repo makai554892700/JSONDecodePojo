@@ -11,7 +11,7 @@ import android.view.View;
 
 public class StaticParam {
 
-    private static final String BASE_URL = "http://api.markingyun.cn";//基本域名
+    private static final String BASE_URL = "http://api.woaizhuangbi.com";//基本域名
     public static final String BASE_POST_JOKES = BASE_URL + "/sbgnews/api/jokes/getJokes";//获取新闻请求路径
     public static final String BASE_POST_BSBDJ_VIDEOS = BASE_URL + "/sbgnews/api/bsbdj/getVideos";//百思不得姐获取视频请求路径
     public static final String BASE_POST_BSBDJ_VOICE = BASE_URL + "/sbgnews/api/bsbdj/getVoices";//百思不得姐获取新闻请求路径
@@ -21,6 +21,10 @@ public class StaticParam {
     public static final String BASE_GET_USER_LOGIN = BASE_URL + "/sbgnews/api/user/login";//用户登陆
     public static final String BASE_GET_USER_LOGOUT = BASE_URL + "/sbgnews/api/user/logout";//用户登出
     public static final String BASE_GET_USER_UPDATE = BASE_URL + "/sbgnews/api/user/update";//用户信息更新
+    public static final String BASE_POST_OPERATE_LOVE = BASE_URL + "/sbgnews/api/operate/love";//喜欢这则新闻
+    public static final String BASE_POST_OPERATE_HATE = BASE_URL + "/sbgnews/api/operate/hate";//讨厌这则新闻
+    public static final String BASE_POST_OPERATE_SHARE = BASE_URL + "/sbgnews/api/operate/share";//分享了这则新闻
+    public static final String BASE_POST_OPERATE_COMMENT = BASE_URL + "/sbgnews/api/operate/comment";//评论了这则新闻
     public static final RecyclerView.ItemDecoration DEFAULT_ITEM_DECORATION = new RecyclerView.ItemDecoration() {
         @Override
         public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
@@ -30,4 +34,7 @@ public class StaticParam {
     public static final String TAG_USER_IMG_URL = "tag_user_img_url";
     public static final String TAG_IMG_URL = "tag_img_url";
     public static final String NULL = "null";
+    public static final String USER_SESSION = "user_session";
+    public static final boolean REMBER_ME = true;
+    public static final int TYPE_ANDROID = 1;
 }

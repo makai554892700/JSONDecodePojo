@@ -5,10 +5,13 @@ import android.util.Log;
 import com.mayousheng.www.basepojo.BasePoJo;
 import com.mayousheng.www.httputils.HttpUtils;
 import com.mayousheng.www.jsondecodepojo.pojo.DataBack;
+import com.mayousheng.www.jsondecodepojo.pojo.UserResponse;
 
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by ma kai on 2017/9/29.
@@ -32,7 +35,7 @@ public class CommonRequestUtils {
         return commonGetDataBack(HttpUtils.getInstance().postURLResponse(url, heards, data));
     }
 
-    private static <T extends BasePoJo> DataBack<ArrayList<T>> commonGetDatasBack(byte[] data, T t) {
+    public static <T extends BasePoJo> DataBack<ArrayList<T>> commonGetDatasBack(byte[] data, T t) {
         if (data == null || t == null) {
             return null;
         }
@@ -46,11 +49,83 @@ public class CommonRequestUtils {
         return result;
     }
 
-    private static <T extends BasePoJo> DataBack<T> commonGetDataBack(byte[] data) {
+    public static <T extends BasePoJo> DataBack<T> commonGetDataBack(byte[] data) {
         if (data == null) {
             return null;
         }
         return new DataBack<>(new String(data, Charset.forName("UTF-8")));
+    }
+
+    public static void commonGet(final String url, final Back back) {
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                HttpUtils.getInstance().getURLResponse(url, JsonHeardUtils.getInstance().getHeard(), new HttpUtils.IWebCallback() {
+                    @Override
+                    public void onCallback(int status, String message, Map<String, List<String>> heard, byte[] data) {
+                        if (status == 200) {
+                            DataBack<UserResponse> dataBack = CommonRequestUtils.commonGetDataBack(data);
+                            if (dataBack == null) {
+                                back.field("data error");
+                            } else {
+                                if (dataBack.code == 0) {
+                                    back.succeed();
+                                } else {
+                                    back.field(dataBack.msg);
+                                }
+                            }
+                        } else {
+                            back.field(message);
+                        }
+                    }
+
+                    @Override
+                    public void onFail(int status, String message) {
+                        back.field(message);
+                    }
+                });
+            }
+        };
+        ThreadUtils.executor.execute(runnable);
+    }
+
+    public static void commonPost(final String url, final byte[] data, final Back back) {
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                HttpUtils.getInstance().postURLResponse(url, JsonHeardUtils.getInstance().getHeard(), data, new HttpUtils.IWebCallback() {
+                    @Override
+                    public void onCallback(int status, String message, Map<String, List<String>> heard, byte[] data) {
+                        if (status == 200) {
+                            DataBack<UserResponse> dataBack = CommonRequestUtils.commonGetDataBack(data);
+                            if (dataBack == null) {
+                                back.field("data error");
+                            } else {
+                                if (dataBack.code == 0) {
+                                    back.succeed();
+                                } else {
+                                    back.field(dataBack.msg);
+                                }
+                            }
+                        } else {
+                            back.field(message);
+                        }
+                    }
+
+                    @Override
+                    public void onFail(int status, String message) {
+                        back.field(message);
+                    }
+                });
+            }
+        };
+        ThreadUtils.executor.execute(runnable);
+    }
+
+    public interface Back {
+        public void succeed();
+
+        public void field(String message);
     }
 
 }
