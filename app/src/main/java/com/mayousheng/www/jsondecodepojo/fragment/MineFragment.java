@@ -32,6 +32,7 @@ public class MineFragment extends BaseFragment {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Settings.remove(getContext(), StaticParam.USER_SESSION);
                 UserUtils.logout(new CommonRequestUtils.Back() {
                     @Override
                     public void succeed() {
