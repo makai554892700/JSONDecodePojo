@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.mayousheng.www.jsondecodepojo.base.BaseNewsHolder;
+import com.mayousheng.www.jsondecodepojo.pojo.Comment;
 import com.mayousheng.www.jsondecodepojo.pojo.JokeResponse;
 import com.mayousheng.www.jsondecodepojo.pojo.Operate;
 import com.mayousheng.www.jsondecodepojo.utils.CommonRequestUtils;
@@ -39,15 +40,16 @@ public class JokeHolder extends BaseNewsHolder<JokeResponse> {
         love.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                OperateUtils.love(new Operate(jokeResponse.newsDesc.newsMark, jokeResponse.newsDesc.newsType), new CommonRequestUtils.Back() {
+                OperateUtils.love(context, new Operate(jokeResponse.newsDesc.newsMark
+                        , jokeResponse.newsDesc.newsType), new CommonRequestUtils.Back() {
                     @Override
                     public void succeed() {
-                        Toast.makeText(context, "succeed", Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, "love", Toast.LENGTH_LONG).show();
                     }
 
                     @Override
                     public void field(String message) {
-                        Log.e("-----1", "field,message=" + message);
+                        Log.e("-----1", "love field,message=" + message);
                     }
                 });
             }
@@ -55,19 +57,53 @@ public class JokeHolder extends BaseNewsHolder<JokeResponse> {
         hate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context, "i hate it.", Toast.LENGTH_LONG).show();
+                OperateUtils.hate(context, new Operate(jokeResponse.newsDesc.newsMark
+                        , jokeResponse.newsDesc.newsType), new CommonRequestUtils.Back() {
+                    @Override
+                    public void succeed() {
+                        Toast.makeText(context, "hate", Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void field(String message) {
+                        Log.e("-----1", "hate field,message=" + message);
+                    }
+                });
             }
         });
         share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context, "i share it.", Toast.LENGTH_LONG).show();
+                OperateUtils.share(context, new Operate(jokeResponse.newsDesc.newsMark
+                        , jokeResponse.newsDesc.newsType), new CommonRequestUtils.Back() {
+                    @Override
+                    public void succeed() {
+                        Toast.makeText(context, "share", Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void field(String message) {
+                        Log.e("-----1", "share field,message=" + message);
+                    }
+                });
             }
         });
         comment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context, "i comment it.", Toast.LENGTH_LONG).show();
+                OperateUtils.comment(context, new Comment(new Operate(jokeResponse.newsDesc.newsMark
+                                , jokeResponse.newsDesc.newsType), "testComment")
+                        , new CommonRequestUtils.Back() {
+                            @Override
+                            public void succeed() {
+                                Toast.makeText(context, "comment", Toast.LENGTH_LONG).show();
+                            }
+
+                            @Override
+                            public void field(String message) {
+                                Log.e("-----1", "comment field,message=" + message);
+                            }
+                        });
             }
         });
     }

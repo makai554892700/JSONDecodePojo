@@ -18,8 +18,8 @@ public class Comment extends BasePoJo {
         super(jsonStr);
     }
 
-    public Comment(String jsonStr, Operate newsMark, String commentInfo) {
-        super(jsonStr);
+    public Comment(Operate newsMark, String commentInfo) {
+        super(null);
         this.newsMark = newsMark;
         this.commentInfo = commentInfo;
     }

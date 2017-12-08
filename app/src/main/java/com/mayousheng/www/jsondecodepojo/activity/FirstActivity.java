@@ -110,10 +110,12 @@ public class FirstActivity extends BaseActivity implements View.OnClickListener 
     }
 
     private void login(User user) {
-        UserUtils.login(user, new CommonRequestUtils.Back() {
+        UserUtils.login(user, new CommonRequestUtils.SessionBack() {
             @Override
-            public void succeed() {
-                Settings.saveSetting(getApplicationContext(), StaticParam.USER_SESSION, StaticParam.USER_SESSION);
+            public void succeed(String sessionId) {
+                if (sessionId != null) {
+                    Settings.saveSetting(getApplicationContext(), StaticParam.USER_SESSION, sessionId);
+                }
                 loading(false);
                 toMain();
             }

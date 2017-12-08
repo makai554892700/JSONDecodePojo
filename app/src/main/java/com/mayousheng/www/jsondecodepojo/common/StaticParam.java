@@ -11,7 +11,7 @@ import android.view.View;
 public class StaticParam {
 
     //    private static final String BASE_URL = "http://api.woaizhuangbi.com";//基本域名
-    private static final String BASE_URL = "http://192.168.1.59";//基本域名
+    private static final String BASE_URL = "http://192.168.0.110";//基本域名
     public static final String BASE_POST_JOKES = BASE_URL + "/sbgnews/api/jokes/getJokes";//获取新闻请求路径
     public static final String BASE_POST_BSBDJ_VIDEOS = BASE_URL + "/sbgnews/api/bsbdj/getVideos";//百思不得姐获取视频请求路径
     public static final String BASE_POST_BSBDJ_VOICE = BASE_URL + "/sbgnews/api/bsbdj/getVoices";//百思不得姐获取新闻请求路径
@@ -35,6 +35,7 @@ public class StaticParam {
     public static final String TAG_IMG_URL = "tag_img_url";
     public static final String NULL = "null";
     public static final String USER_SESSION = "user_session";
+    public static final String SESSION_SET_KEY = "Cookie";
     public static final boolean REMBER_ME = true;
     public static final int TYPE_ANDROID = 1;
 }

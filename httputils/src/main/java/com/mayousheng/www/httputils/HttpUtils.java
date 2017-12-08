@@ -22,6 +22,8 @@ public class HttpUtils {
     private String HTTPS = "https";
     private String GET = "GET";
     private String POST = "POST";
+    private String SESSION_GET_KEY = "set-cookie";
+    private String SESSION_KEY = "JSESSIONID";
     private static HttpUtils httpUtils = new HttpUtils();
 
     private HttpUtils() {
@@ -31,12 +33,17 @@ public class HttpUtils {
         return httpUtils;
     }
 
-    public interface IWebCallback {
-
-        void onCallback(int status, String message, Map<String, List<String>> heard, byte[] data);
-
+    private interface CallBack {
         void onFail(int status, String message);
+    }
 
+    public interface IWebCallback extends CallBack {
+        void onCallback(int status, String message, Map<String, List<String>> heard, byte[] data);
+    }
+
+    public interface IWebSessionBack extends CallBack {
+        void onCallback(int status, String message, Map<String, List<String>> heard
+                , String sessionId, byte[] data);
     }
 
     public byte[] getURLResponse(String urlString, HashMap<String, String> headers) {
@@ -60,7 +67,8 @@ public class HttpUtils {
         return result;
     }
 
-    public void getURLResponse(String urlString, HashMap<String, String> headers, IWebCallback iWebCallback) {
+    public void getURLResponse(String urlString, HashMap<String, String> headers
+            , CallBack iWebCallback) {
         if (urlString != null) {
             HttpURLConnection conn = null; //连接对象
             InputStream is = null;
@@ -71,7 +79,15 @@ public class HttpUtils {
                 baos = new ByteArrayOutputStream();
                 is2bos(is, baos);
                 if (iWebCallback != null) {
-                    iWebCallback.onCallback(conn.getResponseCode(), conn.getResponseMessage(), conn.getHeaderFields(), baos.toByteArray());
+                    if (iWebCallback instanceof IWebSessionBack) {
+                        ((IWebSessionBack) iWebCallback).onCallback(conn.getResponseCode(), conn.getResponseMessage()
+                                , conn.getHeaderFields(), getSession(conn), baos.toByteArray());
+                    } else {
+                        if (iWebCallback instanceof IWebCallback) {
+                            ((IWebCallback) iWebCallback).onCallback(conn.getResponseCode(), conn.getResponseMessage()
+                                    , conn.getHeaderFields(), baos.toByteArray());
+                        }
+                    }
                 }
             } catch (Exception e) {
                 onException(iWebCallback, conn, e);
@@ -103,7 +119,7 @@ public class HttpUtils {
     }
 
     public void postURLResponse(String urlString, HashMap<String, String> headers,
-                                byte[] postData, IWebCallback iWebCallback) {
+                                byte[] postData, CallBack iWebCallback) {
         if (urlString != null) {
             HttpURLConnection conn = null; //连接对象
             InputStream is = null;
@@ -114,7 +130,15 @@ public class HttpUtils {
                 baos = new ByteArrayOutputStream();
                 is2bos(is, baos);
                 if (iWebCallback != null) {
-                    iWebCallback.onCallback(conn.getResponseCode(), conn.getResponseMessage(), conn.getHeaderFields(), baos.toByteArray());
+                    if (iWebCallback instanceof IWebSessionBack) {
+                        ((IWebSessionBack) iWebCallback).onCallback(conn.getResponseCode(), conn.getResponseMessage()
+                                , conn.getHeaderFields(), getSession(conn), baos.toByteArray());
+                    } else {
+                        if (iWebCallback instanceof IWebCallback) {
+                            ((IWebCallback) iWebCallback).onCallback(conn.getResponseCode(), conn.getResponseMessage()
+                                    , conn.getHeaderFields(), baos.toByteArray());
+                        }
+                    }
                 }
             } catch (Exception e) {
                 onException(iWebCallback, conn, e);
@@ -124,7 +148,22 @@ public class HttpUtils {
         }
     }
 
-    private void onException(IWebCallback iWebCallback, HttpURLConnection conn, Exception e) {
+    private String getSession(HttpURLConnection connection) {
+        Map<String, List<String>> fields = connection.getHeaderFields();
+        if (fields != null) {
+            List<String> sessionList = fields.get(SESSION_GET_KEY);
+            if (sessionList != null) {
+                for (String session : sessionList) {
+                    if (session.contains(SESSION_KEY)) {
+                        return session;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    private void onException(CallBack iWebCallback, HttpURLConnection conn, Exception e) {
         int code;
         if (conn != null) {
             try {

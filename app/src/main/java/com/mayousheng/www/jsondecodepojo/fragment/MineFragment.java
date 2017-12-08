@@ -1,6 +1,5 @@
 package com.mayousheng.www.jsondecodepojo.fragment;
 
-import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,12 +31,16 @@ public class MineFragment extends BaseFragment {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Settings.remove(getContext(), StaticParam.USER_SESSION);
-                UserUtils.logout(new CommonRequestUtils.Back() {
+                UserUtils.logout(getContext(), new CommonRequestUtils.Back() {
                     @Override
                     public void succeed() {
                         Settings.remove(getContext(), StaticParam.USER_SESSION);
-                        Toast.makeText(getContext(), "succeed", Toast.LENGTH_LONG).show();
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(getContext(), "succeed", Toast.LENGTH_LONG).show();
+                            }
+                        });
                     }
 
                     @Override
@@ -50,6 +53,7 @@ public class MineFragment extends BaseFragment {
                         });
                     }
                 });
+                Settings.remove(getContext(), StaticParam.USER_SESSION);
             }
         });
     }

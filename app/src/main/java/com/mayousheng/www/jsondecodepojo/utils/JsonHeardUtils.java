@@ -1,5 +1,9 @@
 package com.mayousheng.www.jsondecodepojo.utils;
 
+import android.content.Context;
+
+import com.mayousheng.www.jsondecodepojo.common.StaticParam;
+
 import java.util.HashMap;
 
 /**
@@ -20,6 +24,14 @@ public class JsonHeardUtils {
     }
 
     public HashMap<String, String> getHeard() {
+        return heard;
+    }
+
+    public HashMap<String, String> getSessionHeard(Context context) {
+        String sessionId = Settings.getStringSetting(context, StaticParam.USER_SESSION);
+        if (sessionId != null) {
+            heard.put(StaticParam.SESSION_SET_KEY, sessionId);
+        }
         return heard;
     }
 
