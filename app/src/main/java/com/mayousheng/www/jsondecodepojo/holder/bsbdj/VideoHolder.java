@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.mayousheng.www.jsondecodepojo.R;
 import com.mayousheng.www.jsondecodepojo.base.BaseNewsHolder;
@@ -16,8 +15,9 @@ import com.mayousheng.www.initview.ViewDesc;
 import com.mayousheng.www.jsondecodepojo.common.StaticParam;
 import com.mayousheng.www.jsondecodepojo.pojo.BSBDJVideoResponse;
 import com.mayousheng.www.jsondecodepojo.utils.MediaPlayerUtils;
-import com.mayousheng.www.jsondecodepojo.utils.RC4Utils;
 import com.mayousheng.www.jsondecodepojo.utils.ShowImageUtils;
+
+import java.lang.ref.WeakReference;
 
 /**
  * Created by ma kai on 2017/10/5.
@@ -52,21 +52,19 @@ public class VideoHolder extends BaseNewsHolder<BSBDJVideoResponse> {
         }
     };
 
-    public VideoHolder(final Context context, View view) {
-        super(context, view);
+    public VideoHolder(final Context context, View view, ShowImageUtils showImageUtils) {
+        super(context, view, showImageUtils);
     }
 
 
     @Override
     public void inViewBind(final BSBDJVideoResponse videoResponse) {
+        super.inViewBind(videoResponse);
         videoUri = videoResponse.videoUri;
-        userImg.setTag(String.valueOf(videoResponse.newsDesc.newsMark));
-        videoBg.setTag(videoResponse.scImg);
-        new ShowImageUtils(itemView).setImgDescs(new ShowImageUtils.ImgDesc[]{
-                new ShowImageUtils.ImgDesc(String.valueOf(videoResponse.newsDesc.newsMark)
-                        , videoResponse.userDesc.imgUrl),
-                new ShowImageUtils.ImgDesc(videoResponse.scImg
-                        , videoResponse.scImg)}).loadImage(0, 2);
+        String imgTag = StaticParam.TAG_IMG_URL + videoResponse.newsDesc.newsMark;
+        videoBg.setImageResource(R.color.black);
+        videoBg.setTag(imgTag);
+        showImageUtils.loadImage(imgTag, new WeakReference<ImageView>(videoBg));
         surfaceHolder = video.getHolder();
         surfaceHolder.setFixedSize(videoResponse.width, videoResponse.height);
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(videoResponse.width, videoResponse.height);
@@ -89,41 +87,6 @@ public class VideoHolder extends BaseNewsHolder<BSBDJVideoResponse> {
             }
         });
         video.setOnClickListener(onVideoClickListener);
-        userName.setText(videoResponse.userDesc.nickName);
-        date.setText(videoResponse.newsDesc.createTime);
-        if (videoResponse.text != null && !StaticParam.NULL.equals(videoResponse.text)) {
-            text.setText(RC4Utils.hexStringToString(videoResponse.text));
-        } else {
-            text.setVisibility(View.GONE);
-        }
-        loveText.setText(String.valueOf(videoResponse.newsDesc.love));
-        hateText.setText(String.valueOf(videoResponse.newsDesc.hate));
-        commentText.setText(String.valueOf(videoResponse.newsDesc.comment));
-        shareText.setText(String.valueOf(videoResponse.newsDesc.share));
-        love.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(context, "i love it.", Toast.LENGTH_LONG).show();
-            }
-        });
-        hate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(context, "i hate it.", Toast.LENGTH_LONG).show();
-            }
-        });
-        share.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(context, "i share it.", Toast.LENGTH_LONG).show();
-            }
-        });
-        comment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(context, "i comment it.", Toast.LENGTH_LONG).show();
-            }
-        });
     }
 
 }

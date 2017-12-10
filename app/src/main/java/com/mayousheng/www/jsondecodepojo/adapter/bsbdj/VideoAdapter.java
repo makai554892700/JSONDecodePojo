@@ -22,7 +22,7 @@ public class VideoAdapter extends BaseRecyclerAdapter<BSBDJVideoResponse> {
     @Override
     public BaseRecyclerHolder<BSBDJVideoResponse> onCreateViewHolder(ViewGroup parent, int viewType) {
         rootView = layoutInflater.inflate(R.layout.item_video, parent, false);
-        return new VideoHolder(context, rootView);
+        return new VideoHolder(context, rootView, getShowImageUtils());
     }
 
     public void onDataChange() {

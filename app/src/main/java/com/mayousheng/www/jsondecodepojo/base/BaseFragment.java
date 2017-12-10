@@ -21,6 +21,10 @@ public abstract class BaseFragment extends Fragment {
 
     protected abstract void initView(View view);
 
+    public View getRootView() {
+        return rootView;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container

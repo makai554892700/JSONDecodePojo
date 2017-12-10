@@ -28,6 +28,7 @@ public class JokeFragment extends BaseNewsFragment<JokeResponse> {
     @Override
     protected void initView(View view) {
         recyclerAdapter = new JokeAdapter(getContext());
+        recyclerAdapter.getShowImageUtils().setView(getRootView());
     }
 
     @Override

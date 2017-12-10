@@ -24,7 +24,7 @@ public class VoiceAdapter extends BaseRecyclerAdapter<BSBDJVoiceResponse> {
     @Override
     public BaseRecyclerHolder<BSBDJVoiceResponse> onCreateViewHolder(ViewGroup parent, int viewType) {
         rootView = layoutInflater.inflate(R.layout.item_voice, parent, false);
-        return new VoiceHolder(context, rootView);
+        return new VoiceHolder(context, rootView, getShowImageUtils());
     }
 
     public void onDataChange() {

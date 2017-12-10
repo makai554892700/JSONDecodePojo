@@ -22,7 +22,7 @@ public class JokeAdapter extends BaseRecyclerAdapter<JokeResponse> {
     @Override
     public BaseRecyclerHolder<JokeResponse> onCreateViewHolder(ViewGroup parent, int viewType) {
         rootView = layoutInflater.inflate(R.layout.item_joke, parent, false);
-        return new JokeHolder(context, rootView);
+        return new JokeHolder(context, rootView, getShowImageUtils());
     }
 
 }

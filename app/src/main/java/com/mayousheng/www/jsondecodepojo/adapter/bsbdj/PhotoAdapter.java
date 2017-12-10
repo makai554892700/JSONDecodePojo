@@ -22,7 +22,7 @@ public class PhotoAdapter extends BaseRecyclerAdapter<BSBDJPhotoResponse> {
     @Override
     public BaseRecyclerHolder<BSBDJPhotoResponse> onCreateViewHolder(ViewGroup parent, int viewType) {
         rootView = layoutInflater.inflate(R.layout.item_photo, parent, false);
-        return new PhotoHolder(context, rootView);
+        return new PhotoHolder(context, rootView, getShowImageUtils());
     }
 
     public void onDataChange() {
