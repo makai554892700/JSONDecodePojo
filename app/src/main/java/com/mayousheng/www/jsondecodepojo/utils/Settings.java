@@ -13,7 +13,7 @@ public class Settings {
         if (context == null) {
             return null;
         }
-        return context.getSharedPreferences(SETTING_INFO,
+        return context.getApplicationContext().getSharedPreferences(SETTING_INFO,
                 Context.MODE_WORLD_READABLE).getString(SettingName, "");
     }
 
@@ -29,7 +29,7 @@ public class Settings {
         if (context == null) {
             return false;
         }
-        SharedPreferences.Editor editor = context.getSharedPreferences(
+        SharedPreferences.Editor editor = context.getApplicationContext().getSharedPreferences(
                 SETTING_INFO, Context.MODE_WORLD_WRITEABLE).edit();
         editor.putBoolean(settingName, settingValue);
         return editor.commit();
@@ -39,7 +39,7 @@ public class Settings {
         if (context == null) {
             return false;
         }
-        SharedPreferences.Editor editor = context.getSharedPreferences(
+        SharedPreferences.Editor editor = context.getApplicationContext().getSharedPreferences(
                 SETTING_INFO, Context.MODE_WORLD_WRITEABLE).edit();
         editor.putString(settingName, settingValue);
         return editor.commit();
@@ -49,7 +49,7 @@ public class Settings {
         if (context == null || key == null) {
             return false;
         }
-        SharedPreferences.Editor editor = context.getSharedPreferences(
+        SharedPreferences.Editor editor = context.getApplicationContext().getSharedPreferences(
                 SETTING_INFO, Context.MODE_WORLD_WRITEABLE).edit();
         editor.remove(key);
         return editor.commit();

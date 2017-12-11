@@ -29,8 +29,8 @@ public abstract class BaseRecyclerAdapter<T extends BaseResponse> extends Recycl
     }
 
     public BaseRecyclerAdapter(Context context) {
-        layoutInflater = LayoutInflater.from(context);
-        this.context = context;
+        this.context = context.getApplicationContext();
+        layoutInflater = LayoutInflater.from(context.getApplicationContext());
     }
 
     public void addData(ArrayList<T> data) {

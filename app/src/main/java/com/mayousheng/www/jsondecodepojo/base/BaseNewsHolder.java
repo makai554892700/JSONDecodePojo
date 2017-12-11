@@ -1,6 +1,9 @@
 package com.mayousheng.www.jsondecodepojo.base;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
@@ -10,6 +13,7 @@ import android.widget.TextView;
 
 import com.mayousheng.www.jsondecodepojo.R;
 import com.mayousheng.www.initview.ViewDesc;
+import com.mayousheng.www.jsondecodepojo.activity.WebActivity;
 import com.mayousheng.www.jsondecodepojo.common.StaticParam;
 import com.mayousheng.www.jsondecodepojo.pojo.Comment;
 import com.mayousheng.www.jsondecodepojo.pojo.Operate;
@@ -17,8 +21,8 @@ import com.mayousheng.www.jsondecodepojo.utils.CommonRequestUtils;
 import com.mayousheng.www.jsondecodepojo.utils.OperateUtils;
 import com.mayousheng.www.jsondecodepojo.utils.RC4Utils;
 import com.mayousheng.www.jsondecodepojo.utils.ShowImageUtils;
-import com.mayousheng.www.jsondecodepojo.utils.db.DBOprateUtils;
-import com.mayousheng.www.jsondecodepojo.utils.db.model.DBOprateInfo;
+import com.mayousheng.www.jsondecodepojo.utils.db.DBOperateUtils;
+import com.mayousheng.www.jsondecodepojo.utils.db.model.DBOperateInfo;
 
 import java.lang.ref.WeakReference;
 
@@ -54,28 +58,28 @@ public abstract class BaseNewsHolder<T extends BaseResponse> extends BaseRecycle
     public TextView commentText;
     protected ShowImageUtils showImageUtils;
     protected int width, height;
-    private DBOprateUtils dbOprateUtils;
-    private DBOprateInfo dbOprateInfo, localOprateInfo;
+    private DBOperateUtils dbOperateUtils;
+    private DBOperateInfo dbOperateInfo, localOperateInfo;
     private Operate operate;
     private T data;
     private CommonRequestUtils.Back back = new CommonRequestUtils.Back() {
         @Override
         public void succeed() {
             Log.e("-----1", "operate succeed,");
-            localOprateInfo.sure = true;
-            dbOprateUtils.updateDBOprateInfo(localOprateInfo);
+            localOperateInfo.sure = true;
+            dbOperateUtils.updateDBOperateInfo(localOperateInfo);
         }
 
         @Override
         public void field(String message) {
-            dbOprateUtils.delDBOprateInfo(localOprateInfo.newsType
-                    , localOprateInfo.newsMark);
-            switch (dbOprateInfo.oprate) {
-                case StaticParam.OPRATE_LOVE:
+            dbOperateUtils.delDBOperateInfo(localOperateInfo.newsType
+                    , localOperateInfo.newsMark);
+            switch (dbOperateInfo.operate) {
+                case StaticParam.OPERATE_LOVE:
                     loveImg(false);
                     loveText(false);
                     break;
-                case StaticParam.OPRATE_HATE:
+                case StaticParam.OPERATE_HATE:
                     hateImg(false);
                     hateText(false);
                     break;
@@ -95,7 +99,7 @@ public abstract class BaseNewsHolder<T extends BaseResponse> extends BaseRecycle
                 height = display.getHeight();
             }
         }
-        dbOprateUtils = new DBOprateUtils(context);
+        dbOperateUtils = new DBOperateUtils(context.getApplicationContext());
     }
 
     @Override
@@ -105,6 +109,18 @@ public abstract class BaseNewsHolder<T extends BaseResponse> extends BaseRecycle
         String userImgTag = StaticParam.TAG_USER_IMG_URL + baseResponse.newsDesc.newsMark;
         userImg.setImageResource(R.drawable.user);
         userImg.setTag(userImgTag);
+        userImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toWebActivity(baseResponse.userDesc.pageHome);
+            }
+        });
+        text.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toWebActivity(baseResponse.url);
+            }
+        });
 //        Log.e("-----1", "set user img tag.tag=" + userImgTag + ";userImg=" + userImg);
         showImageUtils.loadImage(userImgTag, new WeakReference<ImageView>(userImg));
         userName.setText(baseResponse.userDesc.nickName);
@@ -118,35 +134,35 @@ public abstract class BaseNewsHolder<T extends BaseResponse> extends BaseRecycle
         hateText.setText(String.valueOf(baseResponse.newsDesc.hate));
         commentText.setText(String.valueOf(baseResponse.newsDesc.comment));
         shareText.setText(String.valueOf(baseResponse.newsDesc.share));
-        dbOprateInfo = dbOprateUtils.getDBOprateInfoByTypeAndMark(baseResponse.newsDesc.newsType
+        dbOperateInfo = dbOperateUtils.getDBOperateInfoByTypeAndMark(baseResponse.newsDesc.newsType
                 , baseResponse.newsDesc.newsMark);
-        if (dbOprateInfo == null) {
+        if (dbOperateInfo == null) {
             loveImg(false);
             hateImg(false);
         } else {
-            switch (dbOprateInfo.oprate) {
-                case StaticParam.OPRATE_LOVE:
+            switch (dbOperateInfo.operate) {
+                case StaticParam.OPERATE_LOVE:
                     loveImg(true);
                     break;
-                case StaticParam.OPRATE_HATE:
+                case StaticParam.OPERATE_HATE:
                     hateImg(true);
                     break;
             }
         }
-        localOprateInfo = new DBOprateInfo(baseResponse.newsDesc.newsType
-                , baseResponse.newsDesc.newsMark, StaticParam.OPRATE_LOVE, false);
+        localOperateInfo = new DBOperateInfo(baseResponse.newsDesc.newsType
+                , baseResponse.newsDesc.newsMark, StaticParam.OPERATE_LOVE, false);
         operate = new Operate(baseResponse.newsDesc.newsMark
                 , baseResponse.newsDesc.newsType);
         love.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                operate(StaticParam.OPRATE_LOVE);
+                operate(StaticParam.OPERATE_LOVE);
             }
         });
         hate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                operate(StaticParam.OPRATE_HATE);
+                operate(StaticParam.OPERATE_HATE);
             }
         });
         share.setOnClickListener(new View.OnClickListener() {
@@ -187,23 +203,23 @@ public abstract class BaseNewsHolder<T extends BaseResponse> extends BaseRecycle
     }
 
     private void operate(int operateType) {
-        if (dbOprateInfo == null && localOprateInfo != null) {
-            localOprateInfo.oprate = operateType;
-            long id = dbOprateUtils.saveDBOprateInfo(localOprateInfo);
+        if (dbOperateInfo == null && localOperateInfo != null) {
+            localOperateInfo.operate = operateType;
+            long id = dbOperateUtils.saveDBOperateInfo(localOperateInfo);
             if (id > 0) {
-                dbOprateInfo = localOprateInfo;
-                dbOprateInfo.id = (int) id;
+                dbOperateInfo = localOperateInfo;
+                dbOperateInfo.id = (int) id;
             } else {
                 Log.e("-----1", "save data error.");
                 return;
             }
             switch (operateType) {
-                case StaticParam.OPRATE_LOVE:
+                case StaticParam.OPERATE_LOVE:
                     loveImg(true);
                     loveText(true);
                     OperateUtils.love(context, operate, back);
                     break;
-                case StaticParam.OPRATE_HATE:
+                case StaticParam.OPERATE_HATE:
                     hateImg(true);
                     hateText(true);
                     OperateUtils.hate(context, operate, back);
@@ -239,6 +255,19 @@ public abstract class BaseNewsHolder<T extends BaseResponse> extends BaseRecycle
             data.newsDesc.hate -= 1;
         }
         hateText.setText(String.valueOf(data.newsDesc.hate));
+    }
+
+    private void toWebActivity(String webUrl){
+        if(!TextUtils.isEmpty(webUrl)){
+            Intent intent = new Intent(context, WebActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putString(StaticParam.WEB_URL, webUrl);
+            intent.putExtras(bundle);
+            try {
+                context.startActivity(intent);
+            } catch (Exception e) {
+            }
+        }
     }
 
 

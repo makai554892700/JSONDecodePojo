@@ -72,7 +72,7 @@ public class VideoHolder extends BaseNewsHolder<BSBDJVideoResponse> {
         videoUri = videoResponse.videoUri;
         final int realWidth;
         final int realHeight;
-        if (videoResponse.height > videoResponse.width * 1.5) {
+        if (videoResponse.height > videoResponse.width) {
             realWidth = (int) (width * StaticParam.BSBDJ_VIDEO_SCALE);
             realHeight = (int) (videoResponse.height * width / videoResponse.width * StaticParam.BSBDJ_VIDEO_SCALE);
         } else {

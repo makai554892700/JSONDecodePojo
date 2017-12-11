@@ -9,6 +9,8 @@ public class UserDesc extends BasePoJo {
     public String nickName;        //用户昵称
     @FieldDesc(key = "imgUrl")
     public String imgUrl;         //用户头像
+    @FieldDesc(key = "pageHome")
+    public String pageHome;       //用户首页
 
     public UserDesc(String jsonStr) {
         super(jsonStr);

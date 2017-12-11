@@ -38,7 +38,8 @@ public class StaticParam {
     public static final String SESSION_SET_KEY = "Cookie";
     public static final boolean REMBER_ME = true;
     public static final int TYPE_ANDROID = 1;
-    public static final float BSBDJ_VIDEO_SCALE = 0.75f;
-    public static final int OPRATE_LOVE = 0;
-    public static final int OPRATE_HATE = 1;
+    public static final float BSBDJ_VIDEO_SCALE = 0.70f;
+    public static final int OPERATE_LOVE = 0;
+    public static final int OPERATE_HATE = 1;
+    public static final String WEB_URL = "web_url";
 }

@@ -5,12 +5,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.mayousheng.www.jsondecodepojo.utils.db.model.DBOprateInfo;
+import com.mayousheng.www.jsondecodepojo.utils.db.model.DBOperateInfo;
 
-public class OprateInfoSqlitHelper extends SQLiteOpenHelper {
-    public static final String TB_NAME = "oprateinfo";
+public class OperateInfoSqlitHelper extends SQLiteOpenHelper {
+    public static final String TB_NAME = "operateinfo";
 
-    public OprateInfoSqlitHelper(Context context, String name, CursorFactory factory, int version) {
+    public OperateInfoSqlitHelper(Context context, String name, CursorFactory factory, int version) {
         super(context, name, factory, version);
     }
 
@@ -19,11 +19,11 @@ public class OprateInfoSqlitHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE IF NOT EXISTS " +
                 TB_NAME + "(" +
-                DBOprateInfo.ID + " integer primary key," +
-                DBOprateInfo.NEWS_TYPE + " varchar," +
-                DBOprateInfo.NEWS_MARK + " integer," +
-                DBOprateInfo.OPRATE + " integer," +
-                DBOprateInfo.SURE + " integer" +
+                DBOperateInfo.ID + " integer primary key," +
+                DBOperateInfo.NEWS_TYPE + " varchar," +
+                DBOperateInfo.NEWS_MARK + " integer," +
+                DBOperateInfo.OPERATE + " integer," +
+                DBOperateInfo.SURE + " integer" +
                 ")"
         );
     }
