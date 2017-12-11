@@ -61,49 +61,49 @@ public class ShowImageUtils {
 
     public ShowImageUtils loadImages(HashMap<String, WeakReference<ImageView>> imageViewHashMap) {
         if (imgDescs != null && view != null) {
-            String key;
-            String url;
-            Bitmap tempBitmap;
+            String tag;
             WeakReference<ImageView> imageView;
             for (Map.Entry<String, WeakReference<ImageView>> entry : imageViewHashMap.entrySet()) {
-                key = entry.getKey();
+                tag = entry.getKey();
                 imageView = entry.getValue();
-                url = imgDescs.get(key);
-                if (url != null) {
-                    tempBitmap = CacheUtils.getInstance().getBitmapByDisk(url);
-                    if (tempBitmap == null) {
-                        MyAsyncTast myAsyncTast = new MyAsyncTast(key, url, imageView);
-                        myAsyncTast.execute();
-                        myAsyncTasts.add(myAsyncTast);
-                    } else {
-                        setImageViewByTag(imageView, tempBitmap, key);
-                    }
-                } else {
-                    Log.e("-----1", "url is null.key=" + key);
-                }
+                loadImage(tag, imageView);
             }
         }
         return this;
     }
 
     public ShowImageUtils loadImage(String tag, WeakReference<ImageView> weakReference) {
-        if (tag != null && weakReference != null) {
-            String url = imgDescs.get(tag);
-            Bitmap tempBitmap;
-            if (url != null) {
-                tempBitmap = CacheUtils.getInstance().getBitmapByDisk(url);
-                if (tempBitmap == null) {
-                    MyAsyncTast myAsyncTast = new MyAsyncTast(tag, url, weakReference);
-                    myAsyncTast.execute();
-                    myAsyncTasts.add(myAsyncTast);
-                } else {
-                    setImageViewByTag(weakReference, tempBitmap, tag);
-                }
+        loadImage(tag, weakReference, null);
+        return this;
+    }
+
+    public void loadImage(String tag, WeakReference<ImageView> weakReference, LoadImageBack loadImageBack) {
+        if (tag == null || weakReference == null) {
+            if (loadImageBack != null) {
+                loadImageBack.onField("params is null");
+            }
+            return;
+        }
+
+        String url = imgDescs.get(tag);
+        Bitmap tempBitmap;
+        if (url != null) {
+            tempBitmap = CacheUtils.getInstance().getBitmapByDisk(url);
+            if (tempBitmap == null) {
+                MyAsyncTast myAsyncTast = new MyAsyncTast(tag, url, weakReference, loadImageBack);
+                myAsyncTast.execute();
+                myAsyncTasts.add(myAsyncTast);
             } else {
-                Log.e("-----1", "tag=" + tag);
+                setImageViewByTag(weakReference, tempBitmap, tag);
+                if (loadImageBack != null) {
+                    loadImageBack.onSuccess();
+                }
+            }
+        } else {
+            if (loadImageBack != null) {
+                loadImageBack.onField("url is null");
             }
         }
-        return this;
     }
 
     public ShowImageUtils stopAllTasks() {
@@ -119,45 +119,58 @@ public class ShowImageUtils {
         private String tag;
         private String url;
         private WeakReference<ImageView> weakReference;
+        private LoadImageBack loadImageBack;
 
-        private MyAsyncTast(String tag, String url, WeakReference<ImageView> weakReference) {
+        private MyAsyncTast(String tag, String url, WeakReference<ImageView> weakReference, LoadImageBack loadImageBack) {
             this.tag = tag;
             this.url = url;
             this.weakReference = weakReference;
+            this.loadImageBack = loadImageBack;
         }
 
         @Override
         protected Bitmap doInBackground(String... params) {
             if (weakReference.get() == null || !tag.equals(weakReference.get().getTag())) {
-                Log.e("-----1", "stop doInBackground.");//屏蔽滑动时无效请求
-                return null;
+                return null;//屏蔽滑动时无效请求
             }
             return CacheUtils.getInstance().getBitmap(url);
         }
 
         @Override
         protected void onPostExecute(Bitmap bitmap) {
-            setImageViewByTag(weakReference, bitmap, tag);
+            String message = setImageViewByTag(weakReference, bitmap, tag);
+            if (loadImageBack != null) {
+                if (message == null) {
+                    loadImageBack.onSuccess();
+                } else {
+                    loadImageBack.onField(message);
+                }
+
+            }
             myAsyncTasts.remove(this);
         }
     }
 
-    private void setImageViewByTag(WeakReference<ImageView> imageViewReference, Bitmap bitmap, String tag) {
-//        Log.e("-----1", "show img tag=" + tag);
+    private String setImageViewByTag(WeakReference<ImageView> imageViewReference, Bitmap bitmap, String tag) {
         if (bitmap == null || imageViewReference == null || tag == null) {
-            Log.e("-----1", "imageView=" + imageViewReference + ";bitmap=" + bitmap + ";tag=" + tag);
-            return;
+            return "params is null.";
         }
         ImageView imageView = imageViewReference.get();
         if (imageView == null) {
-            Log.e("-----1", "image view is null.tag=" + tag);
-            return;
+            return "iamgeView is null.";
         }
         if (tag.equals(imageView.getTag())) {
             imageView.setImageBitmap(bitmap);
         } else {
-            Log.e("-----1", "tag is not equals.tag=" + tag);
+            return "tag is not equals.tag=" + tag;
         }
+        return null;
+    }
+
+    public interface LoadImageBack {
+        public void onField(String message);
+
+        public void onSuccess();
     }
 
 }

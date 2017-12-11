@@ -1,6 +1,7 @@
 package com.mayousheng.www.jsondecodepojo.holder.bsbdj;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -26,7 +27,12 @@ public class VoiceHolder extends BaseNewsHolder<BSBDJVoiceResponse> {
     private View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            MediaPlayerUtils.getInstance().onClick(voiceuri, null);
+            MediaPlayerUtils.getInstance().onClick(voiceuri, null, new MediaPlayerUtils.StatusBack() {
+                @Override
+                public void onStatuChange(MediaPlayerUtils.PlayStatus playStatus) {
+                    Log.e("-----1", "VoiceHolder  playStatus=" + playStatus + ";voiceuri=" + voiceuri);
+                }
+            });
         }
     };
 

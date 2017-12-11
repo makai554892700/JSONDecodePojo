@@ -15,9 +15,21 @@ public class MediaPlayerUtils {
     private static final MediaPlayerUtils mediaPlayerUtils = new MediaPlayerUtils();
     private MediaPlayer mediaPlayer;
     private String currentUrl;
+    private StatusBack statusBack;
     private PlayStatus playStatus = PlayStatus.STOPTED;
 
     private MediaPlayerUtils() {
+    }
+
+    public void setPlayStatus(PlayStatus playStatus) {
+        this.playStatus = playStatus;
+        if (statusBack != null) {
+            statusBack.onStatuChange(playStatus);
+        }
+    }
+
+    public void setStatusBack(StatusBack statusBack) {
+        this.statusBack = statusBack;
     }
 
     private synchronized void initMediaPlayer(final String url, SurfaceHolder surfaceHolder) {
@@ -35,7 +47,7 @@ public class MediaPlayerUtils {
                 if (mediaPlayer != null) {
                     mediaPlayer.release();
                 }
-                playStatus = PlayStatus.STOPTED;
+                setPlayStatus(PlayStatus.STOPTED);
             }
         });
         try {
@@ -49,7 +61,7 @@ public class MediaPlayerUtils {
         } catch (Exception e) {
             Log.e(TAG, "e1=" + e);
             currentUrl = null;
-            playStatus = PlayStatus.STOPTED;
+            setPlayStatus(PlayStatus.STOPTED);
         }
     }
 
@@ -57,16 +69,15 @@ public class MediaPlayerUtils {
         return mediaPlayerUtils;
     }
 
-    public PlayStatus getStatus() {
-        return playStatus;
-    }
-
-    public synchronized void onClick(String url, SurfaceHolder surfaceHolder) {
+    public synchronized void onClick(String url, SurfaceHolder surfaceHolder, StatusBack statusBack) {
+        if (currentUrl == null || !url.equals(currentUrl)) {
+            stop(currentUrl);
+        }
+        setStatusBack(statusBack);
         if (android.text.TextUtils.isEmpty(url)) {
             return;
         }
         if (currentUrl == null || !url.equals(currentUrl)) {
-            stop(currentUrl);
             initMediaPlayer(url, surfaceHolder);
         } else {
             switch (playStatus) {
@@ -89,9 +100,9 @@ public class MediaPlayerUtils {
             mediaPlayer.start();
         } catch (Exception e) {
             Log.e(TAG, "e2=" + e);
-            playStatus = PlayStatus.STOPTED;
+            setPlayStatus(PlayStatus.STOPTED);
         }
-        playStatus = PlayStatus.PLAYING;
+        setPlayStatus(PlayStatus.PLAYING);
     }
 
     public synchronized void pause() {
@@ -102,9 +113,9 @@ public class MediaPlayerUtils {
             mediaPlayer.pause();
         } catch (Exception e) {
             Log.e(TAG, "e3=" + e);
-            playStatus = PlayStatus.STOPTED;
+            setPlayStatus(PlayStatus.STOPTED);
         }
-        playStatus = PlayStatus.PAUSE;
+        setPlayStatus(PlayStatus.PAUSE);
     }
 
     public synchronized void stop(String url) {
@@ -119,10 +130,15 @@ public class MediaPlayerUtils {
         }
         currentUrl = null;
         mediaPlayer = null;
-        playStatus = PlayStatus.STOPTED;
+        setPlayStatus(PlayStatus.STOPTED);
     }
 
-    private enum PlayStatus {
+    public enum PlayStatus {
         PLAYING, PAUSE, STOPTED;
     }
+
+    public interface StatusBack {
+        public void onStatuChange(PlayStatus playStatus);
+    }
+
 }

@@ -25,8 +25,6 @@ import java.lang.ref.WeakReference;
 
 public class VideoHolder extends BaseNewsHolder<BSBDJVideoResponse> {
 
-    @ViewDesc(viewId = R.id.play)
-    public ImageView play;
     @ViewDesc(viewId = R.id.video_bg)
     public ImageView videoBg;
     @ViewDesc(viewId = R.id.video)
@@ -35,17 +33,19 @@ public class VideoHolder extends BaseNewsHolder<BSBDJVideoResponse> {
     public ProgressBar loading;
     private SurfaceHolder surfaceHolder;
     private boolean isInit;
-    private boolean isBgShow;
+    private boolean isBgShow = true;
     private String videoUri;
     private View.OnClickListener onVideoClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             if (isInit) {
-                if (!isBgShow) {
-                    isBgShow = true;
-                    videoBg.setVisibility(View.INVISIBLE);
-                }
-                MediaPlayerUtils.getInstance().onClick(videoUri, surfaceHolder);
+                showVideoBg(false);
+                MediaPlayerUtils.getInstance().onClick(videoUri, surfaceHolder, new MediaPlayerUtils.StatusBack() {
+                    @Override
+                    public void onStatuChange(MediaPlayerUtils.PlayStatus playStatus) {
+                        Log.e("-----1", "VideoHolder  playStatus=" + playStatus + ";videoUri=" + videoUri);
+                    }
+                });
             } else {
                 Log.e("-----1", "is not init.videoUri=" + videoUri);
             }
@@ -60,21 +60,43 @@ public class VideoHolder extends BaseNewsHolder<BSBDJVideoResponse> {
     @Override
     public void inViewBind(final BSBDJVideoResponse videoResponse) {
         super.inViewBind(videoResponse);
+        onLoad(true);
+        showVideoBg(true);
+        final String imgTag = StaticParam.TAG_IMG_URL + videoResponse.newsDesc.newsMark;
         videoUri = videoResponse.videoUri;
-        String imgTag = StaticParam.TAG_IMG_URL + videoResponse.newsDesc.newsMark;
-        videoBg.setImageResource(R.color.black);
-        videoBg.setTag(imgTag);
-        showImageUtils.loadImage(imgTag, new WeakReference<ImageView>(videoBg));
-        surfaceHolder = video.getHolder();
-        surfaceHolder.setFixedSize(videoResponse.width, videoResponse.height);
-        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(videoResponse.width, videoResponse.height);
+        final int realWidth;
+        final int realHeight;
+        if (videoResponse.height > videoResponse.width * 1.5) {
+            realWidth = (int) (width * StaticParam.BSBDJ_VIDEO_SCALE);
+            realHeight = (int) (videoResponse.height * width / videoResponse.width * StaticParam.BSBDJ_VIDEO_SCALE);
+        } else {
+            realWidth = width;
+            realHeight = videoResponse.height * width / videoResponse.width;
+        }
+        final RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(realWidth, realHeight);
         layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+        videoBg.setLayoutParams(layoutParams);
+        videoBg.setTag(imgTag);
+        videoBg.setImageResource(R.color.black);
+        showImageUtils.loadImage(imgTag, new WeakReference<ImageView>(videoBg), new ShowImageUtils.LoadImageBack() {
+            @Override
+            public void onField(String message) {
+                Log.e("-----1", "load imge onField mesage=" + message);
+            }
+
+            @Override
+            public void onSuccess() {
+                onLoad(false);
+            }
+        });
         video.setLayoutParams(layoutParams);
+        video.setOnClickListener(onVideoClickListener);
+        surfaceHolder = video.getHolder();
+        surfaceHolder.setFixedSize(realWidth, realHeight);
         surfaceHolder.addCallback(new SurfaceHolder.Callback() {
             @Override
             public void surfaceCreated(SurfaceHolder surfaceHolder) {
                 isInit = true;
-                loading.setVisibility(View.INVISIBLE);
             }
 
             @Override
@@ -86,7 +108,15 @@ public class VideoHolder extends BaseNewsHolder<BSBDJVideoResponse> {
                 MediaPlayerUtils.getInstance().stop(videoUri);
             }
         });
-        video.setOnClickListener(onVideoClickListener);
+    }
+
+    private void onLoad(boolean isLoading) {
+        loading.setVisibility(isLoading ? View.VISIBLE : View.GONE);
+    }
+
+    private void showVideoBg(boolean show) {
+        isBgShow = show;
+        videoBg.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
 }

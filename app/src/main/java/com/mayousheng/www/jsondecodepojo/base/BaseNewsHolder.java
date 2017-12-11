@@ -2,7 +2,9 @@ package com.mayousheng.www.jsondecodepojo.base;
 
 import android.content.Context;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -49,10 +51,19 @@ public abstract class BaseNewsHolder<T extends BaseResponse> extends BaseRecycle
     @ViewDesc(viewId = R.id.common_comment_text)
     public TextView commentText;
     protected ShowImageUtils showImageUtils;
+    protected int width, height;
 
     public BaseNewsHolder(final Context context, View view, ShowImageUtils showImageUtils) {
         super(context, view);
         this.showImageUtils = showImageUtils;
+        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        if (windowManager != null) {
+            Display display = windowManager.getDefaultDisplay();
+            if (display != null) {
+                width = display.getWidth();
+                height = display.getHeight();
+            }
+        }
     }
 
     @Override
