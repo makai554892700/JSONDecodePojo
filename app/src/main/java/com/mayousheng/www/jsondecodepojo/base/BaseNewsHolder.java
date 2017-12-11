@@ -17,6 +17,8 @@ import com.mayousheng.www.jsondecodepojo.utils.CommonRequestUtils;
 import com.mayousheng.www.jsondecodepojo.utils.OperateUtils;
 import com.mayousheng.www.jsondecodepojo.utils.RC4Utils;
 import com.mayousheng.www.jsondecodepojo.utils.ShowImageUtils;
+import com.mayousheng.www.jsondecodepojo.utils.db.DBOprateUtils;
+import com.mayousheng.www.jsondecodepojo.utils.db.model.DBOprateInfo;
 
 import java.lang.ref.WeakReference;
 
@@ -52,6 +54,35 @@ public abstract class BaseNewsHolder<T extends BaseResponse> extends BaseRecycle
     public TextView commentText;
     protected ShowImageUtils showImageUtils;
     protected int width, height;
+    private DBOprateUtils dbOprateUtils;
+    private DBOprateInfo dbOprateInfo, localOprateInfo;
+    private Operate operate;
+    private T data;
+    private CommonRequestUtils.Back back = new CommonRequestUtils.Back() {
+        @Override
+        public void succeed() {
+            Log.e("-----1", "operate succeed,");
+            localOprateInfo.sure = true;
+            dbOprateUtils.updateDBOprateInfo(localOprateInfo);
+        }
+
+        @Override
+        public void field(String message) {
+            dbOprateUtils.delDBOprateInfo(localOprateInfo.newsType
+                    , localOprateInfo.newsMark);
+            switch (dbOprateInfo.oprate) {
+                case StaticParam.OPRATE_LOVE:
+                    loveImg(false);
+                    loveText(false);
+                    break;
+                case StaticParam.OPRATE_HATE:
+                    hateImg(false);
+                    hateText(false);
+                    break;
+            }
+            Log.e("-----1", "operate field,message=" + message);
+        }
+    };
 
     public BaseNewsHolder(final Context context, View view, ShowImageUtils showImageUtils) {
         super(context, view);
@@ -64,11 +95,13 @@ public abstract class BaseNewsHolder<T extends BaseResponse> extends BaseRecycle
                 height = display.getHeight();
             }
         }
+        dbOprateUtils = new DBOprateUtils(context);
     }
 
     @Override
     public void inViewBind(final T baseResponse) {
 //        Log.e("-----1", "baseResponse=" + baseResponse);
+        data = baseResponse;
         String userImgTag = StaticParam.TAG_USER_IMG_URL + baseResponse.newsDesc.newsMark;
         userImg.setImageResource(R.drawable.user);
         userImg.setTag(userImgTag);
@@ -85,38 +118,35 @@ public abstract class BaseNewsHolder<T extends BaseResponse> extends BaseRecycle
         hateText.setText(String.valueOf(baseResponse.newsDesc.hate));
         commentText.setText(String.valueOf(baseResponse.newsDesc.comment));
         shareText.setText(String.valueOf(baseResponse.newsDesc.share));
+        dbOprateInfo = dbOprateUtils.getDBOprateInfoByTypeAndMark(baseResponse.newsDesc.newsType
+                , baseResponse.newsDesc.newsMark);
+        if (dbOprateInfo == null) {
+            loveImg(false);
+            hateImg(false);
+        } else {
+            switch (dbOprateInfo.oprate) {
+                case StaticParam.OPRATE_LOVE:
+                    loveImg(true);
+                    break;
+                case StaticParam.OPRATE_HATE:
+                    hateImg(true);
+                    break;
+            }
+        }
+        localOprateInfo = new DBOprateInfo(baseResponse.newsDesc.newsType
+                , baseResponse.newsDesc.newsMark, StaticParam.OPRATE_LOVE, false);
+        operate = new Operate(baseResponse.newsDesc.newsMark
+                , baseResponse.newsDesc.newsType);
         love.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                OperateUtils.love(context, new Operate(baseResponse.newsDesc.newsMark
-                        , baseResponse.newsDesc.newsType), new CommonRequestUtils.Back() {
-                    @Override
-                    public void succeed() {
-                        Log.e("-----1", "love succeed,");
-                    }
-
-                    @Override
-                    public void field(String message) {
-                        Log.e("-----1", "love field,message=" + message);
-                    }
-                });
+                operate(StaticParam.OPRATE_LOVE);
             }
         });
         hate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                OperateUtils.hate(context, new Operate(baseResponse.newsDesc.newsMark
-                        , baseResponse.newsDesc.newsType), new CommonRequestUtils.Back() {
-                    @Override
-                    public void succeed() {
-                        Log.e("-----1", "hate succeed.");
-                    }
-
-                    @Override
-                    public void field(String message) {
-                        Log.e("-----1", "hate field,message=" + message);
-                    }
-                });
+                operate(StaticParam.OPRATE_HATE);
             }
         });
         share.setOnClickListener(new View.OnClickListener() {
@@ -155,4 +185,61 @@ public abstract class BaseNewsHolder<T extends BaseResponse> extends BaseRecycle
             }
         });
     }
+
+    private void operate(int operateType) {
+        if (dbOprateInfo == null && localOprateInfo != null) {
+            localOprateInfo.oprate = operateType;
+            long id = dbOprateUtils.saveDBOprateInfo(localOprateInfo);
+            if (id > 0) {
+                dbOprateInfo = localOprateInfo;
+                dbOprateInfo.id = (int) id;
+            } else {
+                Log.e("-----1", "save data error.");
+                return;
+            }
+            switch (operateType) {
+                case StaticParam.OPRATE_LOVE:
+                    loveImg(true);
+                    loveText(true);
+                    OperateUtils.love(context, operate, back);
+                    break;
+                case StaticParam.OPRATE_HATE:
+                    hateImg(true);
+                    hateText(true);
+                    OperateUtils.hate(context, operate, back);
+                    break;
+                default:
+            }
+        } else {//已经操作过了
+            Log.e("-----1", "already operated.");
+        }
+    }
+
+    private void loveImg(boolean isLove) {
+        love.setImageResource(isLove ? R.drawable.love_select : R.drawable.love);
+    }
+
+    private void hateImg(boolean isHate) {
+        hate.setImageResource(isHate ? R.drawable.hate_select : R.drawable.hate);
+    }
+
+    private void loveText(boolean isLove) {
+        if (isLove) {
+            data.newsDesc.love += 1;
+        } else if (data.newsDesc.love > 0) {
+            data.newsDesc.love -= 1;
+        }
+        loveText.setText(String.valueOf(data.newsDesc.love));
+    }
+
+    private void hateText(boolean isHate) {
+        if (isHate) {
+            data.newsDesc.hate += 1;
+        } else if (data.newsDesc.hate > 0) {
+            data.newsDesc.hate -= 1;
+        }
+        hateText.setText(String.valueOf(data.newsDesc.hate));
+    }
+
+
 }

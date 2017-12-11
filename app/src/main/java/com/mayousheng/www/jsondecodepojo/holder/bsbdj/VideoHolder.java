@@ -39,10 +39,16 @@ public class VideoHolder extends BaseNewsHolder<BSBDJVideoResponse> {
         @Override
         public void onClick(View view) {
             if (isInit) {
-                showVideoBg(false);
                 MediaPlayerUtils.getInstance().onClick(videoUri, surfaceHolder, new MediaPlayerUtils.StatusBack() {
                     @Override
                     public void onStatuChange(MediaPlayerUtils.PlayStatus playStatus) {
+                        if (playStatus == MediaPlayerUtils.PlayStatus.PLAYING) {
+                            try {
+                                Thread.sleep(500);//防止视频切换闪烁
+                            } catch (Exception e) {
+                            }
+                            showVideoBg(false);
+                        }
                         Log.e("-----1", "VideoHolder  playStatus=" + playStatus + ";videoUri=" + videoUri);
                     }
                 });
