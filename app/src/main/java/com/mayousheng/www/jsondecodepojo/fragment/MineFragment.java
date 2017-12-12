@@ -1,5 +1,6 @@
 package com.mayousheng.www.jsondecodepojo.fragment;
 
+import android.app.Activity;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,6 +32,10 @@ public class MineFragment extends BaseFragment {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Activity activity = getActivity();
+                if (activity != null) {
+                    getActivity().finish();
+                }
                 UserUtils.logout(getContext(), new CommonRequestUtils.Back() {
                     @Override
                     public void succeed() {

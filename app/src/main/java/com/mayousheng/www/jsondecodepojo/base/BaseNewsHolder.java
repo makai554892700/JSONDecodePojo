@@ -20,6 +20,7 @@ import com.mayousheng.www.jsondecodepojo.pojo.Operate;
 import com.mayousheng.www.jsondecodepojo.utils.CommonRequestUtils;
 import com.mayousheng.www.jsondecodepojo.utils.OperateUtils;
 import com.mayousheng.www.jsondecodepojo.utils.RC4Utils;
+import com.mayousheng.www.jsondecodepojo.utils.ShareUtils;
 import com.mayousheng.www.jsondecodepojo.utils.ShowImageUtils;
 import com.mayousheng.www.jsondecodepojo.utils.db.DBOperateUtils;
 import com.mayousheng.www.jsondecodepojo.utils.db.model.DBOperateInfo;
@@ -168,6 +169,7 @@ public abstract class BaseNewsHolder<T extends BaseResponse> extends BaseRecycle
         share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                ShareUtils.shareText(context, baseResponse.text, baseResponse.url);
                 OperateUtils.share(context, new Operate(baseResponse.newsDesc.newsMark
                         , baseResponse.newsDesc.newsType), new CommonRequestUtils.Back() {
                     @Override
@@ -257,8 +259,8 @@ public abstract class BaseNewsHolder<T extends BaseResponse> extends BaseRecycle
         hateText.setText(String.valueOf(data.newsDesc.hate));
     }
 
-    private void toWebActivity(String webUrl){
-        if(!TextUtils.isEmpty(webUrl)){
+    private void toWebActivity(String webUrl) {
+        if (!TextUtils.isEmpty(webUrl)) {
             Intent intent = new Intent(context, WebActivity.class);
             Bundle bundle = new Bundle();
             bundle.putString(StaticParam.WEB_URL, webUrl);

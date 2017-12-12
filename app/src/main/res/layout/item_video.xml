@@ -26,7 +26,8 @@
             android:id="@+id/video"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true" />
+            android:layout_centerInParent="true"
+            android:background="@color/black" />
 
         <ImageView
             android:id="@+id/video_bg"

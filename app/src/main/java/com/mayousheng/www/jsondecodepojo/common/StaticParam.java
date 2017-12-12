@@ -42,4 +42,10 @@ public class StaticParam {
     public static final int OPERATE_LOVE = 0;
     public static final int OPERATE_HATE = 1;
     public static final String WEB_URL = "web_url";
+    public static final String SHARE_ONLY_TEXT = "text/plain";
+    public static final String SHARE_ALL_IMG = "image/*";
+    public static final String SHARE_HTML = "text/html";
+    public static final String SHARE_ALL_TEXT = "text/*";
+    public static final String SHARE_MPEG = "video/mpeg";
+    public static final String SHARE_ALL = "*/*";
 }
