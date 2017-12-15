@@ -42,6 +42,30 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:indeterminateDrawable="@drawable/video_loading" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/play_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/black">
+
+        <ImageView
+            android:id="@+id/play"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:src="@drawable/play" />
+
+        <SeekBar
+            android:id="@+id/seekBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_toRightOf="@id/play"
+            android:max="@integer/video_max" />
+
     </RelativeLayout>
 
     <include

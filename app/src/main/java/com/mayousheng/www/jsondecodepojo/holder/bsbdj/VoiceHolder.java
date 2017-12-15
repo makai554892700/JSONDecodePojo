@@ -29,7 +29,7 @@ public class VoiceHolder extends BaseNewsHolder<BSBDJVoiceResponse> {
         public void onClick(View view) {
             MediaPlayerUtils.getInstance().onClick(voiceuri, null, new MediaPlayerUtils.StatusBack() {
                 @Override
-                public void onStatuChange(MediaPlayerUtils.PlayStatus playStatus) {
+                public void onStatusChange(MediaPlayerUtils.PlayStatus playStatus) {
                     Log.e("-----1", "VoiceHolder  playStatus=" + playStatus + ";voiceuri=" + voiceuri);
                 }
             });

@@ -272,5 +272,4 @@ public abstract class BaseNewsHolder<T extends BaseResponse> extends BaseRecycle
         }
     }
 
-
 }
