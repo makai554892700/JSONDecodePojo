@@ -28,7 +28,7 @@
             android:marqueeRepeatLimit="marquee_forever"
             android:scrollHorizontally="true"
             android:singleLine="true"
-            android:text="加载中...."
+            android:text="@string/loading"
             android:textColor="@color/black" />
 
     </RelativeLayout>

@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_margin="2dp"
-            android:hint="用户名"
+            android:hint="@string/user_name"
             android:padding="5dp" />
 
         <EditText
@@ -24,7 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_margin="2dp"
-            android:hint="密码"
+            android:hint="@string/pass"
             android:padding="5dp" />
 
         <LinearLayout
@@ -37,14 +37,14 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="登陆" />
+                android:text="@string/login" />
 
             <Button
                 android:id="@+id/register"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="注册" />
+                android:text="@string/register" />
         </LinearLayout>
 
     </LinearLayout>

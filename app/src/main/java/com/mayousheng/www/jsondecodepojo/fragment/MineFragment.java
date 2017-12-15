@@ -1,12 +1,14 @@
 package com.mayousheng.www.jsondecodepojo.fragment;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mayousheng.www.initview.ViewDesc;
 import com.mayousheng.www.jsondecodepojo.R;
+import com.mayousheng.www.jsondecodepojo.activity.FirstActivity;
 import com.mayousheng.www.jsondecodepojo.base.BaseFragment;
 import com.mayousheng.www.jsondecodepojo.common.StaticParam;
 import com.mayousheng.www.jsondecodepojo.utils.CommonRequestUtils;
@@ -32,10 +34,6 @@ public class MineFragment extends BaseFragment {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Activity activity = getActivity();
-                if (activity != null) {
-                    getActivity().finish();
-                }
                 UserUtils.logout(getContext(), new CommonRequestUtils.Back() {
                     @Override
                     public void succeed() {
@@ -46,6 +44,7 @@ public class MineFragment extends BaseFragment {
                                 Toast.makeText(getContext(), "succeed", Toast.LENGTH_LONG).show();
                             }
                         });
+                        finish();
                     }
 
                     @Override
@@ -56,10 +55,23 @@ public class MineFragment extends BaseFragment {
                                 Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
                             }
                         });
+                        finish();
                     }
                 });
                 Settings.remove(getContext(), StaticParam.USER_SESSION);
             }
         });
+    }
+
+    private void finish() {
+        try {
+            startActivity(new Intent(getContext(), FirstActivity.class));
+        } catch (Exception e) {
+            return;
+        }
+        Activity activity = getActivity();
+        if (activity != null) {
+            getActivity().finish();
+        }
     }
 }
