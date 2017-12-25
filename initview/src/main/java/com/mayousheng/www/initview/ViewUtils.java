@@ -34,7 +34,7 @@ public class ViewUtils {
     }
 
     private static void initView(Object object, View rootView, Class self) {
-        Field[] fields = self.getDeclaredFields();
+        Field[] fields = self.getFields();
         if (fields == null) {
             return;
         }
