@@ -185,6 +185,9 @@ public abstract class BasePoJo {
             }
             Class fieldType = field.getType();
             String key = fieldDescs.key();
+            if (result.has(key)) {
+                continue;
+            }
             Object fieldValue = null;
             try {
                 fieldValue = field.get(this);
