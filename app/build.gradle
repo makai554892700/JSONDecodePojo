@@ -72,7 +72,7 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.mayousheng.www:basepojo:0.0.3'
+    compile 'com.mayousheng.www:basepojo:0.0.4'
     compile 'com.mayousheng.www:httputils:0.0.2'
     compile 'com.mayousheng.www:initview:0.0.2'
 //    compile project(':basepojo')

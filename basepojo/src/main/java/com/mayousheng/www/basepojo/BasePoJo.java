@@ -163,7 +163,6 @@ public abstract class BasePoJo {
         JSONObject result = new JSONObject();
         Class clazz = this.getClass();
         while (BasePoJo.class != clazz) {
-            System.out.println("class=" + clazz);
             initJSON(result, clazz);
             clazz = clazz.getSuperclass();
         }
@@ -188,18 +187,19 @@ public abstract class BasePoJo {
             if (result.has(key)) {
                 continue;
             }
-            Object fieldValue = null;
+            Object fieldValue;
             try {
                 fieldValue = field.get(this);
             } catch (Exception e) {
                 continue;
             }
+            if (fieldValue != null) {
+                fieldType = fieldValue.getClass();
+            }
             if (ArrayList.class == fieldType) {
                 putObject(result, key, arrayToJsonArray((ArrayList) fieldValue));
-            } else if (BasePoJo.class.isAssignableFrom(fieldType)) {
-                if (fieldValue != null) {
-                    putObject(result, key, ((BasePoJo) fieldValue).toJSONObject());
-                }
+            } else if (BasePoJo.class.isAssignableFrom(fieldType) && fieldValue != null) {
+                putObject(result, key, ((BasePoJo) fieldValue).toJSONObject());
             } else {
                 putObject(result, key, fieldValue);
             }
