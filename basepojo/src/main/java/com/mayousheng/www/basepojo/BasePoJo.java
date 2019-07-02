@@ -8,13 +8,11 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 /**
- * pojo基本抽象类，继承此类后方可利用此类的方法
  * Created by marking on 2017/3/24.
  */
 
 public abstract class BasePoJo {
 
-    //带参构造，用于json string直接转对象
     public BasePoJo(String jsonStr) {
         if (jsonStr == null || jsonStr.isEmpty()) {
             return;
@@ -46,15 +44,18 @@ public abstract class BasePoJo {
             FieldDesc fieldDescs = field.getAnnotation(FieldDesc.class);
             if (fieldDescs == null) {
                 continue;
-            }//以上代码均为健壮性考虑
+            }
             Class fieldType = field.getType();
             String key = fieldDescs.key();
             Class arrayType = fieldDescs.arrayType();
-            Object fieldObj;
+            Object fieldObj = null;
             if (fieldType == String.class) {
-                //根据属性不同类型调用不同方法解析，同时不影响继续解析
-                //目前可能存在考虑不周的地方可根据自己的需求再另行更改
                 fieldObj = jsonObject.optString(key);
+            } else if (fieldType.isEnum()) {
+                try {
+                    fieldObj = Enum.valueOf(fieldType, jsonObject.optString(key));
+                } catch (Exception e) {
+                }
             } else if (fieldType == int.class || fieldType == Integer.class) {
                 fieldObj = jsonObject.optInt(key);
             } else if (fieldType == long.class || fieldType == Long.class) {
@@ -82,7 +83,6 @@ public abstract class BasePoJo {
         }
     }
 
-    //为了防止属性缺失
     private void putObject(JSONObject jsonObject, String key, Object value) {
         try {
             if (value == null) {
@@ -158,7 +158,6 @@ public abstract class BasePoJo {
         return jsonArray;
     }
 
-    //根据注解将对象转为JSONObject
     public JSONObject toJSONObject() {
         JSONObject result = new JSONObject();
         Class clazz = this.getClass();
@@ -206,7 +205,6 @@ public abstract class BasePoJo {
         }
     }
 
-    //方便对象与JSONObject相互转换
     @Override
     public String toString() {
         return toJSONObject().toString();

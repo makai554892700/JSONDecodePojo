@@ -4,7 +4,7 @@
 * 使用方法
     * 于项目build.gradle下添加
 
-            compile 'com.mayousheng.www:basepojo:0.0.2'
+            implementation 'com.mayousheng.www:basepojo:0.0.2'
     * 直接调用HttpUtils.getInstance()获取对象
     * 这里只封装了get/post两种请求方式，分别为直接获取数据和接口返回数据的方式
 * 注意事项

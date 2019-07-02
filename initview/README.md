@@ -2,7 +2,7 @@
 * 使用方法
     * 与项目build.gradle内添加
 
-            compile 'com.mayousheng.www:initview:0.0.1'
+            implementation 'com.mayousheng.www:initview:0.0.1'
     * 注解于某view变量上方(用于修饰view于id的关系)，例：
 
             @ViewDesc(viewId = R.id.img)

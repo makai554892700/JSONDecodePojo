@@ -6,7 +6,7 @@ apply plugin: 'com.android.library'
 //        jcenter()
 //    }
 //    dependencies {
-//        classpath 'com.novoda:bintray-release:0.3.4'
+//        classpath 'com.novoda:bintray-release:0.9.1'
 //    }
 //}
 //
@@ -14,27 +14,18 @@ apply plugin: 'com.android.library'
 //    userOrg = 'marking'
 //    groupId = 'com.mayousheng.www'
 //    artifactId = 'basepojo'
-//    publishVersion = '0.0.4'
+//    publishVersion = '0.0.5'
 //    desc = 'JSON decode pojo'
 //    website = 'https://github.com/makai554892700/JSONDecodePojo/tree/master/basepojo'
-//}
-//
-//tasks.withType(Javadoc) {
-//    options {
-//        encoding "UTF-8"
-//        charSet 'UTF-8'
-//    }
-//    options.addStringOption('Xdoclint:none', '-quiet')
 //}
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
     defaultConfig {
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
-        versionCode 4
-        versionName "0.0.4"
+        versionCode 5
+        versionName "0.0.5"
     }
     buildTypes {
         release {
@@ -47,6 +38,6 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
 }
 //上传jar包命令： gradlew clean build bintrayUpload -PbintrayUser=PBINTRAY_NAME -PbintrayKey=PBINTRAY_KEY -PdryRun=false

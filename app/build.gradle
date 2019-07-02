@@ -1,13 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'AndResGuard'
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.tencent.mm:AndResGuard-gradle-plugin:1.2.6'
-    }
-}
 android {
     signingConfigs {
         shandao {
@@ -18,7 +9,6 @@ android {
         }
     }
     compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
     defaultConfig {
         applicationId "com.mayousheng.www.jsondecodepojo"
         minSdkVersion rootProject.appMinSdkVersion
@@ -34,7 +24,6 @@ android {
             // 移除无用的resource文件
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.shandao
         }
         debug {
             //开启代码混淆
@@ -42,64 +31,21 @@ android {
             // 移除无用的resource文件
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.shandao
-        }
-    }
-
-    productFlavors {
-        marking {}
-    }
-
-    applicationVariants.all { variant ->
-        def flavor = variant.mergedFlavor
-        def versionName = flavor.versionName
-        if (variant.buildType.isDebuggable()) {
-            versionName += "_debug"
-        } else {
-            versionName += ""
-        }
-        flavor.versionName = versionName
-
-        variant.outputs.each { output ->
-            def outputFile = output.outputFile
-            if (outputFile != null && outputFile.name.endsWith('.apk')) {
-                def fileName = "sbgnews-$variant.name- ${versionName}.apk"
-                output.outputFile = new File(outputFile.parent, fileName)
-            }
         }
     }
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.mayousheng.www:basepojo:0.0.4'
-    compile 'com.mayousheng.www:httputils:0.0.2'
-    compile 'com.mayousheng.www:initview:0.0.2'
-//    compile project(':basepojo')
-//    compile project(':httputils')
-//    compile project(':initview')
-    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3'
-    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3'
-    compile rootProject.libRecycleView
-    compile rootProject.libSupportAppcompatV7
-}
-
-andResGuard {
-    use7zip = true
-    useSign = true
-    keepRoot = false
-    whiteList = [
-            "R.mipmap.ic_launcher",
-    ]
-    compressFilePattern = [
-            "*.png",
-            "*.jpg",
-            "*.jpeg",
-            "*.gif",
-            "resources.arsc"
-    ]
-    sevenzip {
-        artifact = 'com.tencent.mm:SevenZip:1.2.6'
-    }
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.mayousheng.www:basepojo:0.0.4'
+    implementation 'com.mayousheng.www:httputils:0.0.2'
+    implementation 'com.mayousheng.www:initview:0.0.2'
+//    implementation project(':basepojo')
+//    implementation project(':httputils')
+//    implementation project(':initview')
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.3'
+    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.3'
+    implementation rootProject.libRecycleView
+    implementation rootProject.libSupportAppcompatV7
 }
 //生成apk包命令： gradlew :app:clean  :app:resguardRelease
