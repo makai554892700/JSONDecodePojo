@@ -94,7 +94,16 @@ public abstract class BasePoJo {
         }
     }
 
-    private <T> T JSONObjectToObject(Class fieldType, JSONObject jsonObject) {
+    public static <T> T strToObject(Class fieldType, String str) {
+        JSONObject jsonObject = null;
+        try {
+            jsonObject = new JSONObject(str);
+        } catch (Exception e) {
+        }
+        return JSONObjectToObject(fieldType, jsonObject);
+    }
+
+    public static <T> T JSONObjectToObject(Class fieldType, JSONObject jsonObject) {
         if (jsonObject == null) {
             return null;
         }
