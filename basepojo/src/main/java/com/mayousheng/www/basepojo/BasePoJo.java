@@ -67,9 +67,23 @@ public abstract class BasePoJo {
             } else if (fieldType == double.class || fieldType == Double.class) {
                 fieldObj = jsonObject.optDouble(key);
             } else if (ArrayList.class == fieldType) {
-                fieldObj = JSONArrayToArray(arrayType, jsonObject.optJSONArray(key));
+                JSONArray tempJSONArray = jsonObject.optJSONArray(key);
+                if (tempJSONArray == null) {
+                    try {
+                        tempJSONArray = new JSONArray(jsonObject.optString(key));
+                    } catch (Exception e) {
+                    }
+                }
+                fieldObj = JSONArrayToArray(arrayType, tempJSONArray);
             } else if (BasePoJo.class.isAssignableFrom(fieldType)) {
-                fieldObj = JSONObjectToObject(fieldType, jsonObject.optJSONObject(key));
+                JSONObject tempJSONObject = jsonObject.optJSONObject(key);
+                if (tempJSONObject == null) {
+                    try {
+                        tempJSONObject = new JSONObject(jsonObject.optString(key));
+                    } catch (Exception e) {
+                    }
+                }
+                fieldObj = JSONObjectToObject(arrayType, tempJSONObject);
             } else {
                 fieldObj = jsonObject.optString(key);
             }
