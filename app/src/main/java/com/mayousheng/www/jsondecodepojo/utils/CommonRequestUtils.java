@@ -45,7 +45,7 @@ public class CommonRequestUtils {
         }
         String tempStr = new String(data, Charset.forName("UTF-8"));
         DataBack<String> dataBack = new DataBack<String>(tempStr);
-        ArrayList<T> list = BasePoJo.JSONArrayStrToArray(t.getClass(), dataBack.data);
+        ArrayList<T> list = (ArrayList<T>) BasePoJo.JSONArrayStrToArray(t.getClass(), dataBack.data);
         DataBack<ArrayList<T>> result = new DataBack<ArrayList<T>>(null);
         result.code = dataBack.code;
         result.msg = dataBack.msg;

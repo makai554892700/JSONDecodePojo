@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -17,6 +18,7 @@ import com.mayousheng.www.jsondecodepojo.R;
 import com.mayousheng.www.jsondecodepojo.base.BaseActivity;
 import com.mayousheng.www.jsondecodepojo.common.StaticParam;
 import com.mayousheng.www.jsondecodepojo.pojo.User;
+import com.mayousheng.www.jsondecodepojo.utils.BLUtils;
 import com.mayousheng.www.jsondecodepojo.utils.CommonRequestUtils;
 import com.mayousheng.www.jsondecodepojo.utils.Settings;
 import com.mayousheng.www.jsondecodepojo.utils.UserUtils;
@@ -61,6 +63,22 @@ public class FirstActivity extends BaseActivity implements View.OnClickListener 
         hideKeyboard();
         Editable userNameStr = userName.getText();
         Editable userPassStr = userPass.getText();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                BLUtils.getPhone(new BLUtils.StringBack() {
+                    @Override
+                    public void onStrSuccess(String response) {
+                        Log.e("-----1", "get phone success.response=" + response);
+                    }
+
+                    @Override
+                    public void onFailed(Integer status, String message) {
+                        Log.e("-----1", "get phone failed.status=" + status + ";message=" + message);
+                    }
+                });
+            }
+        }).start();
         if (userNameStr == null || userPassStr == null) {
             Toast.makeText(this, "用户名或者密码不可为空", Toast.LENGTH_SHORT).show();
             return;

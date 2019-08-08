@@ -37,10 +37,10 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'com.mayousheng.www:basepojo:0.0.4'
+//    implementation 'com.mayousheng.www:basepojo:0.0.9'
     implementation 'com.mayousheng.www:httputils:0.0.2'
     implementation 'com.mayousheng.www:initview:0.0.2'
-//    implementation project(':basepojo')
+    implementation project(':basepojo')
 //    implementation project(':httputils')
 //    implementation project(':initview')
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.3'
