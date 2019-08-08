@@ -1,31 +1,31 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.novoda.bintray-release'
-
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.novoda:bintray-release:0.9.1'
-    }
-}
-
-publish {
-    userOrg = 'marking'
-    groupId = 'com.mayousheng.www'
-    artifactId = 'basepojo'
-    publishVersion = '0.0.7'
-    desc = 'JSON decode pojo'
-    website = 'https://github.com/makai554892700/JSONDecodePojo/tree/master/basepojo'
-}
+//apply plugin: 'com.novoda.bintray-release'
+//
+//buildscript {
+//    repositories {
+//        jcenter()
+//    }
+//    dependencies {
+//        classpath 'com.novoda:bintray-release:0.9.1'
+//    }
+//}
+//
+//publish {
+//    userOrg = 'marking'
+//    groupId = 'com.mayousheng.www'
+//    artifactId = 'basepojo'
+//    publishVersion = '0.0.8'
+//    desc = 'JSON decode pojo'
+//    website = 'https://github.com/makai554892700/JSONDecodePojo/tree/master/basepojo'
+//}
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
     defaultConfig {
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
-        versionCode 7
-        versionName "0.0.7"
+        versionCode 8
+        versionName "0.0.8"
     }
     buildTypes {
         release {

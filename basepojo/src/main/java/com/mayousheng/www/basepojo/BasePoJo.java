@@ -108,7 +108,7 @@ public abstract class BasePoJo {
         }
     }
 
-    public static <T> T strToObject(Class fieldType, String str) {
+    public static <T extends BasePoJo> T strToObject(Class<T> fieldType, String str) {
         JSONObject jsonObject = null;
         try {
             jsonObject = new JSONObject(str);
@@ -117,7 +117,7 @@ public abstract class BasePoJo {
         return JSONObjectToObject(fieldType, jsonObject);
     }
 
-    public static <T> T JSONObjectToObject(Class fieldType, JSONObject jsonObject) {
+    public static <T extends BasePoJo> T JSONObjectToObject(Class<T> fieldType, JSONObject jsonObject) {
         if (jsonObject == null) {
             return null;
         }
@@ -132,7 +132,7 @@ public abstract class BasePoJo {
         return result;
     }
 
-    public static <T> ArrayList<T> JSONArrayStrToArray(Class arrayType, String jsonArrayStr) {
+    public static <T extends BasePoJo> ArrayList<T> JSONArrayStrToArray(Class<T> arrayType, String jsonArrayStr) {
         ArrayList<T> tempArrayList = new ArrayList<T>();
         if (jsonArrayStr != null) {
             JSONArray jsonArray = null;
@@ -145,7 +145,7 @@ public abstract class BasePoJo {
         return tempArrayList;
     }
 
-    public static <T> ArrayList<T> JSONArrayToArray(Class arrayType, JSONArray jsonArray) {
+    public static <T extends BasePoJo> ArrayList<T> JSONArrayToArray(Class<T> arrayType, JSONArray jsonArray) {
         ArrayList<T> tempArrayList = new ArrayList<T>();
         if (jsonArray != null && arrayType != null) {
             Constructor constructor = null;
