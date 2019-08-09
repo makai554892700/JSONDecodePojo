@@ -85,7 +85,7 @@ public abstract class BasePoJo {
                 if (tempJSONObject == null) {
                     tempJSONObject = jsonObject.optJSONObject(key);
                 }
-                fieldObj = JSONObjectToObject(arrayType, tempJSONObject);
+                fieldObj = jsonObject2Object(fieldType, tempJSONObject);
             } else {
                 fieldObj = jsonObject.optString(key);
             }
@@ -128,6 +128,22 @@ public abstract class BasePoJo {
             Constructor constructor = fieldType.getConstructor(String.class);
             if (constructor != null) {
                 result = (T) constructor.newInstance(jsonObject.toString());
+            }
+        } catch (Exception e) {
+        }
+        return result;
+    }
+
+    private <T extends BasePoJo> Object jsonObject2Object(Class<T> fieldType
+            , JSONObject jsonObject) {
+        if (jsonObject == null) {
+            return null;
+        }
+        Object result = null;
+        try {
+            Constructor constructor = fieldType.getConstructor(String.class);
+            if (constructor != null) {
+                result = constructor.newInstance(jsonObject.toString());
             }
         } catch (Exception e) {
         }
