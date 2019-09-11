@@ -6,7 +6,7 @@ apply plugin: 'com.android.library'
 //        jcenter()
 //    }
 //    dependencies {
-//        classpath 'com.novoda:bintray-release:0.3.4'
+//        classpath 'com.novoda:bintray-release:0.9.1'
 //    }
 //}
 //
@@ -14,17 +14,9 @@ apply plugin: 'com.android.library'
 //    userOrg = 'marking'
 //    groupId = 'com.mayousheng.www'
 //    artifactId = 'httputils'
-//    publishVersion = '0.0.2'
+//    publishVersion = '0.0.3'
 //    desc = 'Http utils.'
 //    website = 'https://github.com/makai554892700/JSONDecodePojo/tree/master/httputils'
-//}
-//
-//tasks.withType(Javadoc) {
-//    options {
-//        encoding "UTF-8"
-//        charSet 'UTF-8'
-//    }
-//    options.addStringOption('Xdoclint:none', '-quiet')
 //}
 
 android {
@@ -32,8 +24,8 @@ android {
     defaultConfig {
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
-        versionCode 2
-        versionName "0.0.2"
+        versionCode 3
+        versionName "0.0.3"
     }
     buildTypes {
         release {
