@@ -14,7 +14,7 @@ apply plugin: 'com.android.library'
 //    userOrg = 'marking'
 //    groupId = 'com.mayousheng.www'
 //    artifactId = 'httputils'
-//    publishVersion = '0.0.3'
+//    publishVersion = '0.0.4'
 //    desc = 'Http utils.'
 //    website = 'https://github.com/makai554892700/JSONDecodePojo/tree/master/httputils'
 //}
@@ -24,8 +24,8 @@ android {
     defaultConfig {
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
-        versionCode 3
-        versionName "0.0.3"
+        versionCode 4
+        versionName "0.0.4"
     }
     buildTypes {
         release {

@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.mayousheng.www.httputils.HttpUtils;
 import com.mayousheng.www.initview.ViewDesc;
 import com.mayousheng.www.jsondecodepojo.R;
 import com.mayousheng.www.jsondecodepojo.base.BaseActivity;
@@ -22,6 +23,9 @@ import com.mayousheng.www.jsondecodepojo.utils.BLUtils;
 import com.mayousheng.www.jsondecodepojo.utils.CommonRequestUtils;
 import com.mayousheng.www.jsondecodepojo.utils.Settings;
 import com.mayousheng.www.jsondecodepojo.utils.UserUtils;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by makai on 2017/12/6.
@@ -55,6 +59,23 @@ public class FirstActivity extends BaseActivity implements View.OnClickListener 
             register.setOnClickListener(this);
             loading.setOnClickListener(this);
         }
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                HttpUtils.getInstance().getURLResponse("https://www.baidu.com"
+                        , null, new HttpUtils.IWebCallback() {
+                            @Override
+                            public void onCallback(int status, String message, Map<String, List<String>> heard, byte[] data) {
+                                Log.e("-----1", "onCallback data=" + (data == null ? "null" : new String(data)));
+                            }
+
+                            @Override
+                            public void onFail(int status, String message) {
+                                Log.e("-----1", "onFail data=" + message);
+                            }
+                        });
+            }
+        }).start();
     }
 
     @Override

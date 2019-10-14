@@ -85,6 +85,7 @@ public class HttpUtils {
                         conn.addRequestProperty(key, heads.get(key));
                     }
                 }
+                conn.connect();
                 is = conn.getInputStream();   //获取输入流，此时才真正建立链接
                 baos = new ByteArrayOutputStream();
                 byte[] temp = new byte[1024];
@@ -303,6 +304,7 @@ public class HttpUtils {
                 conn.setRequestProperty(temp.getKey(), temp.getValue());
             }
         }
+        conn.connect();
         if (POST.equals(requestMethod)) {
             conn.getOutputStream().write(postData);
         }
