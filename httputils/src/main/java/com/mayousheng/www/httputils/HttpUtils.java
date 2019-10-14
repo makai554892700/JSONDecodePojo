@@ -1,5 +1,7 @@
 package com.mayousheng.www.httputils;
 
+import android.os.Build;
+
 import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
 import java.io.IOException;
@@ -84,6 +86,9 @@ public class HttpUtils {
                     for (String key : heads.keySet()) {
                         conn.addRequestProperty(key, heads.get(key));
                     }
+                }
+                if (Build.VERSION.SDK != null && Build.VERSION.SDK_INT > 13) {
+                    conn.setRequestProperty("Connection", "close");
                 }
                 conn.connect();
                 is = conn.getInputStream();   //获取输入流，此时才真正建立链接
@@ -303,6 +308,9 @@ public class HttpUtils {
             for (Map.Entry<String, String> temp : headers.entrySet()) {
                 conn.setRequestProperty(temp.getKey(), temp.getValue());
             }
+        }
+        if (Build.VERSION.SDK != null && Build.VERSION.SDK_INT > 13) {
+            conn.setRequestProperty("Connection", "close");
         }
         conn.connect();
         if (POST.equals(requestMethod)) {
