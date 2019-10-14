@@ -24,6 +24,9 @@ import com.mayousheng.www.jsondecodepojo.utils.CommonRequestUtils;
 import com.mayousheng.www.jsondecodepojo.utils.Settings;
 import com.mayousheng.www.jsondecodepojo.utils.UserUtils;
 
+import java.net.InetSocketAddress;
+import java.net.Proxy;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -62,8 +65,12 @@ public class FirstActivity extends BaseActivity implements View.OnClickListener 
         new Thread(new Runnable() {
             @Override
             public void run() {
-                HttpUtils.getInstance().getURLResponse("https://www.baidu.com"
-                        , null, new HttpUtils.IWebCallback() {
+                HttpUtils.getInstance().getURLResponse("http://ip.t88.biz"
+                        , null
+                        , new Proxy(Proxy.Type.SOCKS
+                                , new InetSocketAddress(
+                                "58.253.13.36", 11003))
+                        , new HttpUtils.IWebCallback() {
                             @Override
                             public void onCallback(int status, String message, Map<String, List<String>> heard, byte[] data) {
                                 Log.e("-----1", "onCallback data=" + (data == null ? "null" : new String(data)));

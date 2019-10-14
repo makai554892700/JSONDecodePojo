@@ -1,31 +1,31 @@
 apply plugin: 'com.android.library'
-//apply plugin: 'com.novoda.bintray-release'
-//
-//buildscript {
-//    repositories {
-//        jcenter()
-//    }
-//    dependencies {
-//        classpath 'com.novoda:bintray-release:0.9.1'
-//    }
-//}
-//
-//publish {
-//    userOrg = 'marking'
-//    groupId = 'com.mayousheng.www'
-//    artifactId = 'httputils'
-//    publishVersion = '0.0.5'
-//    desc = 'Http utils.'
-//    website = 'https://github.com/makai554892700/JSONDecodePojo/tree/master/httputils'
-//}
+apply plugin: 'com.novoda.bintray-release'
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.novoda:bintray-release:0.9.1'
+    }
+}
+
+publish {
+    userOrg = 'marking'
+    groupId = 'com.mayousheng.www'
+    artifactId = 'httputils'
+    publishVersion = '0.0.7'
+    desc = 'Http utils.'
+    website = 'https://github.com/makai554892700/JSONDecodePojo/tree/master/httputils'
+}
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
     defaultConfig {
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
-        versionCode 5
-        versionName "0.0.5"
+        versionCode 7
+        versionName "0.0.7"
     }
     buildTypes {
         release {
