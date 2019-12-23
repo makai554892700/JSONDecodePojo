@@ -13,9 +13,10 @@ import java.util.ArrayList;
 
 public abstract class BasePoJo {
 
-    public BasePoJo(String jsonStr) {
-        if (jsonStr == null || jsonStr.isEmpty()) {
-            return;
+    public static <T extends BasePoJo> T fromJsonStr(
+            String jsonStr, T data) {
+        if (jsonStr == null || jsonStr.isEmpty() || data == null) {
+            return null;
         }
         JSONObject jsonObject = null;
         try {
@@ -23,16 +24,21 @@ public abstract class BasePoJo {
         } catch (Exception e) {
         }
         if (jsonObject == null) {
-            return;
+            return null;
         }
-        Class clazz = this.getClass();
+        Class clazz = data.getClass();
         while (BasePoJo.class != clazz) {
-            initField(jsonObject, clazz);
+            data.initField(jsonObject, clazz);
             clazz = clazz.getSuperclass();
         }
+        return data;
     }
 
-    private void initField(JSONObject jsonObject, Class clazz) {
+    public BasePoJo(String jsonStr) {
+        fromJsonStr(jsonStr, this);
+    }
+
+    public void initField(JSONObject jsonObject, Class clazz) {
         if (clazz == null) {
             return;
         }
