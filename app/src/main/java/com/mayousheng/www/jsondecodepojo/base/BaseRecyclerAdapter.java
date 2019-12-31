@@ -1,16 +1,18 @@
 package com.mayousheng.www.jsondecodepojo.base;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.mayousheng.www.jsondecodepojo.utils.MessageUtils;
-import com.mayousheng.www.jsondecodepojo.utils.ShowImageUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import www.mayousheng.com.showimgutils.ShowImageUtils;
 
 /**
  * Created by ma kai on 2017/10/5.

@@ -1,4 +1,4 @@
-package com.mayousheng.www.jsondecodepojo.utils;
+package www.mayousheng.com.showimgutils;
 
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
@@ -13,14 +13,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-/**
- * Created by marking on 2017/4/11.
- */
-
 public class ShowImageUtils {
 
     private View view;
-    private Set<MyAsyncTast> myAsyncTasts;
+    private Set<MyAsyncTask> myAsyncTasts;
     private ConcurrentHashMap<String, String> imgDescs;
 
     public void setView(View view) {
@@ -34,13 +30,13 @@ public class ShowImageUtils {
     }
 
     public ShowImageUtils() {
-        myAsyncTasts = new HashSet<MyAsyncTast>();
+        myAsyncTasts = new HashSet<MyAsyncTask>();
         imgDescs = new ConcurrentHashMap<>();
     }
 
     public ShowImageUtils(View view) {
         this.view = view;
-        myAsyncTasts = new HashSet<MyAsyncTast>();
+        myAsyncTasts = new HashSet<MyAsyncTask>();
         imgDescs = new ConcurrentHashMap<>();
     }
 
@@ -90,9 +86,9 @@ public class ShowImageUtils {
         if (url != null) {
             tempBitmap = CacheUtils.getInstance().getBitmapByDisk(url);
             if (tempBitmap == null) {
-                MyAsyncTast myAsyncTast = new MyAsyncTast(tag, url, weakReference, loadImageBack);
-                myAsyncTast.execute();
-                myAsyncTasts.add(myAsyncTast);
+                MyAsyncTask myAsyncTask = new MyAsyncTask(tag, url, weakReference, loadImageBack);
+                myAsyncTask.execute();
+                myAsyncTasts.add(myAsyncTask);
             } else {
                 setImageViewByTag(weakReference, tempBitmap, tag);
                 if (loadImageBack != null) {
@@ -108,20 +104,20 @@ public class ShowImageUtils {
 
     public ShowImageUtils stopAllTasks() {
         if (myAsyncTasts != null) {
-            for (MyAsyncTast myAsyncTast : myAsyncTasts) {
-                myAsyncTast.cancel(false);
+            for (MyAsyncTask myAsyncTask : myAsyncTasts) {
+                myAsyncTask.cancel(false);
             }
         }
         return this;
     }
 
-    private class MyAsyncTast extends AsyncTask<String, Void, Bitmap> {
+    private class MyAsyncTask extends AsyncTask<String, Void, Bitmap> {
         private String tag;
         private String url;
         private WeakReference<ImageView> weakReference;
         private LoadImageBack loadImageBack;
 
-        private MyAsyncTast(String tag, String url, WeakReference<ImageView> weakReference, LoadImageBack loadImageBack) {
+        private MyAsyncTask(String tag, String url, WeakReference<ImageView> weakReference, LoadImageBack loadImageBack) {
             this.tag = tag;
             this.url = url;
             this.weakReference = weakReference;
@@ -130,7 +126,8 @@ public class ShowImageUtils {
 
         @Override
         protected Bitmap doInBackground(String... params) {
-            if (weakReference.get() == null || !tag.equals(weakReference.get().getTag())) {
+            ImageView tempImageView = weakReference.get();
+            if (tempImageView == null) {
                 return null;//屏蔽滑动时无效请求
             }
             return CacheUtils.getInstance().getBitmap(url);
@@ -145,7 +142,6 @@ public class ShowImageUtils {
                 } else {
                     loadImageBack.onField(message);
                 }
-
             }
             myAsyncTasts.remove(this);
         }

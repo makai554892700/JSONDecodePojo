@@ -5,7 +5,8 @@ import android.view.View;
 
 import com.mayousheng.www.jsondecodepojo.base.BaseNewsHolder;
 import com.mayousheng.www.jsondecodepojo.pojo.BSBDJPunsterResponse;
-import com.mayousheng.www.jsondecodepojo.utils.ShowImageUtils;
+
+import www.mayousheng.com.showimgutils.ShowImageUtils;
 
 /**
  * Created by ma kai on 2017/10/5.

@@ -1,13 +1,14 @@
 package com.mayousheng.www.jsondecodepojo.activity;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
 import android.widget.FrameLayout;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.mayousheng.www.jsondecodepojo.R;
 import com.mayousheng.www.jsondecodepojo.base.BaseActivity;
@@ -19,6 +20,8 @@ import com.mayousheng.www.jsondecodepojo.fragment.NewPostFragment;
 import com.mayousheng.www.jsondecodepojo.view.IconAndTextView;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
 
@@ -33,8 +36,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     @ViewDesc(viewId = R.id.mine)
     public IconAndTextView mine;
     private FragmentManager fragmentManager;
-    private SparseArray<IconAndTextView> iconAndTextViews = new SparseArray<>();
-    private ArrayList<Fragment> fragmentArray = new ArrayList<>();
+    private LinkedHashMap<Integer, IconAndTextView> iconAndTextViews;
+    private ArrayList<Fragment> fragmentArray;
     private int lastIndex = -1;
     private int lastId = -1;
 
@@ -54,6 +57,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     //初始化fragments
     private void initFragments() {
+        fragmentArray = new ArrayList<>();
         fragmentArray.add(new HomeFragment());
         fragmentArray.add(new NewPostFragment());
         fragmentArray.add(new CommunityFragment());
@@ -67,6 +71,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     //获取view
     private void initView() {
+        iconAndTextViews = new LinkedHashMap<>();
         iconAndTextViews.put(R.id.home, home);
         home.setOnClickListener(this);
         iconAndTextViews.put(R.id.new_post, newPost);
@@ -104,19 +109,21 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         if (lastId == id) {
             return -1;
         }
-        int index = -1;
+        int result = -1;
         synchronized (this) {
-            for (int i = 0; i < iconAndTextViews.size(); i++) {
-                if (id == iconAndTextViews.keyAt(i)) {
-                    iconAndTextViews.valueAt(i).setIconAlpha(100);
-                    index = i;
+            int index = -1;
+            for (Map.Entry<Integer, IconAndTextView> kv : iconAndTextViews.entrySet()) {
+                index++;
+                if (id == kv.getKey()) {
+                    result = index;
+                    kv.getValue().setIconAlpha(100);
                 } else {
-                    iconAndTextViews.valueAt(i).setIconAlpha(0);
+                    kv.getValue().setIconAlpha(0);
                 }
             }
         }
         lastId = id;
-        return index;
+        return result;
     }
 
 }

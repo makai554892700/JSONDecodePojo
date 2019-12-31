@@ -1,4 +1,4 @@
-package com.mayousheng.www.jsondecodepojo.utils;
+package www.mayousheng.com.showimgutils;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;
@@ -8,8 +8,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Environment;
-
-import com.mayousheng.www.jsondecodepojo.utils.cache.DiskLruCache;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -22,6 +20,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+
+import www.mayousheng.com.showimgutils.cache.DiskLruCache;
+
 
 /**
  * Created by marking on 2017/4/12.

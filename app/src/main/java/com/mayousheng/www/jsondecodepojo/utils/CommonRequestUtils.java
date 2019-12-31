@@ -1,6 +1,7 @@
 package com.mayousheng.www.jsondecodepojo.utils;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.mayousheng.www.basepojo.BasePoJo;
 import com.mayousheng.www.httputils.HttpUtils;
@@ -127,12 +128,17 @@ public class CommonRequestUtils {
                         , data, new HttpUtils.IWebSessionBack() {
                             @Override
                             public void onFail(int status, String message) {
+                                Log.e("-----1", "commonPost url=" + url + " onFail.status="
+                                        + status + ";message=" + message);
                                 back.field(message);
                             }
 
                             @Override
                             public void onCallback(int status, String message, Map<String
                                     , List<String>> heard, String sessionId, byte[] data) {
+                                Log.e("-----1", "commonPost url=" + url + " success.status="
+                                        + status + ";message=" + message + ";data=" + (data == null
+                                        ? "null" : new String(data)));
                                 if (status == 200) {
                                     DataBack<UserResponse> dataBack =
                                             CommonRequestUtils.commonGetDataBack(data);

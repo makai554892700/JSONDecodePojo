@@ -11,9 +11,10 @@ import com.mayousheng.www.jsondecodepojo.common.StaticParam;
 import com.mayousheng.www.initview.ViewDesc;
 import com.mayousheng.www.jsondecodepojo.pojo.BSBDJVoiceResponse;
 import com.mayousheng.www.jsondecodepojo.utils.MediaPlayerUtils;
-import com.mayousheng.www.jsondecodepojo.utils.ShowImageUtils;
 
 import java.lang.ref.WeakReference;
+
+import www.mayousheng.com.showimgutils.ShowImageUtils;
 
 /**
  * Created by ma kai on 2017/10/5.

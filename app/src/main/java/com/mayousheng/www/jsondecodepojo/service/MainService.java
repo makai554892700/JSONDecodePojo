@@ -3,7 +3,8 @@ package com.mayousheng.www.jsondecodepojo.service;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
-import android.support.annotation.Nullable;
+
+import androidx.annotation.Nullable;
 
 /**
  * Created by ma kai on 2017/10/11.

@@ -1,8 +1,9 @@
 package com.mayousheng.www.jsondecodepojo.common;
 
 import android.graphics.Rect;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by ma kai on 2017/9/29.
@@ -10,7 +11,7 @@ import android.view.View;
 
 public class StaticParam {
 
-    private static final String BASE_URL = "http://api.woaizhuangbi.com";//基本域名
+    private static final String BASE_URL = "https://api.woaizhuangbi.com";//基本域名
     //    private static final String BASE_URL = "http://192.168.0.110";//基本域名
     public static final String BASE_POST_JOKES = BASE_URL + "/sbgnews/api/jokes/getJokes";//获取新闻请求路径
     public static final String BASE_POST_BSBDJ_VIDEOS = BASE_URL + "/sbgnews/api/bsbdj/getVideos";//百思不得姐获取视频请求路径

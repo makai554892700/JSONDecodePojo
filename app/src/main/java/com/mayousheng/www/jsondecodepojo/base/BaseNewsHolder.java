@@ -21,11 +21,12 @@ import com.mayousheng.www.jsondecodepojo.utils.CommonRequestUtils;
 import com.mayousheng.www.jsondecodepojo.utils.OperateUtils;
 import com.mayousheng.www.jsondecodepojo.utils.RC4Utils;
 import com.mayousheng.www.jsondecodepojo.utils.ShareUtils;
-import com.mayousheng.www.jsondecodepojo.utils.ShowImageUtils;
 import com.mayousheng.www.jsondecodepojo.utils.db.DBOperateUtils;
 import com.mayousheng.www.jsondecodepojo.utils.db.model.DBOperateInfo;
 
 import java.lang.ref.WeakReference;
+
+import www.mayousheng.com.showimgutils.ShowImageUtils;
 
 /**
  * Created by ma kai on 2017/10/5.

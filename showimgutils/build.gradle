@@ -13,10 +13,10 @@ apply plugin: 'com.android.library'
 //publish {
 //    userOrg = 'marking'
 //    groupId = 'com.mayousheng.www'
-//    artifactId = 'basepojo'
-//    publishVersion = '0.1.1'
-//    desc = 'JSON decode pojo'
-//    website = 'https://github.com/makai554892700/JSONDecodePojo/tree/master/basepojo'
+//    artifactId = 'showimgutils'
+//    publishVersion = '0.0.1'
+//    desc = 'Show img utils.'
+//    website = 'https://github.com/makai554892700/JSONDecodePojo/tree/master/showimgutils'
 //}
 
 android {
@@ -24,20 +24,22 @@ android {
     defaultConfig {
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
-        versionCode 11
-        versionName "0.1.1"
+        versionCode 1
+        versionName "1.0"
+
+        consumerProguardFiles 'consumer-rules.pro'
     }
+
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    productFlavors {
-    }
+
 }
 
 dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
 }
 //上传jar包命令： gradlew clean build bintrayUpload -PbintrayUser=PBINTRAY_NAME -PbintrayKey=PBINTRAY_KEY -PdryRun=false

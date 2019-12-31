@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.mayousheng.www.jsondecodepojo.utils.cache;
+package www.mayousheng.com.showimgutils.cache;
 
 import java.io.Closeable;
 import java.io.File;

@@ -2,8 +2,6 @@ package com.mayousheng.www.jsondecodepojo.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.util.Log;
 import android.view.View;
@@ -19,14 +17,12 @@ import com.mayousheng.www.jsondecodepojo.R;
 import com.mayousheng.www.jsondecodepojo.base.BaseActivity;
 import com.mayousheng.www.jsondecodepojo.common.StaticParam;
 import com.mayousheng.www.jsondecodepojo.pojo.User;
-import com.mayousheng.www.jsondecodepojo.utils.BLUtils;
 import com.mayousheng.www.jsondecodepojo.utils.CommonRequestUtils;
 import com.mayousheng.www.jsondecodepojo.utils.Settings;
 import com.mayousheng.www.jsondecodepojo.utils.UserUtils;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -62,27 +58,6 @@ public class FirstActivity extends BaseActivity implements View.OnClickListener 
             register.setOnClickListener(this);
             loading.setOnClickListener(this);
         }
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                HttpUtils.getInstance().getURLResponse("http://ip.t88.biz"
-                        , null
-                        , new Proxy(Proxy.Type.SOCKS
-                                , new InetSocketAddress(
-                                "58.253.13.36", 11003))
-                        , new HttpUtils.IWebCallback() {
-                            @Override
-                            public void onCallback(int status, String message, Map<String, List<String>> heard, byte[] data) {
-                                Log.e("-----1", "onCallback data=" + (data == null ? "null" : new String(data)));
-                            }
-
-                            @Override
-                            public void onFail(int status, String message) {
-                                Log.e("-----1", "onFail data=" + message);
-                            }
-                        });
-            }
-        }).start();
     }
 
     @Override
@@ -91,22 +66,6 @@ public class FirstActivity extends BaseActivity implements View.OnClickListener 
         hideKeyboard();
         Editable userNameStr = userName.getText();
         Editable userPassStr = userPass.getText();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                BLUtils.getPhone(new BLUtils.StringBack() {
-                    @Override
-                    public void onStrSuccess(String response) {
-                        Log.e("-----1", "get phone success.response=" + response);
-                    }
-
-                    @Override
-                    public void onFailed(Integer status, String message) {
-                        Log.e("-----1", "get phone failed.status=" + status + ";message=" + message);
-                    }
-                });
-            }
-        }).start();
         if (userNameStr == null || userPassStr == null) {
             Toast.makeText(this, "用户名或者密码不可为空", Toast.LENGTH_SHORT).show();
             return;

@@ -37,15 +37,18 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-//    implementation 'com.mayousheng.www:basepojo:0.0.9'
-//    implementation 'com.mayousheng.www:httputils:0.0.5'
-    implementation 'com.mayousheng.www:initview:0.0.2'
+//    implementation 'com.mayousheng.www:basepojo:0.1.1'
+//    implementation 'com.mayousheng.www:httputils:0.0.8'
+//    implementation 'com.mayousheng.www:initview:0.0.2'
+//    implementation 'com.mayousheng.www:showimgutils:0.0.1'
     implementation project(':basepojo')
     implementation project(':httputils')
-//    implementation project(':initview')
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.3'
-    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.3'
-    implementation rootProject.libRecycleView
-    implementation rootProject.libSupportAppcompatV7
+    implementation project(':initview')
+    implementation project(':showimgutils')
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
+//    implementation 'com.github.bumptech.glide:glide:4.10.0'
+//    annotationProcessor 'com.github.bumptech.glide:compiler:4.10.0'
 }
 //生成apk包命令： gradlew :app:clean  :app:resguardRelease

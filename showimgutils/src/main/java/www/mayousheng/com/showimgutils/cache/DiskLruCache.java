@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.mayousheng.www.jsondecodepojo.utils.cache;
+package www.mayousheng.com.showimgutils.cache;
 
 import java.io.BufferedWriter;
 import java.io.Closeable;
@@ -851,7 +851,8 @@ public final class DiskLruCache implements Closeable {
         super(out);
       }
 
-      @Override public void write(int oneByte) {
+      @Override
+      public void write(int oneByte) {
         try {
           out.write(oneByte);
         } catch (IOException e) {
@@ -859,7 +860,8 @@ public final class DiskLruCache implements Closeable {
         }
       }
 
-      @Override public void write(byte[] buffer, int offset, int length) {
+      @Override
+      public void write(byte[] buffer, int offset, int length) {
         try {
           out.write(buffer, offset, length);
         } catch (IOException e) {
@@ -867,7 +869,8 @@ public final class DiskLruCache implements Closeable {
         }
       }
 
-      @Override public void close() {
+      @Override
+      public void close() {
         try {
           out.close();
         } catch (IOException e) {
@@ -875,7 +878,8 @@ public final class DiskLruCache implements Closeable {
         }
       }
 
-      @Override public void flush() {
+      @Override
+      public void flush() {
         try {
           out.flush();
         } catch (IOException e) {

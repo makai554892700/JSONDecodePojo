@@ -1,7 +1,8 @@
 package com.mayousheng.www.jsondecodepojo.fragment.bsbdj;
 
-import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.mayousheng.www.jsondecodepojo.R;
 import com.mayousheng.www.jsondecodepojo.adapter.bsbdj.VideoAdapter;
