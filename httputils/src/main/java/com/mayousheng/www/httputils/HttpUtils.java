@@ -185,7 +185,7 @@ public class HttpUtils {
             InputStream is = null;
             ByteArrayOutputStream baos = null;
             try {
-                conn = commonGetConn(urlString, headers, postData, proxy, timeOut);
+                conn = commonGetConn(urlString, null, headers, postData, proxy, timeOut);
                 is = conn.getInputStream();   //获取输入流，此时才真正建立链接
                 baos = new ByteArrayOutputStream();
                 is2bos(is, baos);
@@ -206,7 +206,7 @@ public class HttpUtils {
             InputStream is = null;
             ByteArrayOutputStream baos = null;
             try {
-                conn = commonGetConn(urlString, headers, postData, proxy, timeOut);
+                conn = commonGetConn(urlString, null, headers, postData, proxy, timeOut);
                 is = conn.getInputStream();   //获取输入流，此时才真正建立链接
                 baos = new ByteArrayOutputStream();
                 is2bos(is, baos);
@@ -229,7 +229,7 @@ public class HttpUtils {
         }
     }
 
-    private HttpURLConnection commonGetConn(String urlString, HashMap<String, String> headers
+    private HttpURLConnection commonGetConn(String urlString, String requestType, HashMap<String, String> headers
             , byte[] postData, Proxy proxy, int timeOut) throws IOException {
         HttpURLConnection conn;
         URL url = new URL(urlString); //URL对象
@@ -249,7 +249,11 @@ public class HttpUtils {
             }
         }
         conn.setConnectTimeout(timeOut);
-        conn.setRequestMethod(postData == null ? GET : POST);
+        if (requestType == null) {
+            conn.setRequestMethod(postData == null ? GET : POST);
+        } else {
+            conn.setRequestMethod(requestType);
+        }
         conn.setRequestProperty("Charsert", "UTF-8");
         if (headers != null) {
             for (Map.Entry<String, String> temp : headers.entrySet()) {
