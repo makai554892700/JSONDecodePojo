@@ -14,7 +14,7 @@ public class Settings {
             return null;
         }
         return context.getApplicationContext().getSharedPreferences(SETTING_INFO,
-                Context.MODE_WORLD_READABLE).getString(SettingName, "");
+                Context.MODE_PRIVATE).getString(SettingName, "");
     }
 
     public static boolean getBooleanSetting(Context context, String SettingName) {
@@ -22,7 +22,7 @@ public class Settings {
             return false;
         }
         return context.getSharedPreferences(SETTING_INFO,
-                Context.MODE_WORLD_READABLE).getBoolean(SettingName, false);
+                Context.MODE_PRIVATE).getBoolean(SettingName, false);
     }
 
     public static boolean saveSetting(Context context, String settingName, boolean settingValue) {
@@ -30,7 +30,7 @@ public class Settings {
             return false;
         }
         SharedPreferences.Editor editor = context.getApplicationContext().getSharedPreferences(
-                SETTING_INFO, Context.MODE_WORLD_WRITEABLE).edit();
+                SETTING_INFO, Context.MODE_PRIVATE).edit();
         editor.putBoolean(settingName, settingValue);
         return editor.commit();
     }
@@ -40,7 +40,7 @@ public class Settings {
             return false;
         }
         SharedPreferences.Editor editor = context.getApplicationContext().getSharedPreferences(
-                SETTING_INFO, Context.MODE_WORLD_WRITEABLE).edit();
+                SETTING_INFO, Context.MODE_PRIVATE).edit();
         editor.putString(settingName, settingValue);
         return editor.commit();
     }
@@ -50,7 +50,7 @@ public class Settings {
             return false;
         }
         SharedPreferences.Editor editor = context.getApplicationContext().getSharedPreferences(
-                SETTING_INFO, Context.MODE_WORLD_WRITEABLE).edit();
+                SETTING_INFO, Context.MODE_PRIVATE).edit();
         editor.remove(key);
         return editor.commit();
     }

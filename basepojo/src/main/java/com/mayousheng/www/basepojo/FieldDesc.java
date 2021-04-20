@@ -16,5 +16,7 @@ import java.lang.annotation.Target;
 public @interface FieldDesc {
     String key();
 
-    Class arrayType() default String.class;
+    Class<?> arrayType() default String.class;
+
+    Class<?> mapType() default String.class;
 }

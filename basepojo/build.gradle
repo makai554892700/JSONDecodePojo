@@ -14,7 +14,7 @@ apply plugin: 'com.android.library'
 //    userOrg = 'marking'
 //    groupId = 'com.mayousheng.www'
 //    artifactId = 'basepojo'
-//    publishVersion = '0.1.1'
+//    publishVersion = '0.1.2'
 //    desc = 'JSON decode pojo'
 //    website = 'https://github.com/makai554892700/JSONDecodePojo/tree/master/basepojo'
 //}
@@ -24,8 +24,8 @@ android {
     defaultConfig {
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
-        versionCode 11
-        versionName "0.1.1"
+        versionCode 12
+        versionName "0.1.2"
     }
     buildTypes {
         release {
