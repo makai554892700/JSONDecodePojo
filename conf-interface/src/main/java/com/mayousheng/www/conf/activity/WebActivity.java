@@ -326,7 +326,7 @@ public class WebActivity extends BaseLoadingActivity {
         mWebView = null;
     }
 
-    public abstract class EventBack {
+    public static abstract class EventBack {
         public abstract void onEvent(String eventKey);
 
         public abstract void customEvent(String eventKey, String eventValue);
