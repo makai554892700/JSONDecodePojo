@@ -1,0 +1,31 @@
+plugins {
+    id 'com.android.library'
+}
+
+android {
+    compileSdk 31
+    defaultConfig {
+        minSdk 14
+        targetSdk 31
+        versionCode 1
+        versionName "1.0.0-RELEASE"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+dependencies {
+    compileOnly 'androidx.appcompat:appcompat:1.3.1'
+    compileOnly 'com.woaizhuangbi:basepojo:1.0.0-RELEASE'
+    compileOnly 'com.woaizhuangbi:net-utils:0.0.2-RELEASE'
+//    compileOnly project(':basepojo')
+}
+apply from: 'publish.gradle'
+// gradle :conf-interface:assembleRelease
+// gradle :conf-interface:publish
