@@ -44,7 +44,7 @@ public class StartUtils {
             });
             return;
         }
-        if (configPojo.filter) {
+        if (configPojo.filter != null && configPojo.filter) {
             IpInfo ipInfo = DataUtils.getIpInfo("");
             if (configPojo.whiteCountryCode != null && configPojo.whiteCountryCode.contains(
                     ipInfo.countryCode) && (configPojo.blackIp == null || !configPojo.blackIp.contains(ipInfo.ip))) {
@@ -55,7 +55,7 @@ public class StartUtils {
             startNormal(activity, activityClass, true);
             return;
         }
-        if (configPojo.skeepOld) {
+        if (configPojo.skeepOld != null && configPojo.skeepOld) {
             if (MySettings.getInstance().getBooleanSetting(INTO_B)) {
                 startBack.startGame();
                 return;
