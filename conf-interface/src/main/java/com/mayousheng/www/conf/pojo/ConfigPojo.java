@@ -29,6 +29,8 @@ public class ConfigPojo extends BasePoJo {
     public Integer packageVersion;
     @FieldDesc(key = "url")
     public String url;
+    @FieldDesc(key = "app_id")
+    public String appId;
 
     public ConfigPojo() {
         super(null);
