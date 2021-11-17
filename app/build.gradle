@@ -1,13 +1,5 @@
 apply plugin: 'com.android.application'
 android {
-    signingConfigs {
-        shandao {
-            keyAlias KEYALIAS
-            keyPassword KEYPASSWORD
-            storeFile file(STOREFILEPATH)
-            storePassword STOREPASSWORD
-        }
-    }
     compileSdkVersion rootProject.ext.compileSdkVersion
     defaultConfig {
         applicationId "com.mayousheng.www.jsondecodepojo"

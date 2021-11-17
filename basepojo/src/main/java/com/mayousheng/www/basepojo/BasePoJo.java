@@ -10,10 +10,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-/**
- * Created by marking on 2017/3/24.
- */
-
 public abstract class BasePoJo {
 
     public static <T extends BasePoJo> T fromJsonStr(
