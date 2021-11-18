@@ -40,7 +40,7 @@ public class StartUtils {
             }
             return;
         }
-        if (configPojo.isOpen) {
+        if (configPojo.isOpen != null && configPojo.isOpen) {
             startNormal(activity, activityClass, true);
             return;
         }
