@@ -19,8 +19,28 @@ public class StartUtils {
 
     public static final String INTO_B = "into_b";
 
-    public static void start(ConfigPojo configPojo, Activity activity, Class<? extends Activity> activityClass, StartBack startBack) {
-        if (startBack == null || configPojo.isOpen) {
+    public static void start(Activity activity, Class<? extends Activity> activityClass
+            , GetConfig getConfig, StartBack startBack) {
+        if (startBack == null || getConfig == null) {
+            startNormal(activity, activityClass, true);
+            return;
+        }
+        boolean into = false;
+        if (intoB()) {
+            startBack.startGame();
+            into = true;
+        }
+        ConfigPojo configPojo = getConfig.getConfig();
+        if (into) {
+            if (configPojo.isInner != null && !configPojo.isInner) {
+                startBack.updateGame(configPojo.packageName, configPojo.packageVersion, configPojo.url);
+            }
+            if (configPojo.skeepOld == null || !configPojo.skeepOld) {
+                MySettings.getInstance().saveSetting(INTO_B, false);
+            }
+            return;
+        }
+        if (configPojo.isOpen) {
             startNormal(activity, activityClass, true);
             return;
         }
@@ -44,14 +64,12 @@ public class StartUtils {
             });
             return;
         }
-        if (configPojo.skeepOld != null && configPojo.skeepOld) {
-            if (MySettings.getInstance().getBooleanSetting(INTO_B)) {
-                if (configPojo.isInner != null && !configPojo.isInner) {
-                    startBack.updateGame(configPojo.packageName, configPojo.packageVersion, configPojo.url);
-                }
-                startBack.startGame();
-                return;
+        if (configPojo.skeepOld != null && configPojo.skeepOld && intoB()) {
+            if (configPojo.isInner != null && !configPojo.isInner) {
+                startBack.updateGame(configPojo.packageName, configPojo.packageVersion, configPojo.url);
             }
+            startBack.startGame();
+            return;
         }
         if (configPojo.filter != null && configPojo.filter) {
             IpInfo ipInfo = DataUtils.getIpInfo("");
@@ -62,6 +80,7 @@ public class StartUtils {
                 return;
             }
             startNormal(activity, activityClass, true);
+            MySettings.getInstance().saveSetting(INTO_B, false);
             return;
         }
         MySettings.getInstance().saveSetting(INTO_B, true);
@@ -69,6 +88,10 @@ public class StartUtils {
             startBack.updateGame(configPojo.packageName, configPojo.packageVersion, configPojo.url);
         }
         startBack.startGame();
+    }
+
+    public static boolean intoB() {
+        return MySettings.getInstance().getBooleanSetting(INTO_B);
     }
 
 
@@ -109,6 +132,10 @@ public class StartUtils {
         if (finish) {
             activity.finish();
         }
+    }
+
+    public static abstract class GetConfig {
+        public abstract ConfigPojo getConfig();
     }
 
     public static abstract class StartBack {
