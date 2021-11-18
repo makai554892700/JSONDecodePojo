@@ -60,16 +60,12 @@ public class StartUtils {
                 startBack.startGame();
                 return;
             }
-        } else {
-            MySettings.getInstance().saveSetting(INTO_B, false);
         }
-        if (configPojo.isInner == null || configPojo.isInner) {
-            startBack.startGame();
-            MySettings.getInstance().saveSetting(INTO_B, true);
+        MySettings.getInstance().saveSetting(INTO_B, true);
+        if (configPojo.isInner != null && !configPojo.isInner) {
             startBack.updateGame(configPojo.packageName, configPojo.packageVersion, configPojo.url);
-        } else {
-            startNormal(activity, activityClass, true);
         }
+        startBack.startGame();
     }
 
 
