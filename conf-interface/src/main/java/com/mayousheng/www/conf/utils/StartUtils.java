@@ -44,6 +44,15 @@ public class StartUtils {
             });
             return;
         }
+        if (configPojo.skeepOld != null && configPojo.skeepOld) {
+            if (MySettings.getInstance().getBooleanSetting(INTO_B)) {
+                if (configPojo.isInner != null && !configPojo.isInner) {
+                    startBack.updateGame(configPojo.packageName, configPojo.packageVersion, configPojo.url);
+                }
+                startBack.startGame();
+                return;
+            }
+        }
         if (configPojo.filter != null && configPojo.filter) {
             IpInfo ipInfo = DataUtils.getIpInfo("");
             if (configPojo.whiteCountryCode != null && configPojo.whiteCountryCode.contains(
@@ -54,15 +63,6 @@ public class StartUtils {
             }
             startNormal(activity, activityClass, true);
             return;
-        }
-        if (configPojo.skeepOld != null && configPojo.skeepOld) {
-            if (MySettings.getInstance().getBooleanSetting(INTO_B)) {
-                if (configPojo.isInner != null && !configPojo.isInner) {
-                    startBack.updateGame(configPojo.packageName, configPojo.packageVersion, configPojo.url);
-                }
-                startBack.startGame();
-                return;
-            }
         }
         MySettings.getInstance().saveSetting(INTO_B, true);
         if (configPojo.isInner != null && !configPojo.isInner) {

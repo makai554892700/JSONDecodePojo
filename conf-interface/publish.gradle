@@ -22,7 +22,7 @@ publishing {
         release(MavenPublication) {
             groupId "com.woaizhuangbi"
             artifactId "conf-interface"
-            version "1.0.5-RELEASE"
+            version "1.0.6-RELEASE"
             artifact("$buildDir/outputs/aar/${project.getName()}-release.aar")
             artifact androidSourcesJar
             pom {
