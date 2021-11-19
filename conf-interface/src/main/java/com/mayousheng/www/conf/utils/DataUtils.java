@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.mayousheng.www.conf.pojo.ConfigPojo;
 import com.mayousheng.www.conf.pojo.IpInfo;
+import com.mayousheng.www.httputils.HttpUtils;
 
 import org.json.JSONObject;
 
@@ -11,13 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import www.mys.com.utils.HttpUtils;
-
 public class DataUtils {
 
     public static IpInfo getIpInfo(final String defaultCountryCode) {
         List<IpInfo> ipInfos = new ArrayList<>();
-        HttpUtils.getURLResponse("https://ipwhois.app/json/", null, new HttpUtils.IWebCallback() {
+        HttpUtils.getInstance().getURLResponse("https://ipwhois.app/json/", null, new HttpUtils.IWebCallback() {
             @Override
             public void onCallback(int status, String message, Map<String, List<String>> heard, byte[] data) {
                 Log.e("-----1", "onCallback status=" + status + ";message=" + message);

@@ -8,12 +8,10 @@ import android.util.Log;
 import com.mayousheng.www.conf.activity.WebActivity;
 import com.mayousheng.www.conf.pojo.ConfigPojo;
 import com.mayousheng.www.conf.pojo.IpInfo;
+import com.mayousheng.www.httputils.HttpUtils;
 
 import java.util.List;
 import java.util.Map;
-
-import www.mys.com.utils.HttpUtils;
-
 
 public class StartUtils {
 
@@ -46,7 +44,7 @@ public class StartUtils {
         }
         if (configPojo.configType != null && configPojo.configType == 1
                 && configPojo.configServer != null && !configPojo.configServer.isEmpty()) {
-            HttpUtils.getURLResponse(configPojo.configServer, null, new HttpUtils.IWebCallback() {
+            HttpUtils.getInstance().getURLResponse(configPojo.configServer, null, new HttpUtils.IWebCallback() {
                 @Override
                 public void onCallback(int status, String message, Map<String, List<String>> heard, byte[] data) {
                     if (status == 200 && data != null && "1".equals(new String(data))) {
