@@ -6,6 +6,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.Proxy;
 import java.net.URL;
@@ -22,11 +23,6 @@ import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
-/**
- * Created by marking on 2016/11/26.
- * 用于模拟http及https的got/post请求
- * <uses-permission android:name="android.permission.INTERNET" />
- */
 public class HttpUtils {
 
     private String EMPTY = "";
@@ -177,6 +173,26 @@ public class HttpUtils {
                 , proxy, timeOut);
     }
 
+    public boolean commonURLResponse(String urlString, HashMap<String, String> headers
+            , byte[] postData, Proxy proxy, OutputStream outputStream, int timeOut) {
+        if (urlString != null) {
+            HttpURLConnection conn = null; //连接对象
+            InputStream is = null;
+            try {
+                conn = commonGetConn(urlString, null, headers, postData, proxy, timeOut);
+                is = conn.getInputStream();   //获取输入流，此时才真正建立链接
+                is2bos(is, outputStream);
+                return true;
+            } catch (Exception e) {
+                onException(null, conn, e);
+                return false;
+            } finally {
+                closeAll(conn, is, outputStream);
+            }
+        }
+        return false;
+    }
+
     public byte[] commonURLResponse(String urlString, HashMap<String, String> headers
             , byte[] postData, Proxy proxy, int timeOut) {
         byte[] result = null;
@@ -319,7 +335,7 @@ public class HttpUtils {
         }
     }
 
-    private void closeAll(HttpURLConnection conn, InputStream is, ByteArrayOutputStream baos) {
+    private void closeAll(HttpURLConnection conn, InputStream is, OutputStream baos) {
         closeSilently(is);
         closeSilently(baos);
         if (conn != null) {
@@ -327,7 +343,7 @@ public class HttpUtils {
         }
     }
 
-    private void is2bos(InputStream is, ByteArrayOutputStream baos) throws IOException {
+    private void is2bos(InputStream is, OutputStream baos) throws IOException {
         byte[] temp = new byte[1024];
         int len;
         while ((len = is.read(temp)) != -1) {

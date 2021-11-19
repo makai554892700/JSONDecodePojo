@@ -1,43 +1,27 @@
-apply plugin: 'com.android.library'
-// apply plugin: 'com.novoda.bintray-release'
-//
-// buildscript {
-//     repositories {
-//         jcenter()
-//     }
-//     dependencies {
-//         classpath 'com.novoda:bintray-release:0.9.2'
-//     }
-// }
-//
-// publish {
-//     userOrg = 'marking'
-//     groupId = 'com.mayousheng.www'
-//     artifactId = 'httputils'
-//     publishVersion = '0.0.9'
-//     desc = 'Http utils.'
-//     website = 'https://github.com/makai554892700/JSONDecodePojo/tree/master/httputils'
-// }
+plugins {
+    id 'com.android.library'
+}
 
 android {
-    compileSdkVersion rootProject.ext.compileSdkVersion
+    compileSdk 31
     defaultConfig {
-        minSdkVersion rootProject.minSdkVersion
-        targetSdkVersion rootProject.targetSdkVersion
-        versionCode 9
-        versionName "0.0.9"
+        minSdk 14
+        targetSdk 31
+        versionCode 1
+        versionName "1.0.0-RELEASE"
     }
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    productFlavors {
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
-
 dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
 }
-//上传jar包命令： gradlew clean build bintrayUpload -PbintrayUser=PBINTRAY_NAME -PbintrayKey=PBINTRAY_KEY -PdryRun=false
+apply from: 'publish.gradle'
+// gradle :httputils:assembleRelease
+// gradle :httputils:publish
