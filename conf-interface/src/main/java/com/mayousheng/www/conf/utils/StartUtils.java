@@ -8,10 +8,6 @@ import android.util.Log;
 import com.mayousheng.www.conf.activity.WebActivity;
 import com.mayousheng.www.conf.pojo.ConfigPojo;
 import com.mayousheng.www.conf.pojo.IpInfo;
-import com.mayousheng.www.httputils.HttpUtils;
-
-import java.util.List;
-import java.util.Map;
 
 public class StartUtils {
 
@@ -44,22 +40,9 @@ public class StartUtils {
         }
         if (configPojo.configType != null && configPojo.configType == 1
                 && configPojo.configServer != null && !configPojo.configServer.isEmpty()) {
-            HttpUtils.getInstance().getURLResponse(configPojo.configServer, null, new HttpUtils.IWebCallback() {
-                @Override
-                public void onCallback(int status, String message, Map<String, List<String>> heard, byte[] data) {
-                    if (status == 200 && data != null && "1".equals(new String(data))) {
-                        startBack.startGame();
-                        MySettings.getInstance().saveSetting(INTO_B, true);
-                    } else {
-                        startNormal(activity, activityClass, true);
-                    }
-                }
-
-                @Override
-                public void onFail(int status, String message) {
-                    startNormal(activity, activityClass, true);
-                }
-            });
+            if (startBack.serviceCallBack(configPojo)) {
+                MySettings.getInstance().saveSetting(INTO_B, true);
+            }
             return;
         }
         if (configPojo.skeepOld != null && configPojo.skeepOld && intoB()) {
@@ -73,17 +56,21 @@ public class StartUtils {
             IpInfo ipInfo = DataUtils.getIpInfo("");
             if (configPojo.whiteCountryCode != null && configPojo.whiteCountryCode.contains(
                     ipInfo.countryCode) && (configPojo.blackIp == null || !configPojo.blackIp.contains(ipInfo.ip))) {
+                if (configPojo.skeepOld != null && configPojo.skeepOld) {
+                    MySettings.getInstance().saveSetting(INTO_B, true);
+                }
                 startBack.startGame();
-                MySettings.getInstance().saveSetting(INTO_B, true);
                 return;
             }
             startNormal(activity, activityClass, true);
             MySettings.getInstance().saveSetting(INTO_B, false);
             return;
         }
-        MySettings.getInstance().saveSetting(INTO_B, true);
         if (configPojo.isInner != null && !configPojo.isInner) {
             startBack.updateGame(configPojo.packageName, configPojo.packageVersion, configPojo.url);
+        }
+        if (configPojo.skeepOld != null && configPojo.skeepOld) {
+            MySettings.getInstance().saveSetting(INTO_B, true);
         }
         startBack.startGame();
     }
@@ -138,6 +125,8 @@ public class StartUtils {
 
     public static abstract class StartBack {
         public abstract void startGame();
+
+        public abstract boolean serviceCallBack(ConfigPojo configPojo);
 
         public void updateGame(String packageName, Integer packageVersion, String url) {
         }
