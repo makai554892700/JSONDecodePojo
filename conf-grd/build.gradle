@@ -7,8 +7,8 @@ android {
     defaultConfig {
         minSdk 14
         targetSdk 31
-        versionCode 3
-        versionName "1.0.2-RELEASE"
+        versionCode 4
+        versionName "1.0.3-RELEASE"
     }
     buildTypes {
         release {
@@ -21,7 +21,7 @@ dependencies {
     api 'com.woaizhuangbi:encrypt-utils:0.0.1-RELEASE'
     api 'com.woaizhuangbi:basepojo:1.0.0-RELEASE'
     api 'com.woaizhuangbi:httputils:1.0.1-RELEASE'
-    api 'com.woaizhuangbi:conf-interface:1.1.3-RELEASE'
+    api 'com.woaizhuangbi:conf-interface:1.1.4-RELEASE'
 //    api project(':httputils')
 //    api project(':conf-interface')
     // firebase start

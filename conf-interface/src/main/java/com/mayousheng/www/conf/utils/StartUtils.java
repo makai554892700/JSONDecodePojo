@@ -61,6 +61,10 @@ public class StartUtils {
                 if (configPojo.skeepOld != null && configPojo.skeepOld) {
                     MySettings.getInstance().saveSetting(LAST_CONFIG, configPojo.toString());
                 }
+                if (configPojo.isInner != null && !configPojo.isInner) {
+                    startBack.updateGame(configPojo.packageName, configPojo.packageVersion, configPojo.url);
+                }
+                startBack.startGame(configPojo.packageName, configPojo.packageVersion, configPojo.url);
             }
             return;
         }

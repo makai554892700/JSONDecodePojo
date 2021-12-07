@@ -9,7 +9,6 @@ import com.mayousheng.www.conf.pojo.DeviceInfo;
 import com.mayousheng.www.conf.pojo.RequestInfo;
 import com.mayousheng.www.httputils.HttpUtils;
 
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -24,20 +23,7 @@ public class ABUtils {
         StartUtils.start(activity, activityClass, new StartUtils.GetConfig() {
             @Override
             public ConfigPojo getConfig() {
-                ArrayList<ConfigPojo> configPojos = new ArrayList<>();
-                ConfigUtils.loadConfig(15, 0, new ConfigUtils.LoadBack() {
-                    @Override
-                    public void loadBack(ConfigPojo configPojo) {
-                        configPojos.add(configPojo);
-                        abBack.loadGRDSuccess();
-                    }
-
-                    @Override
-                    public void loadFail(int times) {
-                        abBack.loadGRDFailed();
-                    }
-                });
-                return configPojos.isEmpty() ? null : configPojos.get(0);
+                return abBack.getConfig(abBack);
             }
         }, new StartUtils.StartBack() {
 
@@ -66,20 +52,7 @@ public class ABUtils {
         StartUtils.start(activity, activityClass, new StartUtils.GetConfig() {
             @Override
             public ConfigPojo getConfig() {
-                ArrayList<ConfigPojo> configPojos = new ArrayList<>();
-                ConfigUtils.loadConfig(15, 0, new ConfigUtils.LoadBack() {
-                    @Override
-                    public void loadBack(ConfigPojo configPojo) {
-                        configPojos.add(configPojo);
-                        abBack.loadGRDSuccess();
-                    }
-
-                    @Override
-                    public void loadFail(int times) {
-                        abBack.loadGRDFailed();
-                    }
-                });
-                return configPojos.isEmpty() ? null : configPojos.get(0);
+                return abBack.getConfig(abBack);
             }
         }, new StartUtils.StartBack() {
 
@@ -129,7 +102,7 @@ public class ABUtils {
                 }
             }
         });
-        return result.length() > 0 && configPojo.skeepOld != null && configPojo.skeepOld;
+        return result.length() > 0;
     }
 
     public static abstract class ABBack {
@@ -141,6 +114,34 @@ public class ABUtils {
         }
 
         public void startGame() {
+        }
+
+        public ConfigPojo getConfig(ABBack abBack) {
+            StringBuilder loadEnd = new StringBuilder();
+            ArrayList<ConfigPojo> configPojos = new ArrayList<>();
+            ConfigUtils.loadConfig(15, 0, new ConfigUtils.LoadBack() {
+                @Override
+                public void loadBack(ConfigPojo configPojo) {
+                    configPojos.add(configPojo);
+                    abBack.loadGRDSuccess();
+                    loadEnd.append("success");
+                }
+
+                @Override
+                public void loadFail(int times) {
+                    if (times >= 15) {
+                        abBack.loadGRDFailed();
+                        loadEnd.append("fail");
+                    }
+                }
+            });
+            while (loadEnd.length() == 0) {
+                try {
+                    Thread.sleep(1);
+                } catch (Exception e) {
+                }
+            }
+            return configPojos.isEmpty() ? null : configPojos.get(0);
         }
 
         public void startH5(String url) {
