@@ -34,6 +34,13 @@ public class HttpUtils {
     private int defaultTimeOut = 5000;
     private static HttpUtils httpUtils = new HttpUtils();
 
+    public static final HashMap<String, String> JSON_HEAD = new HashMap<String, String>() {{
+        put("Content-Type", "application/json");
+    }}, FORM_URLENCODED_HEAD = new HashMap<String, String>() {{
+        put("Content-Type", "application/x-www-form-urlencoded");
+    }};
+    ;
+
     private HttpUtils() {
     }
 
@@ -245,7 +252,7 @@ public class HttpUtils {
         }
     }
 
-    private HttpURLConnection commonGetConn(String urlString, String requestType, HashMap<String, String> headers
+    public HttpURLConnection commonGetConn(String urlString, String requestType, HashMap<String, String> headers
             , byte[] postData, Proxy proxy, int timeOut) throws IOException {
         HttpURLConnection conn;
         URL url = new URL(urlString); //URL对象
@@ -286,15 +293,15 @@ public class HttpUtils {
         return conn;
     }
 
-    private interface CallBack {
+    public static interface CallBack {
         void onFail(int status, String message);
     }
 
-    public interface IWebCallback extends CallBack {
+    public static interface IWebCallback extends CallBack {
         void onCallback(int status, String message, Map<String, List<String>> heard, byte[] data);
     }
 
-    public interface IWebSessionBack extends CallBack {
+    public static interface IWebSessionBack extends CallBack {
         void onCallback(int status, String message, Map<String, List<String>> heard
                 , String sessionId, byte[] data);
     }
@@ -304,7 +311,7 @@ public class HttpUtils {
 
     }
 
-    private String getSession(HttpURLConnection connection) {
+    public String getSession(HttpURLConnection connection) {
         Map<String, List<String>> fields = connection.getHeaderFields();
         if (fields != null) {
             List<String> sessionList = fields.get(SESSION_GET_KEY);
@@ -319,7 +326,7 @@ public class HttpUtils {
         return null;
     }
 
-    private void onException(CallBack iWebCallback, HttpURLConnection conn, Exception e) {
+    public void onException(CallBack iWebCallback, HttpURLConnection conn, Exception e) {
         int code;
         if (conn != null) {
             try {
@@ -335,7 +342,7 @@ public class HttpUtils {
         }
     }
 
-    private void closeAll(HttpURLConnection conn, InputStream is, OutputStream baos) {
+    public void closeAll(HttpURLConnection conn, InputStream is, OutputStream baos) {
         closeSilently(is);
         closeSilently(baos);
         if (conn != null) {
@@ -373,7 +380,7 @@ public class HttpUtils {
         }
     }
 
-    private void closeSilently(Closeable closeable) {
+    public void closeSilently(Closeable closeable) {
         if (closeable != null) {
             try {
                 closeable.close();

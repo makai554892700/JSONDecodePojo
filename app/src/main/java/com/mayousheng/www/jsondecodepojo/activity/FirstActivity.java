@@ -2,6 +2,7 @@ package com.mayousheng.www.jsondecodepojo.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.text.Editable;
 import android.util.Log;
 import android.view.View;
@@ -11,7 +12,10 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.mayousheng.www.httputils.HttpUtils;
+import androidx.annotation.Nullable;
+
+import com.mayousheng.www.conf.utils.DeviceUtils;
+import com.mayousheng.www.conf.utils.PermissionUtil;
 import com.mayousheng.www.initview.ViewDesc;
 import com.mayousheng.www.jsondecodepojo.R;
 import com.mayousheng.www.jsondecodepojo.base.BaseActivity;
@@ -20,11 +24,6 @@ import com.mayousheng.www.jsondecodepojo.pojo.User;
 import com.mayousheng.www.jsondecodepojo.utils.CommonRequestUtils;
 import com.mayousheng.www.jsondecodepojo.utils.Settings;
 import com.mayousheng.www.jsondecodepojo.utils.UserUtils;
-
-import java.net.InetSocketAddress;
-import java.net.Proxy;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by makai on 2017/12/6.
@@ -48,8 +47,15 @@ public class FirstActivity extends BaseActivity implements View.OnClickListener 
     }
 
     @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        PermissionUtil.requestPermission(this);
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
+        Log.e("-----1", "deviceInfo=" + DeviceUtils.getDeviceInfo(getApplicationContext()));
         String session = Settings.getStringSetting(this, StaticParam.USER_SESSION);
         if (session != null && !session.isEmpty()) {
             toMain();

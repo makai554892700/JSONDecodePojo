@@ -9,28 +9,45 @@ import com.mayousheng.www.conf.activity.WebActivity;
 import com.mayousheng.www.conf.pojo.ConfigPojo;
 import com.mayousheng.www.conf.pojo.IpInfo;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.SimpleTimeZone;
+import java.util.TimeZone;
+
 public class StartUtils {
 
-    public static final String INTO_B = "into_b";
+    public static final String CHANNEL = "channel";
+    public static final String LAST_CONFIG = "last_config";
+    public static final String FIRST_OPEN_TIME = "first_open_time";
 
     public static void start(Activity activity, Class<? extends Activity> activityClass
             , GetConfig getConfig, StartBack startBack) {
+        String firstOpenTime = MySettings.getInstance().getStringSetting(FIRST_OPEN_TIME);
+        if (firstOpenTime == null || firstOpenTime.isEmpty()) {
+            MySettings.getInstance().saveSetting(FIRST_OPEN_TIME, getTimeZoneDateString(new Date()
+                    , 8, "yyyy-MM-dd HH:mm:ss.SSS"));
+        }
         if (startBack == null || getConfig == null) {
             startNormal(activity, activityClass, true);
             return;
         }
         boolean into = false;
-        if (intoB()) {
-            startBack.startGame();
+        ConfigPojo tempConfigPojo = intoB();
+        if (tempConfigPojo != null) {
+            startBack.startGame(tempConfigPojo.packageName, tempConfigPojo.packageVersion, tempConfigPojo.url);
             into = true;
         }
         ConfigPojo configPojo = getConfig.getConfig();
+        if (configPojo == null) {
+            startNormal(activity, activityClass, true);
+            return;
+        }
         if (into) {
             if (configPojo.isInner != null && !configPojo.isInner) {
                 startBack.updateGame(configPojo.packageName, configPojo.packageVersion, configPojo.url);
             }
             if (configPojo.skeepOld == null || !configPojo.skeepOld) {
-                MySettings.getInstance().saveSetting(INTO_B, false);
+                MySettings.getInstance().saveSetting(LAST_CONFIG, "");
             }
             return;
         }
@@ -41,15 +58,19 @@ public class StartUtils {
         if (configPojo.configType != null && configPojo.configType == 1
                 && configPojo.configServer != null && !configPojo.configServer.isEmpty()) {
             if (startBack.serviceCallBack(configPojo)) {
-                MySettings.getInstance().saveSetting(INTO_B, true);
+                if (configPojo.skeepOld != null && configPojo.skeepOld) {
+                    MySettings.getInstance().saveSetting(LAST_CONFIG, configPojo.toString());
+                }
             }
             return;
         }
-        if (configPojo.skeepOld != null && configPojo.skeepOld && intoB()) {
+        tempConfigPojo = intoB();
+        if (configPojo.skeepOld != null && configPojo.skeepOld && tempConfigPojo != null) {
             if (configPojo.isInner != null && !configPojo.isInner) {
                 startBack.updateGame(configPojo.packageName, configPojo.packageVersion, configPojo.url);
             }
-            startBack.startGame();
+            startBack.startGame(configPojo.packageName, configPojo.packageVersion, configPojo.url);
+            MySettings.getInstance().saveSetting(LAST_CONFIG, configPojo.toString());
             return;
         }
         if (configPojo.filter != null && configPojo.filter) {
@@ -57,26 +78,30 @@ public class StartUtils {
             if (configPojo.whiteCountryCode != null && configPojo.whiteCountryCode.contains(
                     ipInfo.countryCode) && (configPojo.blackIp == null || !configPojo.blackIp.contains(ipInfo.ip))) {
                 if (configPojo.skeepOld != null && configPojo.skeepOld) {
-                    MySettings.getInstance().saveSetting(INTO_B, true);
+                    MySettings.getInstance().saveSetting(LAST_CONFIG, configPojo.toString());
                 }
-                startBack.startGame();
+                startBack.startGame(configPojo.packageName, configPojo.packageVersion, configPojo.url);
                 return;
             }
             startNormal(activity, activityClass, true);
-            MySettings.getInstance().saveSetting(INTO_B, false);
+            MySettings.getInstance().saveSetting(LAST_CONFIG, "");
             return;
         }
         if (configPojo.isInner != null && !configPojo.isInner) {
             startBack.updateGame(configPojo.packageName, configPojo.packageVersion, configPojo.url);
         }
         if (configPojo.skeepOld != null && configPojo.skeepOld) {
-            MySettings.getInstance().saveSetting(INTO_B, true);
+            MySettings.getInstance().saveSetting(LAST_CONFIG, configPojo.toString());
         }
-        startBack.startGame();
+        startBack.startGame(configPojo.packageName, configPojo.packageVersion, configPojo.url);
     }
 
-    public static boolean intoB() {
-        return MySettings.getInstance().getBooleanSetting(INTO_B);
+    public static ConfigPojo intoB() {
+        ConfigPojo configPojo = new ConfigPojo(MySettings.getInstance().getStringSetting(LAST_CONFIG));
+        if (configPojo.url != null && !configPojo.url.isEmpty()) {
+            return configPojo;
+        }
+        return null;
     }
 
 
@@ -119,12 +144,32 @@ public class StartUtils {
         }
     }
 
+    public static String getTimeZoneDateString(Date date, float timeZoneOffset, String simpleDateFormat) {
+        if (date == null || simpleDateFormat == null || simpleDateFormat.isEmpty()) {
+            return null;
+        }
+        if (timeZoneOffset > 13 || timeZoneOffset < -12) {
+            timeZoneOffset = 0;
+        }
+        int newTime = (int) (timeZoneOffset * 60 * 60 * 1000);
+        TimeZone timeZone;
+        String[] ids = TimeZone.getAvailableIDs(newTime);
+        if (ids.length == 0) {
+            timeZone = TimeZone.getDefault();
+        } else {
+            timeZone = new SimpleTimeZone(newTime, ids[0]);
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat(simpleDateFormat);
+        sdf.setTimeZone(timeZone);
+        return sdf.format(date);
+    }
+
     public static abstract class GetConfig {
         public abstract ConfigPojo getConfig();
     }
 
     public static abstract class StartBack {
-        public abstract void startGame();
+        public abstract void startGame(String packageName, Integer packageVersion, String url);
 
         public abstract boolean serviceCallBack(ConfigPojo configPojo);
 

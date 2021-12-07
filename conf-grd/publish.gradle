@@ -21,14 +21,14 @@ publishing {
     publications {
         release(MavenPublication) {
             groupId "com.woaizhuangbi"
-            artifactId "conf-interface"
-            version "1.1.3-RELEASE"
+            artifactId "conf-grd"
+            version "1.0.0-RELEASE"
             artifact("$buildDir/outputs/aar/${project.getName()}-release.aar")
             artifact androidSourcesJar
             pom {
-                name = "conf-interface"
-                description = 'conf-interface'
-                url = 'https://github.com/makai554892700/JSONDecodePojo/tree/master/conf-interface'
+                name = "conf-grd"
+                description = 'conf-grd'
+                url = 'https://github.com/makai554892700/JSONDecodePojo/tree/master/conf-grd'
                 licenses {
                     license {
                         name = 'The Apache License, Version 2.0'
