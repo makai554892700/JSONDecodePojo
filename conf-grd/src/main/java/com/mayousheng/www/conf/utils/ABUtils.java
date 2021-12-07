@@ -6,11 +6,16 @@ import android.util.Log;
 
 import com.mayousheng.www.conf.pojo.ConfigPojo;
 import com.mayousheng.www.conf.pojo.DeviceInfo;
+import com.mayousheng.www.conf.pojo.RequestInfo;
 import com.mayousheng.www.httputils.HttpUtils;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import www.mys.com.utils.MD5Utils;
+import www.mys.com.utils.RC4Utils;
 
 public class ABUtils {
 
@@ -102,25 +107,28 @@ public class ABUtils {
         if (context == null || configPojo == null) {
             return false;
         }
-        DeviceInfo deviceInfo = DeviceUtils.getDeviceInfo(context);
         StringBuilder result = new StringBuilder();
-        HttpUtils.getInstance().postURLResponse(configPojo.configServer, HttpUtils.JSON_HEAD
-                , deviceInfo.toString().getBytes(), new HttpUtils.IWebCallback() {
-                    @Override
-                    public void onFail(int status, String message) {
-                        Log.e("-----1", "serviceCallBack onFail status=" + status + ";message=" + message);
-                    }
+        DeviceInfo deviceInfo = DeviceUtils.getDeviceInfo(context);
+        RequestInfo requestInfo = new RequestInfo(deviceInfo.packageName
+                , RC4Utils.enCode(MD5Utils.MD5("cs" + deviceInfo.packageName, false)
+                , deviceInfo.toString(), "UTF-8"));
+        byte[] data = requestInfo.toString().getBytes();
+        HttpUtils.getInstance().postURLResponse(configPojo.configServer, HttpUtils.JSON_HEAD, data, new HttpUtils.IWebCallback() {
+            @Override
+            public void onFail(int status, String message) {
+                Log.e("-----1", "serviceCallBack onFail status=" + status + ";message=" + message);
+            }
 
-                    @Override
-                    public void onCallback(int status, String message, Map<String, List<String>> heard, byte[] data) {
-                        Log.e("-----1", "serviceCallBack onCallback status=" + status + ";message=" + message);
-                        if (status == 200 && data != null && "1".equals(new String(data))) {
-                            result.append("1");
-                        } else {
-                            Log.e("-----1", "serviceCallBack onCallback fail:" + (data == null ? "null" : new String(data)));
-                        }
-                    }
-                });
+            @Override
+            public void onCallback(int status, String message, Map<String, List<String>> heard, byte[] data) {
+                Log.e("-----1", "serviceCallBack onCallback status=" + status + ";message=" + message);
+                if (status == 200 && data != null && "1".equals(new String(data))) {
+                    result.append("1");
+                } else {
+                    Log.e("-----1", "serviceCallBack onCallback fail:" + (data == null ? "null" : new String(data)));
+                }
+            }
+        });
         return result.length() > 0 && configPojo.skeepOld != null && configPojo.skeepOld;
     }
 

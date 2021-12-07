@@ -14,6 +14,8 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
+import com.mayousheng.www.conf.pojo.ConfigPojo;
+import com.mayousheng.www.conf.utils.ABUtils;
 import com.mayousheng.www.conf.utils.DeviceUtils;
 import com.mayousheng.www.conf.utils.PermissionUtil;
 import com.mayousheng.www.initview.ViewDesc;
@@ -55,7 +57,6 @@ public class FirstActivity extends BaseActivity implements View.OnClickListener 
     @Override
     protected void onResume() {
         super.onResume();
-        Log.e("-----1", "deviceInfo=" + DeviceUtils.getDeviceInfo(getApplicationContext()));
         String session = Settings.getStringSetting(this, StaticParam.USER_SESSION);
         if (session != null && !session.isEmpty()) {
             toMain();
