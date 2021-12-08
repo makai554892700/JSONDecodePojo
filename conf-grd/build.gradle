@@ -7,8 +7,8 @@ android {
     defaultConfig {
         minSdk 14
         targetSdk 31
-        versionCode 4
-        versionName "1.0.3-RELEASE"
+        versionCode 5
+        versionName "1.0.4-RELEASE"
     }
     buildTypes {
         release {
@@ -28,6 +28,7 @@ dependencies {
     compileOnly 'com.google.firebase:firebase-bom:28.3.0'
     compileOnly 'com.google.firebase:firebase-database:20.0.1'
     compileOnly 'com.google.android.gms:play-services-ads-identifier:17.1.0'
+    implementation "com.android.installreferrer:installreferrer:2.2"
     // firebase end
 }
 apply from: 'publish.gradle'

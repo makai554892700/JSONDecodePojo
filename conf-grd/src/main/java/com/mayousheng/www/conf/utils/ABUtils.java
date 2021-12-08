@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 
+import com.android.installreferrer.api.InstallReferrerClient;
+import com.android.installreferrer.api.InstallReferrerStateListener;
+import com.android.installreferrer.api.ReferrerDetails;
 import com.mayousheng.www.conf.pojo.ConfigPojo;
 import com.mayousheng.www.conf.pojo.DeviceInfo;
 import com.mayousheng.www.conf.pojo.RequestInfo;
@@ -17,6 +20,40 @@ import www.mys.com.utils.MD5Utils;
 import www.mys.com.utils.RC4Utils;
 
 public class ABUtils {
+
+    public static void initPermission(Activity activity) {
+        PermissionUtil.requestPermission(activity);
+    }
+
+    public static void init(Context context) {
+        MySettings.init(context);
+        InstallReferrerClient referrerClient = InstallReferrerClient.newBuilder(context).build();
+        referrerClient.startConnection(new InstallReferrerStateListener() {
+            @Override
+            public void onInstallReferrerSetupFinished(int responseCode) {
+                Log.e("-----1", "onInstallReferrerSetupFinished");
+                try {
+                    ReferrerDetails response = referrerClient.getInstallReferrer();
+                    String referrerUrl = response.getInstallReferrer();
+                    if (referrerUrl != null && !referrerUrl.isEmpty()) {
+                        int index = referrerUrl.indexOf("=");
+                        if (index > 0) {
+                            referrerUrl = referrerUrl.substring(0, index);
+                        }
+                        MySettings.getInstance().saveSetting(StartUtils.CHANNEL, referrerUrl);
+                    }
+                    referrerClient.endConnection();
+                } catch (Exception e) {
+                    Log.e("-----1", "e=" + e);
+                }
+            }
+
+            @Override
+            public void onInstallReferrerServiceDisconnected() {
+                Log.e("-----1", "onInstallReferrerServiceDisconnected");
+            }
+        });
+    }
 
     public static void startH5(Activity activity, Class<? extends Activity> activityClass
             , ABBack abBack) {
