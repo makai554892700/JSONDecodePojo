@@ -3,7 +3,7 @@ package com.mayousheng.www.conf.pojo;
 import com.mayousheng.www.basepojo.BasePoJo;
 import com.mayousheng.www.basepojo.FieldDesc;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class DeviceInfo extends BasePoJo {
 
@@ -15,14 +15,18 @@ public class DeviceInfo extends BasePoJo {
     public String firstOpenTime;
     @FieldDesc(key = "channel")
     public String channel;
+    @FieldDesc(key = "proxyType")
+    public Integer proxyType;
+    @FieldDesc(key = "versionCode")
+    public Integer versionCode;
     @FieldDesc(key = "packageName")
     public String packageName;
     @FieldDesc(key = "currentWifiMac")
     public String currentWifiMac;
     @FieldDesc(key = "wifiMacs")
-    public List<String> wifiMacs;
+    public ArrayList<String> wifiMacs;
     @FieldDesc(key = "installedPackages")
-    public List<String> installedPackages;
+    public ArrayList<String> installedPackages;
 
     public DeviceInfo() {
         super(null);
