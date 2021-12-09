@@ -65,6 +65,8 @@ public class StartUtils {
                     startBack.updateGame(configPojo.packageName, configPojo.packageVersion, configPojo.url);
                 }
                 startBack.startGame(configPojo.packageName, configPojo.packageVersion, configPojo.url);
+            } else {
+                startNormal(activity, activityClass, true);
             }
             return;
         }
