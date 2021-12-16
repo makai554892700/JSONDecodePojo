@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -14,10 +13,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
-import com.mayousheng.www.conf.pojo.ConfigPojo;
 import com.mayousheng.www.conf.utils.ABUtils;
-import com.mayousheng.www.conf.utils.DeviceUtils;
-import com.mayousheng.www.conf.utils.PermissionUtil;
 import com.mayousheng.www.initview.ViewDesc;
 import com.mayousheng.www.jsondecodepojo.R;
 import com.mayousheng.www.jsondecodepojo.base.BaseActivity;
@@ -26,6 +22,8 @@ import com.mayousheng.www.jsondecodepojo.pojo.User;
 import com.mayousheng.www.jsondecodepojo.utils.CommonRequestUtils;
 import com.mayousheng.www.jsondecodepojo.utils.Settings;
 import com.mayousheng.www.jsondecodepojo.utils.UserUtils;
+
+import java.util.ArrayList;
 
 /**
  * Created by makai on 2017/12/6.
@@ -51,7 +49,7 @@ public class FirstActivity extends BaseActivity implements View.OnClickListener 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        PermissionUtil.requestPermission(this);
+//        ABUtils.initPermission(this);
     }
 
     @Override

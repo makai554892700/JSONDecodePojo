@@ -7,8 +7,8 @@ android {
     defaultConfig {
         minSdk 14
         targetSdk 31
-        versionCode 15
-        versionName "1.1.5-RELEASE"
+        versionCode 16
+        versionName "1.1.6-RELEASE"
     }
     buildTypes {
         release {
@@ -22,6 +22,8 @@ dependencies {
     compileOnly 'com.woaizhuangbi:httputils:1.0.1-RELEASE'
 //    compileOnly project(':httputils')
 //    compileOnly project(':basepojo')
+    api 'com.google.android.gms:play-services-ads-identifier:17.1.0'
+    api "com.android.installreferrer:installreferrer:2.2"
 }
 apply from: 'publish.gradle'
 // gradle :conf-interface:assembleRelease

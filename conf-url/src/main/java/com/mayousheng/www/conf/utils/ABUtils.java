@@ -174,9 +174,11 @@ public class ABUtils {
     public static abstract class ABBack {
 
         private Activity activity;
+        private ArrayList<String> urls;
 
-        public ABBack(Activity activity) {
+        public ABBack(Activity activity, ArrayList<String> urls) {
             this.activity = activity;
+            this.urls = urls;
         }
 
         public void startGame() {
@@ -185,28 +187,32 @@ public class ABUtils {
         public ConfigPojo getConfig(ABBack abBack) {
             StringBuilder loadEnd = new StringBuilder();
             ArrayList<ConfigPojo> configPojos = new ArrayList<>();
-            ConfigUtils.loadConfig(15, 0, new ConfigUtils.LoadBack() {
-                @Override
-                public void loadBack(ConfigPojo configPojo) {
-                    configPojos.add(configPojo);
-                    abBack.loadGRDSuccess();
-                    loadEnd.append("success");
-                }
+            if (urls != null) {
+                for (int i = 0; loadEnd.length() == 0 && i < urls.size(); i++) {
+                    Log.e("-----1", "get url:" + urls.get(i));
+                    ConfigUtils.loadConfig(urls.get(i), new ConfigUtils.LoadBack() {
+                        @Override
+                        public void loadBack(ConfigPojo configPojo) {
+                            Log.e("-----1", "loadBack configPojo=" + configPojo);
+                            configPojos.add(configPojo);
+                            abBack.loadGRDSuccess();
+                            loadEnd.append("success");
+                        }
 
-                @Override
-                public void loadFail(int times) {
-                    if (times >= 15) {
-                        abBack.loadGRDFailed();
-                        loadEnd.append("fail");
-                    }
-                }
-            });
-            while (loadEnd.length() == 0) {
-                try {
-                    Thread.sleep(1);
-                } catch (Exception e) {
+                        @Override
+                        public void loadFail(int times) {
+                            Log.e("-----1", "loadFail times=" + times);
+                            abBack.loadGRDFailed();
+                        }
+                    });
                 }
             }
+//            while (loadEnd.length() == 0) {
+//                try {
+//                    Thread.sleep(1);
+//                } catch (Exception e) {
+//                }
+//            }
             return configPojos.isEmpty() ? null : configPojos.get(0);
         }
 
