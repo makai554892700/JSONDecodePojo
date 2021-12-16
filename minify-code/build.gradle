@@ -17,8 +17,8 @@ dependencies {
 }
 
 
-version = "1.0.1"
-group = "com.woaizhuangbi"
+version = "1.0.2"
+group = "io.github.williamjeremy"
 
 pluginBundle {
     website = 'https://github.com/makai554892700/JSONDecodePojo/tree/master/minify-code'
@@ -27,7 +27,7 @@ pluginBundle {
     tags = ['android', 'minify']
     plugins {
         greetingsPlugin {
-            id = 'com.woaizhuangbi.minify-code'
+            id = 'io.github.williamjeremy.minify-code'
             description = 'android minify plugin for gradle'
             displayName = 'Gradle android minify plugin'
         }
