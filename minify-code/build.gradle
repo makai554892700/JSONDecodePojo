@@ -1,0 +1,35 @@
+plugins {
+    id 'java-gradle-plugin'
+    id "com.gradle.plugin-publish" version "0.18.0"
+    id 'maven-publish'
+    id 'groovy'
+}
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation gradleApi()
+    implementation localGroovy()
+    implementation 'com.squareup:javapoet:1.13.0'
+    implementation 'com.android.tools.build:gradle:3.0.0'
+}
+
+
+version = "1.0.0"
+group = "com.woaizhuangbi"
+
+pluginBundle {
+    website = 'https://github.com/makai554892700/JSONDecodePojo'
+    vcsUrl = 'https://github.com/makai554892700/JSONDecodePojo'
+    description = 'android minify plugin for gradle'
+    tags = ['android', 'minify']
+    plugins {
+        greetingsPlugin {
+            id = 'com.woaizhuangbi.minify-code'
+            description = 'android minify plugin for gradle'
+            displayName = 'android minify plugin for gradle'
+        }
+    }
+}

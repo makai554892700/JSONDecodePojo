@@ -1,2 +1,1 @@
-include ':app', ':basepojo', ':httputils', ':refreshview', ':bannerview', ':viewinit', ':initview', ':showimgutils', ':conf-interface'
-include ':conf-grd'
+include ':app', ':basepojo', ':conf-grd', ':conf-interface', ':httputils', ':refreshview', ':bannerview', ':viewinit', ':initview', ':showimgutils', ':minify-code'
