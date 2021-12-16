@@ -17,19 +17,19 @@ dependencies {
 }
 
 
-version = "1.0.0"
+version = "1.0.1"
 group = "com.woaizhuangbi"
 
 pluginBundle {
-    website = 'https://github.com/makai554892700/JSONDecodePojo'
-    vcsUrl = 'https://github.com/makai554892700/JSONDecodePojo'
+    website = 'https://github.com/makai554892700/JSONDecodePojo/tree/master/minify-code'
+    vcsUrl = 'https://github.com/makai554892700/JSONDecodePojo/tree/master/minify-code'
     description = 'android minify plugin for gradle'
     tags = ['android', 'minify']
     plugins {
         greetingsPlugin {
             id = 'com.woaizhuangbi.minify-code'
             description = 'android minify plugin for gradle'
-            displayName = 'android minify plugin for gradle'
+            displayName = 'Gradle android minify plugin'
         }
     }
 }
