@@ -207,12 +207,6 @@ public class ABUtils {
                     });
                 }
             }
-//            while (loadEnd.length() == 0) {
-//                try {
-//                    Thread.sleep(1);
-//                } catch (Exception e) {
-//                }
-//            }
             return configPojos.isEmpty() ? null : configPojos.get(0);
         }
 

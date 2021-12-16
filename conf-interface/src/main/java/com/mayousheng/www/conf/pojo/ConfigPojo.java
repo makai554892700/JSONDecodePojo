@@ -31,6 +31,10 @@ public class ConfigPojo extends BasePoJo {
     public String url;
     @FieldDesc(key = "app_id")
     public String appId;
+    @FieldDesc(key = "list_server_url")
+    public String listServerUrl;
+    @FieldDesc(key = "event_server_url")
+    public String eventServerUrl;
 
     public ConfigPojo() {
         super(null);
