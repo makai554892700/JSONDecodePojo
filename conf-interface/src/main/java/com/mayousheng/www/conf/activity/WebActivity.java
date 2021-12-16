@@ -62,11 +62,11 @@ public class WebActivity extends BaseLoadingActivity {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             if (showTitle) {
-
+                actionBar.show();
+                actionBar.setTitle(title);
             } else {
-
+                actionBar.hide();
             }
-            actionBar.hide();
         }
         mWebView = findViewById(R.id.webView);
         progressBar = findViewById(R.id.progressBar);

@@ -7,8 +7,8 @@ android {
     defaultConfig {
         minSdk 14
         targetSdk 31
-        versionCode 1
-        versionName "1.0.0.RELEASE"
+        versionCode 2
+        versionName "1.0.1.RELEASE"
     }
     buildTypes {
         release {
@@ -21,7 +21,7 @@ dependencies {
     api 'com.woaizhuangbi:encrypt-utils:0.0.1-RELEASE'
     api 'com.woaizhuangbi:basepojo:1.0.0-RELEASE'
     api 'com.woaizhuangbi:httputils:1.0.1-RELEASE'
-    api 'com.woaizhuangbi:conf-interface:1.1.6-RELEASE'
+    api 'com.woaizhuangbi:conf-interface:1.1.7-RELEASE'
 //    api project(':httputils')
 //    api project(':conf-interface')
 }
