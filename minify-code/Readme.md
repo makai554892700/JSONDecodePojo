@@ -12,7 +12,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath "io.github.williamjeremy:io.github.williamjeremy.minify-code:1.0.0"
+        classpath "io.github.williamjeremy:minify-code:1.0.2"
     }
 }
 ```
@@ -20,6 +20,7 @@ buildscript {
 app目录的build.gradle模块中：
 
 ```groovy
+apply plugin: 'io.github.williamjeremy.minify-code'
 androidJunkCode {
     def config = {
         packageBase = "www.demo.com"    //生成java类根包名
