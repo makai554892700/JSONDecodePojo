@@ -3,17 +3,16 @@ package com.mayousheng.www.conf.activity;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.app.ActionBar;
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.mayousheng.www.conf.R;
 
-public class BaseLoadingActivity extends AppCompatActivity {
+public class BaseLoadingActivity extends Activity {
 
     public RelativeLayout loading;
     public ImageView leftImg, rightImg;
@@ -37,7 +36,7 @@ public class BaseLoadingActivity extends AppCompatActivity {
         translationY.setCurrentPlayTime(10000);
         translationY.setRepeatMode(ValueAnimator.REVERSE);
         animatorSet.playTogether(translationX, translationY);
-        ActionBar actionBar = getSupportActionBar();
+        ActionBar actionBar = getActionBar();
         if (actionBar != null) {
             actionBar.hide();
         }

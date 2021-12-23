@@ -1,5 +1,6 @@
 package com.mayousheng.www.conf.activity;
 
+import android.app.ActionBar;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -8,7 +9,6 @@ import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,7 +27,6 @@ import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 
 import com.mayousheng.www.conf.R;
 import com.mayousheng.www.conf.utils.StartUtils;
@@ -59,7 +58,7 @@ public class WebActivity extends BaseLoadingActivity {
             return;
         }
         Log.e("-----1", "open web url=" + url);
-        ActionBar actionBar = getSupportActionBar();
+        ActionBar actionBar = getActionBar();
         if (actionBar != null) {
             if (showTitle) {
                 actionBar.show();
@@ -255,7 +254,7 @@ public class WebActivity extends BaseLoadingActivity {
     @Override
     public void onConfigurationChanged(Configuration config) {
         super.onConfigurationChanged(config);
-        ActionBar actionBar = getSupportActionBar();
+        ActionBar actionBar = getActionBar();
         switch (config.orientation) {
             case Configuration.ORIENTATION_LANDSCAPE:
                 if (actionBar != null) {
