@@ -29,6 +29,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.mayousheng.www.conf.R;
+import com.mayousheng.www.conf.utils.DeviceUtils;
 import com.mayousheng.www.conf.utils.StartUtils;
 import com.mayousheng.www.conf.view.JSInterface;
 import com.mayousheng.www.conf.view.WBViewClient;
@@ -108,6 +109,11 @@ public class WebActivity extends BaseLoadingActivity {
                 if (eventBack != null) {
                     eventBack.customEvent(eventUrl, eventValue);
                 }
+            }
+
+            @Override
+            public String getDeviceInfo() {
+                return DeviceUtils.getDeviceInfo(getApplicationContext()).toString();
             }
         }), "AndroidEM");
         mWebView.setDownloadListener((url, userAgent, contentDisposition, mimetype, contentLength) -> {
@@ -208,10 +214,12 @@ public class WebActivity extends BaseLoadingActivity {
             public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
                 super.onReceivedHttpError(view, request, errorResponse);
                 try {
-                    if (errorResponse != null && errorResponse.getStatusCode() != 200 && !request.getUrl().toString().endsWith("ico")) {
-                        Log.e("-----1", "onReceivedHttpError statusCode=" + errorResponse.getStatusCode() + ";url=" + request.getUrl());
-                        if (eventBack != null) {
-                            eventBack.requestUrlError(request.getUrl().toString());
+                    if (errorResponse != null) {
+                        if (errorResponse.getStatusCode() != 200 && !request.getUrl().toString().endsWith("ico")) {
+                            Log.e("-----1", "onReceivedHttpError statusCode=" + errorResponse.getStatusCode() + ";url=" + request.getUrl());
+                            eventBack.loadUrlFail(request.getUrl().toString());
+                        } else {
+                            eventBack.loadUrlSuccess(request.getUrl().toString());
                         }
                     }
                 } catch (Exception e) {
@@ -231,6 +239,7 @@ public class WebActivity extends BaseLoadingActivity {
             public void openNewActivity(Intent intent) {
                 boolean haveError = false;
                 try {
+                    eventBack.startOpenNewActivity();
                     startActivity(intent);
                 } catch (Exception e) {
                     haveError = true;
@@ -336,19 +345,19 @@ public class WebActivity extends BaseLoadingActivity {
         public void endLoadUrl() {
         }
 
-        public void loadUrlSuccess() {
+        public void loadUrlSuccess(String url) {
         }
 
-        public void loadUrlFail() {
+        public void loadUrlFail(String url) {
+        }
+
+        public void startOpenNewActivity() {
         }
 
         public void openNewActivitySuccess() {
         }
 
         public void openNewActivityFail() {
-        }
-
-        public void requestUrlError(String url) {
         }
 
     }

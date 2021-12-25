@@ -16,6 +16,8 @@ public class JSInterface {
         public void onEvent(String key);
 
         public void customEvent(String eventUrl, String eventValue);
+
+        public String getDeviceInfo();
     }
 
     @JavascriptInterface
@@ -31,6 +33,11 @@ public class JSInterface {
     @JavascriptInterface
     public void customEvent(String eventUrl, String eventValue) {
         callback.customEvent(eventUrl, eventValue);
+    }
+
+    @JavascriptInterface
+    public String getDeviceInfo() {
+        return callback.getDeviceInfo();
     }
 
 }

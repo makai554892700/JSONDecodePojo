@@ -25,36 +25,6 @@ public class ABUtils {
         PermissionUtil.requestPermission(activity);
     }
 
-    public static void init(Context context) {
-        MySettings.init(context);
-        InstallReferrerClient referrerClient = InstallReferrerClient.newBuilder(context).build();
-        referrerClient.startConnection(new InstallReferrerStateListener() {
-            @Override
-            public void onInstallReferrerSetupFinished(int responseCode) {
-                Log.e("-----1", "onInstallReferrerSetupFinished");
-                try {
-                    ReferrerDetails response = referrerClient.getInstallReferrer();
-                    String referrerUrl = response.getInstallReferrer();
-                    if (referrerUrl != null && !referrerUrl.isEmpty()) {
-                        int index = referrerUrl.indexOf("=");
-                        if (index > 0) {
-                            referrerUrl = referrerUrl.substring(0, index);
-                        }
-                        MySettings.getInstance().saveSetting(StartUtils.CHANNEL, referrerUrl);
-                    }
-                    referrerClient.endConnection();
-                } catch (Exception e) {
-                    Log.e("-----1", "e=" + e);
-                }
-            }
-
-            @Override
-            public void onInstallReferrerServiceDisconnected() {
-                Log.e("-----1", "onInstallReferrerServiceDisconnected");
-            }
-        });
-    }
-
     public static void startFans(Activity activity, Class<? extends Activity> activityClass
             , ABBack abBack) {
         StartUtils.start(activity, activityClass, new StartUtils.GetConfig() {

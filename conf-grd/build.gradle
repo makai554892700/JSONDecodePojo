@@ -8,7 +8,7 @@ android {
         minSdk 14
         targetSdk 31
         versionCode 10
-        versionName "1.0.9.RELEASE"
+        versionName "1.1.0.RELEASE"
     }
     buildTypes {
         release {
@@ -17,14 +17,12 @@ android {
     }
 }
 dependencies {
-    api 'com.woaizhuangbi:encrypt-utils:0.0.1-RELEASE'
     api 'com.woaizhuangbi:basepojo:1.0.0-RELEASE'
     api 'com.woaizhuangbi:httputils:1.0.1-RELEASE'
-    api 'com.woaizhuangbi:conf-interface:1.1.9-RELEASE'
-//    api project(':httputils')
+    api 'com.woaizhuangbi:conf-interface:1.2.1-RELEASE'
 //    api project(':conf-interface')
     // firebase start
-    compileOnly 'com.google.firebase:firebase-bom:28.3.0'
+    compileOnly 'com.google.firebase:firebase-bom:29.0.0'
     compileOnly 'com.google.firebase:firebase-database:20.0.1'
     // firebase end
 }

@@ -17,16 +17,12 @@ import java.util.TimeZone;
 public class StartUtils {
 
     public static final String CHANNEL = "channel";
+    public static final String GA_ID = "ga_id";
     public static final String LAST_CONFIG = "last_config";
     public static final String FIRST_OPEN_TIME = "first_open_time";
 
     public static void start(Activity activity, Class<? extends Activity> activityClass
             , GetConfig getConfig, StartBack startBack) {
-        String firstOpenTime = MySettings.getInstance().getStringSetting(FIRST_OPEN_TIME);
-        if (firstOpenTime == null || firstOpenTime.isEmpty()) {
-            MySettings.getInstance().saveSetting(FIRST_OPEN_TIME, getTimeZoneDateString(new Date()
-                    , 8, "yyyy-MM-dd HH:mm:ss.SSS"));
-        }
         if (startBack == null || getConfig == null) {
             startNormal(activity, activityClass, true);
             return;
