@@ -7,8 +7,8 @@ android {
     defaultConfig {
         minSdk 14
         targetSdk 31
-        versionCode 4
-        versionName "1.0.4.RELEASE"
+        versionCode 5
+        versionName "1.0.5.RELEASE"
     }
     buildTypes {
         release {
@@ -19,7 +19,7 @@ android {
 dependencies {
     api 'com.woaizhuangbi:basepojo:1.0.0-RELEASE'
     api 'com.woaizhuangbi:httputils:1.0.1-RELEASE'
-    api 'com.woaizhuangbi:conf-interface:1.2.1-RELEASE'
+    api 'com.woaizhuangbi:conf-interface:1.2.2-RELEASE'
 //    api project(':conf-interface')
 }
 apply from: 'publish.gradle'

@@ -1,45 +1,25 @@
-apply plugin: 'com.android.library'
-//apply plugin: 'com.novoda.bintray-release'
-//
-//buildscript {
-//    repositories {
-//        jcenter()
-//    }
-//    dependencies {
-//        classpath 'com.novoda:bintray-release:0.9.1'
-//    }
-//}
-//
-//publish {
-//    userOrg = 'marking'
-//    groupId = 'com.mayousheng.www'
-//    artifactId = 'showimgutils'
-//    publishVersion = '0.0.1'
-//    desc = 'Show img utils.'
-//    website = 'https://github.com/makai554892700/JSONDecodePojo/tree/master/showimgutils'
-//}
+plugins {
+    id 'com.android.library'
+}
 
 android {
-    compileSdkVersion rootProject.ext.compileSdkVersion
+    compileSdk 31
     defaultConfig {
-        minSdkVersion rootProject.minSdkVersion
-        targetSdkVersion rootProject.targetSdkVersion
+        minSdk 14
+        targetSdk 31
         versionCode 1
-        versionName "1.0"
-
-        consumerProguardFiles 'consumer-rules.pro'
+        versionName "1.0.0-RELEASE"
     }
-
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
 }
-//上传jar包命令： gradlew clean build bintrayUpload -PbintrayUser=PBINTRAY_NAME -PbintrayKey=PBINTRAY_KEY -PdryRun=false
+apply from: 'publish.gradle'
+// gradle :showimgutils:assembleRelease
+// gradle :showimgutils:publish

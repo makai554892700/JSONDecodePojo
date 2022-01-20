@@ -254,6 +254,17 @@ public class WebActivity extends BaseLoadingActivity {
                     }
                 }
             }
+
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                if (!url.startsWith("http")) {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+                    return true;
+                } else {
+                    view.loadUrl(url);
+                }
+                return super.shouldOverrideUrlLoading(view, url);
+            }
         });
         if (url != null) {
             mWebView.loadUrl(url);

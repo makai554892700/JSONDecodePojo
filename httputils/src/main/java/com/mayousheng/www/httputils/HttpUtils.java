@@ -30,7 +30,6 @@ public class HttpUtils {
     private String GET = "GET";
     private String POST = "POST";
     private String SESSION_GET_KEY = "set-cookie";
-    private String SESSION_KEY = "JSESSIONID";
     private int defaultTimeOut = 5000;
     private static HttpUtils httpUtils = new HttpUtils();
 
@@ -314,12 +313,9 @@ public class HttpUtils {
     public String getSession(HttpURLConnection connection) {
         Map<String, List<String>> fields = connection.getHeaderFields();
         if (fields != null) {
-            List<String> sessionList = fields.get(SESSION_GET_KEY);
-            if (sessionList != null) {
-                for (String session : sessionList) {
-                    if (session.contains(SESSION_KEY)) {
-                        return session;
-                    }
+            for (Map.Entry<String, List<String>> kv : fields.entrySet()) {
+                if (kv.getKey().toLowerCase().equals(SESSION_GET_KEY)) {
+                    return kv.getValue().toString();
                 }
             }
         }

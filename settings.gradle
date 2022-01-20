@@ -1,1 +1,2 @@
 include ':app', ':basepojo', ':conf-grd', ':conf-interface', ':conf-url', ':httputils', ':refreshview', ':bannerview', ':viewinit', ':initview', ':showimgutils', ':minify-code'
+include ':recyclerutils'

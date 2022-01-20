@@ -1,51 +1,25 @@
-apply plugin: 'com.android.library'
-//apply plugin: 'com.novoda.bintray-release'
-//
-//buildscript {
-//    repositories {
-//        jcenter()
-//    }
-//    dependencies {
-//        classpath 'com.novoda:bintray-release:0.3.4'
-//    }
-//}
-//
-//publish {
-//    userOrg = 'marking'
-//    groupId = 'com.mayousheng.www'
-//    artifactId = 'initview'
-//    publishVersion = '0.0.2'
-//    desc = 'init view utils.'
-//    website = 'https://github.com/makai554892700/JSONDecodePojo/tree/master/initview'
-//}
-//
-//tasks.withType(Javadoc) {
-//    options {
-//        encoding "UTF-8"
-//        charSet 'UTF-8'
-//    }
-//    options.addStringOption('Xdoclint:none', '-quiet')
-//}
+plugins {
+    id 'com.android.library'
+}
 
 android {
-    compileSdkVersion rootProject.ext.compileSdkVersion
+    compileSdk 31
     defaultConfig {
-        minSdkVersion rootProject.minSdkVersion
-        targetSdkVersion rootProject.targetSdkVersion
-        versionCode 2
-        versionName "0.0.2"
+        minSdk 14
+        targetSdk 31
+        versionCode 1
+        versionName "1.0.0-RELEASE"
     }
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-    }
-    productFlavors {
     }
 }
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 }
-//上传jar包命令： gradlew clean build bintrayUpload -PbintrayUser=PBINTRAY_NAME -PbintrayKey=PBINTRAY_KEY -PdryRun=false
+apply from: 'publish.gradle'
+// gradle :initview:assembleRelease
+// gradle :initview:publish

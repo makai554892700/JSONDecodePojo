@@ -21,14 +21,14 @@ publishing {
     publications {
         release(MavenPublication) {
             groupId "com.woaizhuangbi"
-            artifactId "httputils"
-            version "1.0.2-RELEASE"
+            artifactId "initview"
+            version "1.0.0-RELEASE"
             artifact("$buildDir/outputs/aar/${project.getName()}-release.aar")
             artifact androidSourcesJar
             pom {
-                name = "httputils"
-                description = 'httputils'
-                url = 'https://github.com/makai554892700/JSONDecodePojo/tree/master/httputils'
+                name = "initview"
+                description = 'initview'
+                url = 'https://github.com/makai554892700/JSONDecodePojo/tree/master/initview'
                 licenses {
                     license {
                         name = 'The Apache License, Version 2.0'
