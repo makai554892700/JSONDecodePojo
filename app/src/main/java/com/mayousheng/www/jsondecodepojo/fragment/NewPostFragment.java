@@ -3,11 +3,7 @@ package com.mayousheng.www.jsondecodepojo.fragment;
 import android.view.View;
 
 import com.mayousheng.www.jsondecodepojo.R;
-import com.mayousheng.www.jsondecodepojo.base.BaseFragment;
-
-/**
- * Created by ma kai on 2017/10/4.
- */
+import com.mayousheng.www.recyclerutils.BaseFragment;
 
 public class NewPostFragment extends BaseFragment {
 

@@ -1,5 +1,6 @@
 package com.mayousheng.www.jsondecodepojo.activity;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Build;
@@ -23,23 +24,23 @@ import androidx.annotation.Nullable;
 
 import com.mayousheng.www.initview.ViewDesc;
 import com.mayousheng.www.jsondecodepojo.R;
-import com.mayousheng.www.jsondecodepojo.base.BaseActivity;
 import com.mayousheng.www.jsondecodepojo.common.StaticParam;
+import com.mayousheng.www.recyclerutils.BaseActivity;
 
 import static android.view.KeyEvent.KEYCODE_BACK;
 
-/**
- * Created by makai on 17/12/11.
- */
-
 public class WebActivity extends BaseActivity {
 
+    @SuppressLint("NonConstantResourceId")
     @ViewDesc(viewId = R.id.web_view)
     public WebView webView;
+    @SuppressLint("NonConstantResourceId")
     @ViewDesc(viewId = R.id.back)
     public ImageView backView;
+    @SuppressLint("NonConstantResourceId")
     @ViewDesc(viewId = R.id.title)
     public TextView titleView;
+    @SuppressLint("NonConstantResourceId")
     @ViewDesc(viewId = R.id.progress_bar)
     public ProgressBar progressBar;
 

@@ -1,9 +1,7 @@
 package com.mayousheng.www.jsondecodepojo;
 
 import android.app.Application;
-import android.util.Log;
 
-import com.mayousheng.www.conf.utils.DeviceUtils;
 import com.mayousheng.www.conf.utils.MySettings;
 
 import www.mayousheng.com.showimgutils.CacheUtils;

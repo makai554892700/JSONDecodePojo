@@ -4,16 +4,36 @@ import android.content.Context;
 import android.view.ViewGroup;
 
 import com.mayousheng.www.jsondecodepojo.R;
-import com.mayousheng.www.jsondecodepojo.base.BaseRecyclerAdapter;
-import com.mayousheng.www.jsondecodepojo.base.BaseRecyclerHolder;
+import com.mayousheng.www.jsondecodepojo.pojo.BSBDJPunsterResponse;
+import com.mayousheng.www.jsondecodepojo.utils.MessageUtils;
+import com.mayousheng.www.recyclerutils.BaseRecyclerAdapter;
+import com.mayousheng.www.recyclerutils.BaseRecyclerHolder;
 import com.mayousheng.www.jsondecodepojo.holder.bsbdj.VideoHolder;
 import com.mayousheng.www.jsondecodepojo.pojo.BSBDJVideoResponse;
 
-/**
- * Created by ma kai on 2017/10/5.
- */
+import java.util.ArrayList;
+
+import www.mayousheng.com.showimgutils.ShowImageUtils;
 
 public class VideoAdapter extends BaseRecyclerAdapter<BSBDJVideoResponse> {
+
+    private final ShowImageUtils showImageUtils = new ShowImageUtils();
+
+    public ShowImageUtils getShowImageUtils() {
+        return showImageUtils;
+    }
+
+    @Override
+    public void addData(ArrayList<BSBDJVideoResponse> data) {
+        super.addData(data);
+        showImageUtils.addImgDescs(MessageUtils.response2Map(data));
+    }
+
+    @Override
+    public void setData(ArrayList<BSBDJVideoResponse> data) {
+        super.setData(data);
+        showImageUtils.setImgDescs(MessageUtils.response2Map(data));
+    }
 
     public VideoAdapter(Context context) {
         super(context);

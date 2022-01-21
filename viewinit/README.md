@@ -1,1 +1,0 @@
-#view简化初始化工具包,同initview模块 https://github.com/makai554892700/JSONDecodePojo/tree/master/initview

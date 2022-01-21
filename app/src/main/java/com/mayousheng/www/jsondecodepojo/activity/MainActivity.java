@@ -1,8 +1,7 @@
 package com.mayousheng.www.jsondecodepojo.activity;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.util.Log;
-import android.util.SparseArray;
 import android.view.View;
 import android.widget.FrameLayout;
 
@@ -11,28 +10,32 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.mayousheng.www.jsondecodepojo.R;
-import com.mayousheng.www.jsondecodepojo.base.BaseActivity;
 import com.mayousheng.www.initview.ViewDesc;
 import com.mayousheng.www.jsondecodepojo.fragment.CommunityFragment;
 import com.mayousheng.www.jsondecodepojo.fragment.HomeFragment;
 import com.mayousheng.www.jsondecodepojo.fragment.MineFragment;
 import com.mayousheng.www.jsondecodepojo.fragment.NewPostFragment;
 import com.mayousheng.www.jsondecodepojo.view.IconAndTextView;
+import com.mayousheng.www.recyclerutils.BaseActivity;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
-
+    @SuppressLint("NonConstantResourceId")
     @ViewDesc(viewId = R.id.content_view)
     public FrameLayout contentView;
+    @SuppressLint("NonConstantResourceId")
     @ViewDesc(viewId = R.id.home)
     public IconAndTextView home;
+    @SuppressLint("NonConstantResourceId")
     @ViewDesc(viewId = R.id.new_post)
     public IconAndTextView newPost;
+    @SuppressLint("NonConstantResourceId")
     @ViewDesc(viewId = R.id.community)
     public IconAndTextView community;
+    @SuppressLint("NonConstantResourceId")
     @ViewDesc(viewId = R.id.mine)
     public IconAndTextView mine;
     private FragmentManager fragmentManager;

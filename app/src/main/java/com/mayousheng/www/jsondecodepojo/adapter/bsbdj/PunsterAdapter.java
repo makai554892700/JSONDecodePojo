@@ -4,16 +4,35 @@ import android.content.Context;
 import android.view.ViewGroup;
 
 import com.mayousheng.www.jsondecodepojo.R;
-import com.mayousheng.www.jsondecodepojo.base.BaseRecyclerAdapter;
-import com.mayousheng.www.jsondecodepojo.base.BaseRecyclerHolder;
+import com.mayousheng.www.jsondecodepojo.utils.MessageUtils;
+import com.mayousheng.www.recyclerutils.BaseRecyclerAdapter;
+import com.mayousheng.www.recyclerutils.BaseRecyclerHolder;
 import com.mayousheng.www.jsondecodepojo.holder.bsbdj.PunsterHolder;
 import com.mayousheng.www.jsondecodepojo.pojo.BSBDJPunsterResponse;
 
-/**
- * Created by ma kai on 2017/10/5.
- */
+import java.util.ArrayList;
+
+import www.mayousheng.com.showimgutils.ShowImageUtils;
 
 public class PunsterAdapter extends BaseRecyclerAdapter<BSBDJPunsterResponse> {
+
+    private final ShowImageUtils showImageUtils = new ShowImageUtils();
+
+    public ShowImageUtils getShowImageUtils() {
+        return showImageUtils;
+    }
+
+    @Override
+    public void addData(ArrayList<BSBDJPunsterResponse> data) {
+        super.addData(data);
+        showImageUtils.addImgDescs(MessageUtils.response2Map(data));
+    }
+
+    @Override
+    public void setData(ArrayList<BSBDJPunsterResponse> data) {
+        super.setData(data);
+        showImageUtils.setImgDescs(MessageUtils.response2Map(data));
+    }
 
     public PunsterAdapter(Context context) {
         super(context);

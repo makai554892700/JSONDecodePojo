@@ -3,11 +3,8 @@ package com.mayousheng.www.recyclerutils;
 import android.annotation.SuppressLint;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
-import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -19,7 +16,7 @@ import com.mayousheng.www.recyclerutils.utils.ThreadUtils;
 
 import java.util.ArrayList;
 
-public abstract class BaseRecyclerFragment<T extends BasePoJo> extends BaseFragment {
+public abstract class BaseRecyclerActivity<T extends BasePoJo> extends BaseActivity {
 
     public SwipeRefreshLayout swipeRefreshLayout;
     public RecyclerView recyclerView;
@@ -33,18 +30,17 @@ public abstract class BaseRecyclerFragment<T extends BasePoJo> extends BaseFragm
         }
     };
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = super.onCreateView(inflater, container, savedInstanceState);
-        swipeRefreshLayout = view.findViewById(getSwipeRefreshLayoutId());
-        recyclerView = view.findViewById(getRecyclerViewId());
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        swipeRefreshLayout = findViewById(getSwipeRefreshLayoutId());
+        recyclerView = findViewById(getRecyclerViewId());
         recyclerAdapter = getRecyclerAdapter();
         linearLayoutManager = getLinearLayoutManager();
         onLoadMoreListener = new OnLoadMoreListener(linearLayoutManager) {
             @Override
             public void onLoadMore(int currentPage) {
-                BaseRecyclerFragment.this.onLoadMore(currentPage);
+                BaseRecyclerActivity.this.onLoadMore(currentPage);
             }
         };
         recyclerView.setOnScrollListener(onLoadMoreListener);
@@ -56,7 +52,6 @@ public abstract class BaseRecyclerFragment<T extends BasePoJo> extends BaseFragm
             swipeRefreshLayout.setRefreshing(false);
         }));
         recyclerView.addItemDecoration(DEFAULT_ITEM_DECORATION);
-        return view;
     }
 
     public void refreshData() {
@@ -74,9 +69,7 @@ public abstract class BaseRecyclerFragment<T extends BasePoJo> extends BaseFragm
         } else {
             recyclerAdapter.addData(responses);
         }
-        if (getActivity() != null) {
-            getActivity().runOnUiThread(() -> recyclerAdapter.notifyDataSetChanged());
-        }
+        runOnUiThread(() -> recyclerAdapter.notifyDataSetChanged());
     }
 
     public abstract void onLoadMore(int currentPage);

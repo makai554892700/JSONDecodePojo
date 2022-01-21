@@ -7,7 +7,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.mayousheng.www.jsondecodepojo.R;
 import com.mayousheng.www.jsondecodepojo.adapter.ViewPagerAdapter;
-import com.mayousheng.www.jsondecodepojo.base.BaseFragment;
+import com.mayousheng.www.recyclerutils.BaseFragment;
 import com.mayousheng.www.initview.ViewDesc;
 import com.mayousheng.www.jsondecodepojo.fragment.bsbdj.PunsterFragment;
 import com.mayousheng.www.jsondecodepojo.fragment.bsbdj.VideoFragment;
@@ -18,10 +18,6 @@ import com.mayousheng.www.jsondecodepojo.view.OrientationScrollView;
 
 import java.util.ArrayList;
 import java.util.List;
-
-/**
- * Created by ma kai on 2017/10/4.
- */
 
 public class HomeFragment extends BaseFragment {
 
@@ -42,7 +38,7 @@ public class HomeFragment extends BaseFragment {
     @Override
     protected void initView(View view) {
         initFragments();
-        viewPagerAdapter = new ViewPagerAdapter(getActivity().getSupportFragmentManager(), fragmentArray);
+        viewPagerAdapter = new ViewPagerAdapter(getFragmentManager(), fragmentArray);
         viewPager.setAdapter(viewPagerAdapter);
         initOrientationScrollView();
     }
@@ -79,13 +75,13 @@ public class HomeFragment extends BaseFragment {
 //                Log.e("-----1", "state=" + state);
             }
         };
-        orientationScrollView.setViewPager(getContext().getApplicationContext()
+        orientationScrollView.setViewPager(getActivity().getApplicationContext()
                 , new String[]{
                         getString(R.string.joke), getString(R.string.punster), getString(R.string.voice),
                         getString(R.string.video), getString(R.string.photo)
                 }, viewPager, R.color.gray, R.color.black, 16, 16, 12, true
                 , R.color.gray, 0f, 15f, 15f, 100);
-        orientationScrollView.setBgLine(getContext().getApplicationContext(), 1, R.color.colorAccent);
+        orientationScrollView.setBgLine(getActivity().getApplicationContext(), 1, R.color.colorAccent);
         orientationScrollView.setNavLine(getActivity(), 3, R.color.colorPrimary);
         orientationScrollView.setOnTitleClickListener(onTitleClickListener);
         orientationScrollView.setOnNaPageChangeListener(onNaPageChangeListener);

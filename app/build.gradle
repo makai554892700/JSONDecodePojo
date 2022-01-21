@@ -29,22 +29,18 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-//    implementation 'com.mayousheng.www:basepojo:0.1.1'
-//    implementation 'com.mayousheng.www:httputils:0.0.8'
-//    implementation 'com.mayousheng.www:initview:0.0.2'
-//    implementation 'com.mayousheng.www:showimgutils:0.0.1'
-//    implementation project(':basepojo')
-//    implementation project(':httputils')
-    implementation project(':initview')
-    implementation project(':showimgutils')
-    implementation project(':conf-grd')
+    implementation 'androidx.appcompat:appcompat:1.4.0'
     implementation 'androidx.recyclerview:recyclerview:1.2.0'
-    implementation 'androidx.appcompat:appcompat:1.3.1'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
 
-    implementation 'com.google.firebase:firebase-bom:28.3.0'
-    implementation 'com.google.firebase:firebase-database:20.0.1'
-//    implementation 'com.github.bumptech.glide:glide:4.10.0'
-//    annotationProcessor 'com.github.bumptech.glide:compiler:4.10.0'
+//    implementation 'com.woaizhuangbi:showimgutils:1.0.0-RELEASE'
+    implementation 'com.woaizhuangbi:conf-grd:1.1.1-RELEASE'
+    implementation 'com.woaizhuangbi:conf-interface:1.2.2-RELEASE'
+
+    implementation project(':showimgutils')
+    implementation project(':recyclerutils')
+
+    implementation 'com.google.firebase:firebase-bom:29.0.3'
+    implementation 'com.google.firebase:firebase-database:20.0.3'
 }
 //生成apk包命令： gradlew :app:clean  :app:resguardRelease

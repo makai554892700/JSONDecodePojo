@@ -1,5 +1,6 @@
 package com.mayousheng.www.jsondecodepojo.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,15 +14,14 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
-import com.mayousheng.www.conf.utils.ABUtils;
 import com.mayousheng.www.initview.ViewDesc;
 import com.mayousheng.www.jsondecodepojo.R;
-import com.mayousheng.www.jsondecodepojo.base.BaseActivity;
 import com.mayousheng.www.jsondecodepojo.common.StaticParam;
 import com.mayousheng.www.jsondecodepojo.pojo.User;
 import com.mayousheng.www.jsondecodepojo.utils.CommonRequestUtils;
 import com.mayousheng.www.jsondecodepojo.utils.Settings;
 import com.mayousheng.www.jsondecodepojo.utils.UserUtils;
+import com.mayousheng.www.recyclerutils.BaseActivity;
 
 import java.util.ArrayList;
 
@@ -30,14 +30,19 @@ import java.util.ArrayList;
  */
 
 public class FirstActivity extends BaseActivity implements View.OnClickListener {
+    @SuppressLint("NonConstantResourceId")
     @ViewDesc(viewId = R.id.user_name)
     public EditText userName;
+    @SuppressLint("NonConstantResourceId")
     @ViewDesc(viewId = R.id.user_pass)
     public EditText userPass;
+    @SuppressLint("NonConstantResourceId")
     @ViewDesc(viewId = R.id.login)
     public Button login;
+    @SuppressLint("NonConstantResourceId")
     @ViewDesc(viewId = R.id.register)
     public Button register;
+    @SuppressLint("NonConstantResourceId")
     @ViewDesc(viewId = R.id.loading)
     public RelativeLayout loading;
 

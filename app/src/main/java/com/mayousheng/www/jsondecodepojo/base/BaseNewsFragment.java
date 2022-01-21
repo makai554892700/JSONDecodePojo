@@ -15,8 +15,12 @@ import com.mayousheng.www.jsondecodepojo.common.StaticParam;
 import com.mayousheng.www.jsondecodepojo.listener.OnLoadMoreListener;
 import com.mayousheng.www.jsondecodepojo.utils.ThreadUtils;
 import com.mayousheng.www.initview.ViewDesc;
+import com.mayousheng.www.recyclerutils.BaseFragment;
+import com.mayousheng.www.recyclerutils.BaseRecyclerAdapter;
 
 import java.util.ArrayList;
+
+import www.mayousheng.com.showimgutils.ShowImageUtils;
 
 /**
  * Created by ma kai on 2017/10/4.
@@ -31,6 +35,11 @@ public abstract class BaseNewsFragment<T extends BaseResponse> extends BaseFragm
     protected BaseRecyclerAdapter<T> recyclerAdapter;
     protected LinearLayoutManager linearLayoutManager;
     protected OnLoadMoreListener onLoadMoreListener;
+    private ShowImageUtils showImageUtils = new ShowImageUtils();
+
+    public ShowImageUtils getShowImageUtils() {
+        return showImageUtils;
+    }
 
     @Nullable
     @Override

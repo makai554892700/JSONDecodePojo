@@ -28,7 +28,7 @@ publishing {
             pom {
                 name = "recyclerutils"
                 description = 'recyclerutils'
-                url = 'https://github.com/makai554892700/JSONDecodePojo/tree/master/initview'
+                url = 'https://github.com/makai554892700/JSONDecodePojo/tree/master/recyclerutils'
                 licenses {
                     license {
                         name = 'The Apache License, Version 2.0'

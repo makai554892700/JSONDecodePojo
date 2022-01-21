@@ -23,6 +23,7 @@ import com.mayousheng.www.jsondecodepojo.utils.RC4Utils;
 import com.mayousheng.www.jsondecodepojo.utils.ShareUtils;
 import com.mayousheng.www.jsondecodepojo.utils.db.DBOperateUtils;
 import com.mayousheng.www.jsondecodepojo.utils.db.model.DBOperateInfo;
+import com.mayousheng.www.recyclerutils.BaseRecyclerHolder;
 
 import java.lang.ref.WeakReference;
 
@@ -58,7 +59,7 @@ public abstract class BaseNewsHolder<T extends BaseResponse> extends BaseRecycle
     public ImageView comment;
     @ViewDesc(viewId = R.id.common_comment_text)
     public TextView commentText;
-    protected ShowImageUtils showImageUtils;
+    public ShowImageUtils showImageUtils = new ShowImageUtils();
     protected int width, height;
     private DBOperateUtils dbOperateUtils;
     private DBOperateInfo dbOperateInfo, localOperateInfo;

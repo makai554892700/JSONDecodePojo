@@ -13,22 +13,18 @@ import com.mayousheng.www.jsondecodepojo.utils.InfoUtils;
 
 import java.util.ArrayList;
 
-/**
- * Created by ma kai on 2017/10/4.
- */
-
 public class VideoFragment extends BaseNewsFragment<BSBDJVideoResponse> {
 
     @Override
     protected int getLayoutId() {
-        linearLayoutManager = new LinearLayoutManager(getContext()
+        linearLayoutManager = new LinearLayoutManager(getActivity()
                 , LinearLayoutManager.VERTICAL, false);
         return R.layout.fragment_bsbdj_video;
     }
 
     @Override
     protected void initView(View view) {
-        recyclerAdapter = new VideoAdapter(getContext());
+        recyclerAdapter = new VideoAdapter(getActivity());
     }
 
     @Override

@@ -13,22 +13,18 @@ import com.mayousheng.www.jsondecodepojo.utils.InfoUtils;
 
 import java.util.ArrayList;
 
-/**
- * Created by ma kai on 2017/10/4.
- */
-
 public class PunsterFragment extends BaseNewsFragment<BSBDJPunsterResponse> {
 
     @Override
     protected int getLayoutId() {
-        linearLayoutManager = new LinearLayoutManager(getContext()
+        linearLayoutManager = new LinearLayoutManager(getActivity()
                 , LinearLayoutManager.VERTICAL, false);
         return R.layout.fragment_bsbdj_punster;
     }
 
     @Override
     protected void initView(View view) {
-        recyclerAdapter = new PunsterAdapter(getContext());
+        recyclerAdapter = new PunsterAdapter(getActivity());
     }
 
     @Override

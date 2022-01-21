@@ -13,23 +13,19 @@ import com.mayousheng.www.jsondecodepojo.utils.InfoUtils;
 
 import java.util.ArrayList;
 
-/**
- * Created by ma kai on 2017/10/4.
- */
-
 public class JokeFragment extends BaseNewsFragment<JokeResponse> {
 
     @Override
     protected int getLayoutId() {
-        linearLayoutManager = new LinearLayoutManager(getContext()
+        linearLayoutManager = new LinearLayoutManager(getActivity()
                 , LinearLayoutManager.VERTICAL, false);
         return R.layout.fragment_joke;
     }
 
     @Override
     protected void initView(View view) {
-        recyclerAdapter = new JokeAdapter(getContext());
-        recyclerAdapter.getShowImageUtils().setView(getRootView());
+        recyclerAdapter = new JokeAdapter(getActivity());
+        getShowImageUtils().setView(getRootView());
     }
 
     @Override
